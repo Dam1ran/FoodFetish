@@ -7,9 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <script>
-      if (!window.location.pathname.endsWith('.html')) {
-        sessionStorage.redirect = window.location.pathname;
-      }
+      (function () {
+        if (sessionStorage.redirect) {
+          const redirect = sessionStorage.redirect;
+          delete sessionStorage.redirect;
+          window.location.href = redirect;
+        }
+      })();
     </script>
   </head>
   <body>
