@@ -26,7 +26,10 @@
             "assets": ["src/assets"],
             "styles": ["src/styles.scss"],
             "polyfills": ["@angular/localize/init"],
-            "outputPath": "docs"
+            "outputPath": {
+              "base": "docs",
+              "browser": ""
+            }
           },
           "configurations": {
             "production": {
