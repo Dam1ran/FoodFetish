@@ -1,1 +1,0 @@
-import{Kb as m,Sa as a,nb as n,ob as p}from"./chunk-T4KA3DSK.js";var o=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=a({type:t,selectors:[["app-day-template"]],decls:2,vars:0,template:function(e,l){e&1&&(n(0,"p"),m(1,"NOT DONE"),p())},encapsulation:2})};export{o as DayTemplate};

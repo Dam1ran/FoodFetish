@@ -21,7 +21,6 @@ import { Food } from '../../../../shared/entities/food.entity';
   selector: 'add-edit-food-modal',
   imports: [IconifyComponent, FormField],
   templateUrl: './add-edit-food-modal.html',
-  styleUrl: './add-edit-food-modal.scss',
 })
 export class AddEditFood implements AfterViewInit {
   protected readonly foodMacroCategory = FoodMacroCategory;

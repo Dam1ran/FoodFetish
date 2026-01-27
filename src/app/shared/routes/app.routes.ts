@@ -14,9 +14,4 @@ export const routes: Routes = [
     path: RoutePaths.diary,
     loadComponent: () => import('../../components/diary/diary').then((c) => c.Diary),
   },
-  {
-    path: RoutePaths.dayTemplate,
-    loadComponent: () =>
-      import('../../components/day-template/day-template').then((c) => c.DayTemplate),
-  },
 ];
