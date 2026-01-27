@@ -1,0 +1,215 @@
+<div class="content-wrapper">
+  <div class="bg-secondary-subtle p-1">
+    <div class="d-flex justify-content-between">
+      @for (weekday of weekdays; track $index) {
+        <div
+          class="weekday bg-body cursor-pointer"
+          [class]="{
+            'border-warning': isDaySelected(weekday),
+            'text-primary': isTodayLbl(weekday),
+            'fw-bold': isTodayLbl(weekday),
+            'fst-normal': isTodayLbl(weekday),
+            'bg-body-secondary': $index === 5 || $index === 6,
+          }"
+          (click)="selectWeekDay(weekday)"
+        >
+          {{ weekday }}
+        </div>
+      }
+      <date-picker [(selectedDate)]="selectedDate" />
+    </div>
+  </div>
+
+  <div class="border-bottom"></div>
+  <div class="d-flex">
+    <div style="width: 100px"></div>
+    <div
+      class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-25 bg-body-secondary"
+      style="font-size: 12px"
+    >
+      <div class="col col-2 align-self-center text-center">P</div>
+      <div class="col col-2 align-self-center text-center">C</div>
+      <div class="col col-2 align-self-center text-center">Fa</div>
+      <div class="col col-2 align-self-center text-center">Fi</div>
+      <div class="col col-2 align-self-center text-center">KCal</div>
+      <div class="col col-2 align-self-center text-center">G</div>
+    </div>
+    <div style="width: 30px"></div>
+  </div>
+  <div class="border-bottom"></div>
+  <div class="accordion accordion-flush" id="accordionFlush">
+    @for (mealTemplateEntry of dayTemplateService.getDayTemplate()!.entries; track $index) {
+      @let respectiveMeal = getRespectiveMeal(mealTemplateEntry.position);
+      <div class="accordion-item">
+        <h2 class="accordion-header d-flex align-items-center">
+          <button
+            class="accordion-button collapsed p-1 text-truncate text-muted fw-bold opacity-75"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#flush-collapse' + $index"
+            (click)="setOpenedAccordionIndex($index)"
+            style="width: 100px"
+          >
+            {{ mealPositionMap[mealTemplateEntry.position] }}
+          </button>
+          <div class="flex-grow-1 align-self-stretch">
+            <div
+              class="row g-0 h-100 fw-light fst-italic"
+              [class]="{
+                'bg-body-secondary': openedAccordionIndex() !== $index,
+                'bg-dark-subtle': openedAccordionIndex() === $index,
+              }"
+              style="font-size: 12px"
+            >
+              <div class="col col-2 align-self-center text-center">
+                {{ getMealProtein(respectiveMeal).toFixed(1) }}
+              </div>
+              <div class="col col-2 align-self-center text-center">
+                {{ getMealCarbs(respectiveMeal).toFixed(1) }}
+              </div>
+              <div class="col col-2 align-self-center text-center">
+                {{ getMealFats(respectiveMeal).toFixed(1) }}
+              </div>
+              <div class="col col-2 align-self-center text-center">
+                {{ getMealFiber(respectiveMeal).toFixed(1) }}
+              </div>
+              <div class="col col-2 align-self-center text-center">
+                {{ getMealCalories(respectiveMeal).toFixed(1) }}
+              </div>
+              <div class="col col-2 align-self-center text-center"></div>
+            </div>
+          </div>
+          <button
+            class="btn btn-success mx-1"
+            buttonIcon="iconoir:lens-plus"
+            (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position, collapsible)"
+            iconSize="16px"
+          ></button>
+        </h2>
+        <div
+          #collapsible
+          [id]="'flush-collapse' + $index"
+          class="accordion-collapse collapse bg-body-secondary rounded"
+          data-bs-parent="#accordionFlush"
+        >
+          @if (respectiveMeal) {
+            <div class="d-flex align-items-center p-1 gap-1">
+              <input
+                class="form-control form-control-sm meal-name-input text-center"
+                type="text"
+                [value]="respectiveMeal.name"
+                (input)="updateMealName($event.target.value, mealTemplateEntry.position)"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                [class.btn-outline-success]="respectiveMeal.note"
+                buttonIcon="iconoir:notes"
+                iconSize="16px"
+                (click)="toggleEditMealNoteDialog()"
+              ></button>
+              <ng-template #editMealNoteDialog>
+                <textarea
+                  class="form-control form-control-sm meal-name-input text-center"
+                  rows="3"
+                  placeholder="Meal note"
+                  [value]="respectiveMeal.note"
+                  (input)="
+                    updateMealNote(
+                      $any($event.target).value,
+                      mealTemplateEntry.position,
+                      respectiveMeal.id
+                    )
+                  "
+                ></textarea>
+              </ng-template>
+            </div>
+            @for (food of respectiveMeal.foods; track $index; let isOdd = $odd) {
+              <div class="d-flex mb-1" [class.bg-body-tertiary]="isOdd">
+                <div
+                  class="d-flex align-items-center ps-1 border-end border-dark-subtle"
+                  style="min-width: 100px; font-size: 12px"
+                >
+                  {{ food.name }}
+                </div>
+                <div
+                  class="row g-0 fw-light fst-italic flex-grow-1 align-self-stretch"
+                  style="font-size: 12px"
+                >
+                  @let foodWeightMultiplier = food.weight * 0.01;
+                  <div
+                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center m-0"
+                  >
+                    {{ (food.protein * foodWeightMultiplier).toFixed(1) }}
+                  </div>
+                  <div
+                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
+                  >
+                    {{ (food.carbs * foodWeightMultiplier).toFixed(1) }}
+                  </div>
+                  <div
+                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
+                  >
+                    {{ (food.fats * foodWeightMultiplier).toFixed(1) }}
+                  </div>
+                  <div
+                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
+                  >
+                    {{ (food.fiber * foodWeightMultiplier).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 align-self-stretch text-center align-content-center">
+                    {{ (food.calories * foodWeightMultiplier).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 align-self-stretch text-center align-content-center">
+                    <input
+                      type="number"
+                      class="form-control form-control-sm text-center p-0 border border-success-subtle bg-body-tertiary gram-input"
+                      [value]="food.weight"
+                      (input)="
+                        updateFoodWeight(mealTemplateEntry.position, $index, $event.target.value)
+                      "
+                    />
+                  </div>
+                </div>
+                <button
+                  class="btn btn-outline-warning mx-1 opacity-50 align-self-center"
+                  buttonIcon="iconoir:trash"
+                  iconSize="16px"
+                  (click)="removeFood(mealTemplateEntry.position, $index, respectiveMeal)"
+                ></button>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+  <div class="d-flex border-top">
+    <div class="fw-bold text-muted opacity-75 fst-italic" style="width: 100px">Total</div>
+    <div
+      class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-75"
+      style="font-size: 12px"
+    >
+      @let dayStats = getDayStats();
+      <div class="col col-2 text-center align-content-center bg-body-secondary border-start">
+        {{ dayStats.protein.toFixed(0) }}
+      </div>
+      <div class="col col-2 text-center align-content-center">
+        {{ dayStats.carbs.toFixed(0) }}
+      </div>
+      <div class="col col-2 text-center align-content-center bg-body-secondary">
+        {{ dayStats.fat.toFixed(0) }}
+      </div>
+      <div class="col col-2 text-center align-content-center">
+        {{ dayStats.fiber.toFixed(0) }}
+      </div>
+      <div class="col col-2 text-center align-content-center bg-body-secondary">
+        {{ dayStats.calories.toFixed(0) }}
+      </div>
+      <div class="col col-2 text-center align-content-center border-end">
+        {{ dayStats.weight.toFixed(0) }}
+      </div>
+    </div>
+    <div style="width: 30px"></div>
+  </div>
+  <div class="border-bottom"></div>
+</div>

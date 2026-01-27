@@ -1,0 +1,127 @@
+<div class="px-2 py-1 border-bottom d-flex align-items-center" style="min-height: 40px">
+  <h1 class="modal-title fs-6">Manage a food (per 100g)</h1>
+</div>
+<div class="px-2 py-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <input
+      #nameInput
+      type="text"
+      placeholder="Name"
+      class="form-control px-1 py-1 text-center bg-secondary-subtle"
+      [formField]="form.name"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Category</label>
+    <button
+      type="button"
+      class="btn btn-secondary dropdown-toggle bmw align-self-center py-0"
+      style="height: 34px"
+      data-bs-toggle="dropdown"
+      [style.background-color]="foodMacroCategoryMap[form.macroCategory().value()].bgColor"
+    >
+      {{ foodMacroCategory[form.macroCategory().value()] }}
+    </button>
+    <ul class="dropdown-menu p-0" style="min-width: 120px">
+      @for (macroCategory of macroCategories; track $index) {
+        <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor">
+          @let sameCategory = macroCategory.value === form.macroCategory().value();
+
+          <span
+            class="dropdown-item cursor-pointer px-2"
+            (click)="form.macroCategory().value.set(macroCategory.value)"
+            [class]="{
+              'fst-italic': sameCategory,
+            }"
+            [style]="{
+              'text-decoration': sameCategory ? 'underline' : 'unset',
+              'letter-spacing': sameCategory ? '1px' : '0.25px',
+              'text-underline-offset': '2px',
+            }"
+          >
+            {{ macroCategory.label }}
+          </span>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Protein (g)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="prot"
+      class="form-control px-1 py-1 text-center"
+      [formField]="form.protein"
+      style="width: 120px"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Carbs (g)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="carbs"
+      class="form-control px-1 py-1 text-center"
+      [formField]="form.carbs"
+      style="width: 120px"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Fats (g)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="fats"
+      class="form-control px-1 py-1 text-center"
+      [formField]="form.fats"
+      style="width: 120px"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Fiber (g)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="fiber"
+      class="form-control px-1 py-1 text-center"
+      [formField]="form.fiber"
+      style="width: 120px"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <label for="calories">Calories (KCal)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="calories"
+      class="form-control px-1 py-1 text-center"
+      [formField]="form.calories"
+      style="width: 120px"
+    />
+  </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+    <textarea
+      rows="2"
+      placeholder="Note"
+      id="note"
+      class="form-control px-1 py-0"
+      [formField]="form.note"
+    >
+    </textarea>
+  </div>
+</div>
+<div
+  class="modal-footer px-2 py-0 align-items-center justify-content-center"
+  style="min-height: 40px"
+>
+  <button
+    type="button"
+    class="btn btn-sm btn-success gap-2 bmw d-flex align-items-center justify-content-between"
+    data-bs-dismiss="modal"
+    (click)="addEditFood()"
+  >
+    Save
+    <iconify icon="heroicons-outline:save" size="18px" />
+  </button>
+</div>

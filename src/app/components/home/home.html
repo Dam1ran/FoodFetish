@@ -1,0 +1,27 @@
+<div class="d-flex flex-column" style="height: calc(100vh - 56px)">
+  <div class="mb-4">
+    <div class="text-center bg-body-secondary">FoodFetish&trade; - because we can!</div>
+    <div class="text-center mt-2">
+      <span class="fw-bold">Simplest calorie tracker.</span> No ads, no database, no login. For now
+      information is stored in browser memory. Food list can be saved/loaded separately.
+    </div>
+  </div>
+
+  <a
+    class="nav-link fw-bold text-center bg-body-tertiary rounded m-1 p-1 opacity-75 text-decoration-underline"
+    style="text-underline-offset: 2px"
+    [routerLink]="routePaths.diary"
+  >
+    Diary
+  </a>
+  <a
+    class="nav-link fw-bold text-center bg-body-tertiary rounded m-1 p-1 opacity-75 text-decoration-underline"
+    style="text-underline-offset: 2px"
+    [routerLink]="routePaths.myFoods"
+  >
+    My foods
+  </a>
+  <div class="bg-warning-subtle text-center fst-italic mt-auto" style="font-size: 12px">
+    Work in progress...
+  </div>
+</div>

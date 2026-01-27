@@ -1,0 +1,139 @@
+<div
+  class="content-wrapper d-flex justify-content-between gap-2 p-1 bg-body-tertiary border-bottom"
+>
+  <button
+    type="button"
+    class="btn btn-secondary dropdown-toggle bmw align-self-center p-1"
+    [style.background-color]="foodMacroCategoryMap[selectedMacroCategory().value].bgColor"
+    data-bs-toggle="dropdown"
+  >
+    {{ selectedMacroCategory().label }}
+  </button>
+  <div class="position-relative">
+    <input
+      type="text"
+      placeholder="Filter by name"
+      class="form-control p-1"
+      [(ngModel)]="nameFilter"
+    />
+    <button
+      class="btn btn-sm btn-secondary p-0 position-absolute end-0 top-50 translate-middle-y me-2 z-1"
+      buttonIcon="mdi:close"
+      [iconSize]="'16px'"
+      (click)="nameFilter.set('')"
+    ></button>
+  </div>
+  <ul class="dropdown-menu p-0 overflow-hidden shadow-sm" style="min-width: 120px">
+    @for (macroCategory of macroCategories; track $index) {
+      <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor">
+        @let sameCategory = macroCategory.label === selectedMacroCategory().label;
+        <span
+          class="dropdown-item cursor-pointer px-2"
+          (click)="selectedMacroCategory.set(macroCategory)"
+          [class]="{
+            'fst-italic': sameCategory,
+          }"
+          [style]="{
+            'text-decoration': sameCategory ? 'underline' : 'unset',
+            'letter-spacing': sameCategory ? '1px' : '0.25px',
+            'text-underline-offset': '2px',
+          }"
+        >
+          {{ macroCategory.label }}
+        </span>
+      </li>
+    }
+  </ul>
+</div>
+<div class="content-wrapper">
+  <table
+    class="table table-sm table-striped-columns table-hover mb-0"
+    style="font-size: 10px; table-layout: fixed"
+  >
+    <thead class="position-sticky z-1" style="top: 0px">
+      <tr>
+        <th scope="col" class="bg-gradient" style="width: 8%"></th>
+        <th scope="col" class="bg-gradient" style="width: 28%">Name</th>
+        <th scope="col" class="text-center bg-gradient" style="width: 10%">Prot</th>
+        <th scope="col" class="text-center bg-gradient" style="width: 10%">Carbs</th>
+        <th scope="col" class="text-center bg-gradient" style="width: 10%">Fats</th>
+        <th scope="col" class="text-center bg-gradient" style="width: 10%">Fiber</th>
+        <th scope="col" class="text-center bg-gradient" style="width: 15%">KCal</th>
+        <th scope="col" class="bg-gradient" style="width: 8%">
+          <button
+            class="btn p-0 btn-success m-auto rounded-0"
+            iconSize="16px"
+            buttonIcon="iconoir:lens-plus"
+            (click)="addFood()"
+          ></button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (food of foods(); track $index) {
+        <tr scope="row">
+          <td class="text-truncate text-center">
+            <button
+              class="btn p-0 btn-warning opacity-50 m-auto"
+              iconSize="16px"
+              buttonIcon="iconoir:trash"
+              (click)="deleteFood(food)"
+            ></button>
+          </td>
+          <td
+            class="text-truncate1"
+            [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
+            [class.cursor-pointer]="diaryDate()"
+            (click)="addFoodToDiary(food)"
+          >
+            {{ food.name }}
+          </td>
+          <td class="text-truncate text-center">{{ food.protein }}</td>
+          <td class="text-truncate text-center">{{ food.carbs }}</td>
+          <td class="text-truncate text-center">{{ food.fats }}</td>
+          <td class="text-truncate text-center">{{ food.fiber }}</td>
+          <td class="text-truncate text-center">{{ food.calories }}</td>
+          <td class="text-truncate text-center">
+            <button
+              class="btn p-0 btn-secondary m-auto"
+              iconSize="16px"
+              buttonIcon="iconoir:edit"
+              (click)="editFood(food)"
+            ></button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="fst-italic text-center bg-body-tertiary text-muted">
+            No foods found in selected category...
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-between p-1 bg-body-tertiary opacity-50">
+    <button
+      class="btn btn-outline-secondary p-1 rounded-0"
+      iconSize="24px"
+      buttonIcon="iconoir:save-floppy-disk"
+      (click)="saveFoods()"
+    >
+      Save
+    </button>
+    <input
+      #jsonUpload
+      type="file"
+      accept=".json"
+      class="d-none"
+      (change)="onLoadFoodsFromFile($event)"
+    />
+    <button
+      class="btn btn-outline-secondary p-1 rounded-0"
+      iconSize="24px"
+      buttonIcon="iconoir:load-action-floppy"
+      (click)="loadFoods()"
+    >
+      Load
+    </button>
+  </div>
+</div>

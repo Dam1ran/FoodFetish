@@ -1,0 +1,10 @@
+thead::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background-color: #aaaaaa;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}

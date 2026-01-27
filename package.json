@@ -4,8 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "startLan": "ng serve --host 192.168.0.32",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "lint": "ng lint",
     "test": "ng test"
   },
   "prettier": {
@@ -29,15 +31,41 @@
     "@angular/forms": "^21.1.0",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
+    "@ng-bootstrap/ng-bootstrap": "^20.0.0",
+    "bootstrap": "^5.3.8",
+    "dayjs": "^1.11.19",
+    "iconify-icon": "^3.0.2",
+    "lodash-es": "^4.17.22",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "^21.1.0",
+    "@angular-eslint/eslint-plugin": "^21.1.0",
+    "@angular-eslint/eslint-plugin-template": "^21.1.0",
+    "@angular-eslint/template-parser": "^21.1.0",
     "@angular/build": "^21.1.0",
     "@angular/cli": "^21.1.0",
     "@angular/compiler-cli": "^21.1.0",
+    "@angular/language-service": "^21.1.0",
+    "@eslint/js": "^9.39.2",
+    "@smarttools/eslint-plugin-rxjs": "^1.0.22",
+    "@types/bootstrap": "^5.2.10",
+    "@types/lodash-es": "^4.17.12",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "angular-eslint": "^21.1.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-no-barrel-files": "^1.2.2",
+    "eslint-plugin-prettier": "^5.5.5",
     "jsdom": "^27.1.0",
+    "prettier": "^3.8.0",
     "typescript": "~5.9.2",
+    "typescript-eslint": "^8.53.1",
     "vitest": "^4.0.8"
   }
 }
