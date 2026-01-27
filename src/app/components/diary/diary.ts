@@ -1,12 +1,11 @@
-import { Component, computed, inject, model, signal, viewChild } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import dayjs from 'dayjs';
 import { Collapse } from 'bootstrap';
+import { Router } from '@angular/router';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DatePicker } from '../../shared/components/date-picker/date-picker';
 import { DayTemplateService } from '../../shared/services/day-template.service';
-import { IconifyComponent } from '../../shared/components/iconify.component';
 import {
   getMealCalories,
   getMealCarbs,
@@ -18,21 +17,11 @@ import {
 import { DairyLogService } from '../../shared/services/dairy-log.service';
 import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
 import { MealPosition, MealPositionMap } from '../../shared/entities/meal-position.enum';
-import { Router } from '@angular/router';
 import { RoutePaths } from '../../shared/routes/route-paths';
-import { JsonPipe } from '@angular/common';
-import { Food } from '../../shared/entities/food.entity';
 
 @Component({
   selector: 'diary',
-  imports: [
-    ButtonIconDirective,
-    ReactiveFormsModule,
-    FormsModule,
-    DatePicker,
-    IconifyComponent,
-    JsonPipe,
-  ],
+  imports: [ButtonIconDirective, ReactiveFormsModule, FormsModule, DatePicker],
   templateUrl: './diary.html',
   styleUrl: './diary.scss',
 })

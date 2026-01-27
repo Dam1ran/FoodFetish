@@ -29,7 +29,14 @@
             "outputPath": {
               "base": "docs",
               "browser": ""
-            }
+            },
+            "allowedCommonJsDependencies": [
+              "dayjs",
+              "dayjs/plugin/utc",
+              "dayjs/plugin/weekday",
+              "dayjs/plugin/weekOfYear",
+              "dayjs/plugin/isoWeek"
+            ]
           },
           "configurations": {
             "production": {
