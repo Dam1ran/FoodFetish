@@ -134,10 +134,9 @@ export class Diary {
     this.modalService.open(this.editMealNoteDialogRef(), { size: 'sm', centered: true });
   }
 
-  updateMealNote(note: string, mealPosition: MealPosition, mealId: string) {
+  updateMealNote(note: string, mealId: string) {
     this.dairyLogService.updateMealNote(
       DayJsHelper.fromNgbDateStruct(this.selectedDate()).toISOString(),
-      mealPosition,
       mealId,
       note,
     );

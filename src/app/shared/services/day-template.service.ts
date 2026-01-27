@@ -42,7 +42,7 @@ export class DayTemplateService {
   }
 
   private loadDayTemplate() {
-    this.dayTemplate.set(JSON.parse(localStorage.getItem('dayTemplate')!));
+    this.dayTemplate.set(JSON.parse(localStorage.getItem('dayTemplate')));
   }
 
   getDayTemplate() {

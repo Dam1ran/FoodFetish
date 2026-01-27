@@ -1,11 +1,9 @@
 import { Injectable, signal } from '@angular/core';
+import { v7 } from 'uuid';
 import { DairyLog } from '../entities/dairy-log.entity';
-import { Dayjs } from 'dayjs';
 import { DairyDay } from '../entities/dairy-day.entity';
 import { DayTemplate, DayTemplateEntry } from '../entities/day-template.entity';
 import { Meal } from '../entities/meal.entity';
-import { v7 } from 'uuid';
-import { FoodMacroCategory } from '../entities/food-macro-category.enum';
 import { MealPosition, MealPositionMap } from '../entities/meal-position.enum';
 import { Food } from '../entities/food.entity';
 
@@ -27,7 +25,7 @@ export class DairyLogService {
   }
 
   private loadDairyLog() {
-    this.dairyLog.set(JSON.parse(localStorage.getItem('dairyLog')!));
+    this.dairyLog.set(JSON.parse(localStorage.getItem('dairyLog')));
   }
 
   getRespectiveMeal(isoDate: string, mealPosition: MealPosition) {
@@ -40,7 +38,7 @@ export class DairyLogService {
     food = { ...food };
     mealPosition = Number(mealPosition);
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       let respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
@@ -84,7 +82,7 @@ export class DairyLogService {
 
   updateMealName(isoDate: string, mealPosition: MealPosition, value: string) {
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       const respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
@@ -108,7 +106,7 @@ export class DairyLogService {
 
   removeFood(isoDate: string, mealPosition: MealPosition, foodIndex: number) {
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       const respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
@@ -134,7 +132,7 @@ export class DairyLogService {
 
   clearMeal(isoDate: string, mealPosition: MealPosition) {
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       const respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
@@ -160,7 +158,7 @@ export class DairyLogService {
 
   updateFoodWeight(isoDate: string, mealPosition: MealPosition, foodIndex: number, weight: number) {
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       const respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
@@ -218,9 +216,9 @@ export class DairyLogService {
     }, emptyStats);
   }
 
-  updateMealNote(isoDate: string, mealPosition: MealPosition, mealId: string, note: string) {
+  updateMealNote(isoDate: string, mealId: string, note: string) {
     this.dairyLog.update((dairyLog) => {
-      const dairyLogCopy = { ...dairyLog! };
+      const dairyLogCopy = { ...dairyLog };
 
       const respectiveDay = dairyLogCopy.dairyDays.find((day) => day.date === isoDate);
       if (!respectiveDay) {
