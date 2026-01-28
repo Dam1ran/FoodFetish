@@ -33,7 +33,9 @@
     [routerLink]="routePaths.releaseNotes"
   >
     <span class="release-notes">Release notes</span>
-    <div class="version">{{ versionService.releases[0].version }}</div>
+    @if (versionService.isNewVersion()) {
+      <div class="version">{{ versionService.releases[0].version }}</div>
+    }
   </a>
 
   <a
