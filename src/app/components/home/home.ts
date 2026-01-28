@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RoutePaths } from '../../shared/routes/route-paths';
+import { VersionService } from '../../shared/services/version/version.service';
 
 @Component({
   imports: [RouterLink],
@@ -9,4 +10,5 @@ import { RoutePaths } from '../../shared/routes/route-paths';
 })
 export class Home {
   protected readonly routePaths = RoutePaths;
+  protected readonly versionService = inject(VersionService);
 }

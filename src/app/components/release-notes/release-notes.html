@@ -1,0 +1,24 @@
+<div class="content-wrapper">
+  @for (release of versionService.releases; track $index) {
+    <div class="bg-body mt-2 mx-1 rounded border">
+      <div
+        class="d-flex justify-content-between align-items-center bg-body-secondary px-2 py-1 opacity-80"
+      >
+        <h6 class="m-0 fw-normal">{{ release.date }}</h6>
+        <h2 class="fst-italic fs-6 m-0">{{ release.version }}</h2>
+      </div>
+      @for (change of release.changes; track $index) {
+        <div class="d-flex align-content-stretch px-1" style="margin: 4px 0">
+          <div
+            class="flex-shrink-0 opacity-60 rounded-start"
+            [style.background-color]="versionService.versionChangeTypeColorMap[change.type]"
+            style="width: 0.5rem"
+          ></div>
+          <div class="ps-2 pe-1 text-muted opacity-90 bg-body-tertiary flex-grow-1 rounded-end">
+            {{ change.description }}
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

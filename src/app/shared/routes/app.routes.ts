@@ -14,4 +14,9 @@ export const routes: Routes = [
     path: RoutePaths.diary,
     loadComponent: () => import('../../components/diary/diary').then((c) => c.Diary),
   },
+  {
+    path: RoutePaths.releaseNotes,
+    loadComponent: () =>
+      import('../../components/release-notes/release-notes').then((c) => c.ReleaseNotes),
+  },
 ];

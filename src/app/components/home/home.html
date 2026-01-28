@@ -27,6 +27,14 @@
   >
     My foods
   </a>
+  <a
+    class="nav-link text-center bg-body-tertiary rounded m-1 mt-4 p-1 opacity-40"
+    style="text-underline-offset: 2px"
+    [routerLink]="routePaths.releaseNotes"
+  >
+    <span class="release-notes">Release notes</span>
+    <div class="version">{{ versionService.releases[0].version }}</div>
+  </a>
 
   <a
     class="nav-link text-center bg-body-tertiary rounded m-1 p-1 opacity-25 text-decoration-underline mt-4"

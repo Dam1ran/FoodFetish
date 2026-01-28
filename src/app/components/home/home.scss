@@ -1,0 +1,12 @@
+a:has(span.release-notes) {
+  line-height: 14px;
+  .release-notes {
+    text-decoration: underline;
+  }
+}
+.version {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 12px;
+  color: #cccccc;
+}
