@@ -12,6 +12,29 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.2.0',
+      date: '30.01.2026',
+      changes: [
+        {
+          description: 'Added recipe page with wiring functionalities.',
+          type: VersionChangeType.Feature,
+        },
+        {
+          description: 'Added toasts component.',
+          type: VersionChangeType.Maintenance,
+        },
+        {
+          description: 'Fixed bug with edit meal note.',
+          type: VersionChangeType.Fix,
+        },
+        {
+          description:
+            'Persist expanded meal. Display meal weight. Some rearrangements. Some UX improvements and refactors. Added day with food indicator.',
+          type: VersionChangeType.Update,
+        },
+      ],
+    },
+    {
       version: '1.1.2',
       date: '28.01.2026',
       changes: [

@@ -1,6 +1,6 @@
 import { DayTemplate } from './day-template.entity';
 
-export class DairyDay {
+export class DiaryDay {
   constructor(
     public date: string,
     public dayTemplate = new DayTemplate(),

@@ -19,22 +19,27 @@ export class DayTemplateService {
       dayTemplate.entries.push({
         position: 1,
         meal: new Meal('', 'Meal I'),
+        recipes: [],
       });
       dayTemplate.entries.push({
         position: 2,
         meal: new Meal('', 'Meal II'),
+        recipes: [],
       });
       dayTemplate.entries.push({
         position: 3,
         meal: new Meal('', 'Meal III'),
+        recipes: [],
       });
       dayTemplate.entries.push({
         position: 4,
         meal: new Meal('', 'Meal IV'),
+        recipes: [],
       });
       dayTemplate.entries.push({
         position: 5,
         meal: new Meal('', 'Snacks'),
+        recipes: [],
       });
 
       localStorage.setItem('dayTemplate', JSON.stringify(dayTemplate));

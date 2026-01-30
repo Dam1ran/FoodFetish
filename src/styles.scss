@@ -56,7 +56,8 @@ iconify-icon {
   margin-right: auto;
 }
 
-th, td {
+th,
+td {
   vertical-align: middle;
 }
 
@@ -72,4 +73,84 @@ th, td {
   .opacity-#{$i * 5} {
     opacity: calc($i * 0.05) !important;
   }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.toast {
+  --bs-toast-max-width: 310px;
+  &[persistent='true'] {
+    overflow: hidden;
+    --bs-toast-border-color: rgba(var(--opti-main-color-rgb), 0.75);
+
+    &::after,
+    &::before {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-image: conic-gradient(from var(--angle), #e5ff00, #006aff, #dd4e4e);
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      z-index: -1;
+      padding: 3px;
+      border-radius: 10px;
+      opacity: 0;
+      animation:
+        spin 6s linear infinite 60s,
+        fadeIn 3s forwards 15s;
+    }
+
+    &::before {
+      filter: blur(10px);
+      z-index: -2;
+    }
+    .btn-close {
+      display: none;
+    }
+  }
+  .toast-header {
+    user-select: none;
+    padding: 0.25rem 0.5rem;
+  }
+  .toast-body {
+    font-size: 1rem;
+    font-family: sans-serif;
+    text-shadow: 0 0 2px rgba(75, 75, 75, 0.5);
+    padding: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }

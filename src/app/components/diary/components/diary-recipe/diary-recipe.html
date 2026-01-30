@@ -1,0 +1,53 @@
+<div
+  class="accordion accordion-flush"
+  [id]="'accordionFlushRecipe-' + id()"
+  style="--bs-accordion-active-bg: rgba(7, 60, 130, 0.5)"
+>
+  <div class="accordion-item">
+    <h2 class="accordion-header d-flex align-items-center">
+      <button
+        class="btn btn-outline-warning btn-sm opacity-25 mx-1"
+        buttonIcon="iconoir:trash"
+        iconSize="16px"
+        (click)="removeRecipe.emit()"
+      ></button>
+      <button
+        class="accordion-button collapsed p-1 shadow-none"
+        type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#flush-collapse-' + id()"
+      >
+        <div class="opacity-75 w-100 d-flex">
+          <div class="mx-auto text-center text-primary-emphasis text-truncate">
+            {{ recipe().name }}
+          </div>
+        </div>
+      </button>
+      <div class="d-flex align-items-center gap-1 justify-content-center" style="width: 34px">
+        <iconify icon="icon-park-outline:chart-proportion" class="text-success" size="16px" />
+        <div class="text-muted" style="font-size: 10px">{{ recipe().portions }}</div>
+      </div>
+    </h2>
+    <div
+      #collapsible
+      [id]="'flush-collapse-' + id()"
+      class="accordion-collapse collapse bg-body-secondary"
+      [attr.data-bs-parent]="'#accordionFlushRecipe-' + id()"
+    >
+      @for (food of recipe().foods; track $index; let isOdd = $odd) {
+        <food-row
+          [food]="food"
+          [isOdd]="isOdd"
+          noRemove
+          (updateFoodWeight)="
+            updateFoodWeight.emit({
+              foodIndex: $index,
+              newWeight: +$event,
+            })
+          "
+        />
+      }
+      <total-row [stats]="recipeStats()" [fixedDecimals]="0" />
+    </div>
+  </div>
+</div>

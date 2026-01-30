@@ -1,5 +1,7 @@
 {
-  "cSpell.words": [
-    "Iconify"
-  ]
+  "editor.foldingImportsByDefault": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "cSpell.words": ["Iconify", "titlecase"]
 }

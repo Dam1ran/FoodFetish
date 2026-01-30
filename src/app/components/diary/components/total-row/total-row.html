@@ -1,0 +1,23 @@
+<div class="d-flex border-bottom border-2">
+  <div class="fw-bold text-muted opacity-75 fst-italic" style="width: 130px">Total</div>
+  <div class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-75" style="font-size: 12px">
+    <div class="col col-2 text-center align-content-center bg-body-secondary">
+      {{ stats().proteins.toFixed(fixedDecimals()) }}
+    </div>
+    <div class="col col-2 text-center align-content-center">
+      {{ stats().carbs.toFixed(fixedDecimals()) }}
+    </div>
+    <div class="col col-2 text-center align-content-center bg-body-secondary">
+      {{ stats().fats.toFixed(fixedDecimals()) }}
+    </div>
+    <div class="col col-2 text-center align-content-center">
+      {{ stats().fiber.toFixed(fixedDecimals()) }}
+    </div>
+    <div class="col col-2 text-center align-content-center bg-body-secondary">
+      {{ stats().calories.toFixed(fixedDecimals()) }}
+    </div>
+    <div class="col col-2 text-center align-content-center">
+      {{ stats().weight.toFixed(fixedDecimals()) }}
+    </div>
+  </div>
+</div>

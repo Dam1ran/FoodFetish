@@ -73,6 +73,7 @@ export default defineConfig([
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/prefer-readonly': 'warn',
       '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/dot-notation': 'off',
       '@typescript-eslint/explicit-member-accessibility': [
         'warn',
         {

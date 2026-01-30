@@ -1,4 +1,5 @@
 import { Food } from './food.entity';
+import { Stats } from './stats.class';
 
 export class Meal {
   constructor(
@@ -47,4 +48,23 @@ export function getMealCalories(meal?: Meal) {
   }
 
   return meal.foods.reduce((acc, food) => acc + food.calories * food.weight * 0.01, 0);
+}
+
+export function getMealWeight(meal?: Meal) {
+  if (!meal?.foods?.length) {
+    return 0;
+  }
+
+  return meal.foods.reduce((acc, food) => acc + food.weight, 0);
+}
+
+export function getMealStats(meal: Meal) {
+  return new Stats(
+    getMealProtein(meal),
+    getMealCarbs(meal),
+    getMealFats(meal),
+    getMealFiber(meal),
+    getMealCalories(meal),
+    getMealWeight(meal),
+  );
 }

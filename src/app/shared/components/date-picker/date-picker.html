@@ -1,7 +1,6 @@
 <input
   class="form-control p-1"
   style="position: absolute; opacity: 0; pointer-events: none"
-  placeholder="yyyy-mm-dd"
   [(ngModel)]="selectedDate"
   name="dp"
   ngbDatepicker
@@ -9,7 +8,7 @@
   (dateSelect)="onDateSelected($event)"
 />
 <button
-  class="btn btn-secondary bg-body p-0 btn-sm border-0"
+  class="btn p-0 btn-sm border-0"
   buttonIcon="fluent:calendar-20-regular"
   (click)="d.toggle()"
 ></button>

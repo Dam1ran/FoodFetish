@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, input, signal, viewChild } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
@@ -12,11 +12,13 @@ import {
 } from '../../shared/entities/food-macro-category.enum';
 import { Food } from '../../shared/entities/food.entity';
 import { MealPosition } from '../../shared/entities/meal-position.enum';
-import { DairyLogService } from '../../shared/services/dairy-log.service';
+import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { RoutePaths } from '../../shared/routes/route-paths';
+import { RecipesService } from '../../shared/services/recipes.service';
+import { IconifyComponent } from '../../shared/components/iconify.component';
 
 @Component({
-  imports: [ButtonIconDirective, FormsModule],
+  imports: [ButtonIconDirective, FormsModule, IconifyComponent],
   templateUrl: './my-foods.html',
   styleUrl: './my-foods.scss',
 })
@@ -24,6 +26,7 @@ export class MyFoods {
   private readonly modalService = inject(NgbModal);
 
   protected readonly myFoodsService = inject(FoodsService);
+  protected readonly recipesService = inject(RecipesService);
 
   protected readonly foodMacroCategoryMap = FoodMacroCategoryMap;
   protected readonly macroCategories = Object.keys(FoodMacroCategory)
@@ -50,17 +53,23 @@ export class MyFoods {
 
   protected readonly diaryDate = input<string>('');
   protected readonly mealPosition = input<MealPosition>(0);
+  protected readonly recipeId = input<string>('');
 
   protected addFood() {
     this.modalService.open(AddEditFood);
   }
 
-  private readonly dairyLogService = inject(DairyLogService);
+  private readonly diaryLogService = inject(DiaryLogService);
   private readonly router = inject(Router);
-  protected addFoodToDiary(food: Food) {
+  protected addFoodToDiaryOrRecipe(food: Food) {
     if (this.diaryDate() && this.mealPosition()) {
-      this.dairyLogService.addFood(this.diaryDate(), this.mealPosition(), food);
-      void this.router.navigate([RoutePaths.diary]);
+      this.diaryLogService.addFood(this.diaryDate(), this.mealPosition(), food);
+      void this.router.navigate([RoutePaths.diary], {
+        queryParams: { diaryDate: this.diaryDate() },
+      });
+    } else if (this.recipeId()) {
+      this.recipesService.addFood(this.recipeId(), food.id);
+      void this.router.navigate([RoutePaths.recipes]);
     }
   }
 
@@ -71,32 +80,5 @@ export class MyFoods {
 
   protected deleteFood(food: Food) {
     this.myFoodsService.deleteFood(food);
-  }
-
-  saveFoods() {
-    this.myFoodsService.saveFoods();
-  }
-
-  protected readonly jsonUploadInput = viewChild<ElementRef<HTMLInputElement>>('jsonUpload');
-  loadFoods() {
-    this.jsonUploadInput().nativeElement.click();
-  }
-  onLoadFoodsFromFile(fileEvent) {
-    const target = fileEvent.target as DataTransfer;
-    if (target.files?.length !== 1) {
-      this.jsonUploadInput().nativeElement.value = '';
-
-      return;
-    }
-    const file = target.files?.[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const contents = e.target?.result;
-      if (contents) {
-        this.myFoodsService.loadFoodsFromJson(contents as string);
-      }
-    };
-    reader.readAsText(file);
-    this.jsonUploadInput().nativeElement.value = '';
   }
 }

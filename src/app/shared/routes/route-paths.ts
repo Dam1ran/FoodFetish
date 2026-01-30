@@ -1,7 +1,9 @@
 export class RoutePaths {
   static readonly home = '';
-  static readonly myFoods = 'my-foods';
   static readonly diary = 'diary';
+  static readonly recipes = 'recipes';
+  static readonly myFoods = 'my-foods';
+  static readonly options = 'options';
   static readonly releaseNotes = 'release-notes';
 
   static readonly loginFailed = '';
@@ -9,8 +11,10 @@ export class RoutePaths {
 
   static readonly all = [
     RoutePaths.home,
-    RoutePaths.myFoods,
     RoutePaths.diary,
+    RoutePaths.recipes,
+    RoutePaths.myFoods,
+    RoutePaths.options,
     RoutePaths.releaseNotes,
   ];
 
