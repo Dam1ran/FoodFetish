@@ -14,3 +14,20 @@ export class Food {
     public note = '',
   ) {}
 }
+
+export function isValidFood(obj): obj is Food {
+  return (
+    obj &&
+    typeof obj === 'object' &&
+    typeof obj.id === 'string' &&
+    typeof obj.name === 'string' &&
+    typeof obj.macroCategory === 'number' &&
+    typeof obj.protein === 'number' &&
+    typeof obj.carbs === 'number' &&
+    typeof obj.fats === 'number' &&
+    typeof obj.fiber === 'number' &&
+    typeof obj.calories === 'number' &&
+    typeof obj.weight === 'number' &&
+    typeof obj.note === 'string'
+  );
+}

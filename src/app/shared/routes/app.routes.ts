@@ -19,4 +19,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('../../components/release-notes/release-notes').then((c) => c.ReleaseNotes),
   },
+  {
+    path: RoutePaths.recipes,
+    loadComponent: () => import('../../components/recipes/recipes').then((c) => c.Recipes),
+  },
+  {
+    path: RoutePaths.options,
+    loadComponent: () => import('../../components/options/options').then((c) => c.Options),
+  },
 ];

@@ -9,20 +9,6 @@
   >
     {{ selectedMacroCategory().label }}
   </button>
-  <div class="position-relative">
-    <input
-      type="text"
-      placeholder="Filter by name"
-      class="form-control p-1"
-      [(ngModel)]="nameFilter"
-    />
-    <button
-      class="btn btn-sm btn-secondary p-0 position-absolute end-0 top-50 translate-middle-y me-2 z-1"
-      buttonIcon="mdi:close"
-      [iconSize]="'16px'"
-      (click)="nameFilter.set('')"
-    ></button>
-  </div>
   <ul class="dropdown-menu p-0 overflow-hidden shadow-sm" style="min-width: 120px">
     @for (macroCategory of macroCategories; track $index) {
       <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor">
@@ -44,8 +30,22 @@
       </li>
     }
   </ul>
+  <div class="position-relative">
+    <input
+      type="text"
+      placeholder="Filter by name"
+      class="form-control p-1"
+      [(ngModel)]="nameFilter"
+    />
+    <button
+      class="btn btn-sm btn-secondary p-0 position-absolute end-0 top-50 translate-middle-y me-2 z-1"
+      buttonIcon="mdi:close"
+      [iconSize]="'16px'"
+      (click)="nameFilter.set('')"
+    ></button>
+  </div>
 </div>
-<div class="content-wrapper">
+<div class="content-wrapper overflow-y-auto" style="height: calc(100dvh - 137px)">
   <table
     class="table table-sm table-striped-columns table-hover mb-0"
     style="font-size: 10px; table-layout: fixed"
@@ -59,14 +59,7 @@
         <th scope="col" class="text-center bg-gradient" style="width: 10%">Fats</th>
         <th scope="col" class="text-center bg-gradient" style="width: 10%">Fiber</th>
         <th scope="col" class="text-center bg-gradient" style="width: 15%">KCal</th>
-        <th scope="col" class="bg-gradient" style="width: 8%">
-          <button
-            class="btn p-0 btn-success m-auto rounded-0"
-            iconSize="16px"
-            buttonIcon="iconoir:lens-plus"
-            (click)="addFood()"
-          ></button>
-        </th>
+        <th scope="col" class="bg-gradient" style="width: 8%"></th>
       </tr>
     </thead>
     <tbody>
@@ -84,16 +77,16 @@
             class="text-truncate1"
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
             [class.cursor-pointer]="diaryDate()"
-            (click)="addFoodToDiary(food)"
+            (click)="addFoodToDiaryOrRecipe(food)"
           >
             {{ food.name }}
           </td>
-          <td class="text-truncate text-center">{{ food.protein }}</td>
-          <td class="text-truncate text-center">{{ food.carbs }}</td>
-          <td class="text-truncate text-center">{{ food.fats }}</td>
-          <td class="text-truncate text-center">{{ food.fiber }}</td>
-          <td class="text-truncate text-center">{{ food.calories }}</td>
-          <td class="text-truncate text-center">
+          <td class="text-truncate text-center p-0">{{ food.protein }}</td>
+          <td class="text-truncate text-center p-0">{{ food.carbs }}</td>
+          <td class="text-truncate text-center p-0">{{ food.fats }}</td>
+          <td class="text-truncate text-center p-0">{{ food.fiber }}</td>
+          <td class="text-truncate text-center p-0">{{ food.calories }}</td>
+          <td class="text-truncate text-center p-0">
             <button
               class="btn p-0 btn-secondary m-auto"
               iconSize="16px"
@@ -111,29 +104,12 @@
       }
     </tbody>
   </table>
-  <div class="d-flex justify-content-between p-1 bg-body-tertiary opacity-50">
-    <button
-      class="btn btn-outline-secondary p-1 rounded-0"
-      iconSize="24px"
-      buttonIcon="iconoir:save-floppy-disk"
-      (click)="saveFoods()"
-    >
-      Save
-    </button>
-    <input
-      #jsonUpload
-      type="file"
-      accept=".json"
-      class="d-none"
-      (change)="onLoadFoodsFromFile($event)"
-    />
-    <button
-      class="btn btn-outline-secondary p-1 rounded-0"
-      iconSize="24px"
-      buttonIcon="iconoir:load-action-floppy"
-      (click)="loadFoods()"
-    >
-      Load
-    </button>
-  </div>
 </div>
+<button
+  class="btn btn-outline-success p-1 rounded-top-0 w-100 d-flex justify-content-between mt-auto opacity-85"
+  (click)="addFood()"
+>
+  <iconify icon="iconoir:lens-plus" />
+  Add a food
+  <iconify icon="mdi:plus" />
+</button>

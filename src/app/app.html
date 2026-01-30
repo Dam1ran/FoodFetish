@@ -50,6 +50,17 @@
             <a
               class="nav-link px-4 fw-bold text-center"
               style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
+              [routerLink]="routePaths.recipes"
+              routerLinkActive="rounded border-success"
+              data-bs-dismiss="offcanvas"
+            >
+              Recipes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link px-4 fw-bold text-center"
+              style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
               [routerLink]="routePaths.myFoods"
               routerLinkActive="rounded border-success"
               data-bs-dismiss="offcanvas"
@@ -64,3 +75,5 @@
 </nav>
 
 <router-outlet />
+
+<toasts />

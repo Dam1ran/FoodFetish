@@ -1,0 +1,25 @@
+<div class="bg-secondary-subtle p-1 user-select-none">
+  <div class="d-flex justify-content-between">
+    @for (weekday of weekdays; track $index) {
+      <div
+        class="weekday bg-body cursor-pointer"
+        [class]="{
+          'border-warning': isDaySelected(weekday),
+          'text-primary': isTodayLbl(weekday),
+          'fw-bold': isTodayLbl(weekday),
+          'fst-normal': isTodayLbl(weekday),
+          'bg-body-secondary': $index === 5 || $index === 6,
+        }"
+        (click)="selectWeekDay(weekday)"
+      >
+        <div class="text-center">{{ weekday }}.</div>
+        <div
+          class="rounded m-auto"
+          style="width: 6px; height: 6px"
+          [style.background-color]="hasFood(weekday) ? 'rgba(60, 120, 70)' : 'rgba(80, 80, 80)'"
+        ></div>
+      </div>
+    }
+    <date-picker [(selectedDate)]="selectedDate" />
+  </div>
+</div>

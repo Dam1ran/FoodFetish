@@ -1,28 +1,8 @@
 <div class="content-wrapper">
-  <div class="bg-secondary-subtle p-1">
-    <div class="d-flex justify-content-between">
-      @for (weekday of weekdays; track $index) {
-        <div
-          class="weekday bg-body cursor-pointer"
-          [class]="{
-            'border-warning': isDaySelected(weekday),
-            'text-primary': isTodayLbl(weekday),
-            'fw-bold': isTodayLbl(weekday),
-            'fst-normal': isTodayLbl(weekday),
-            'bg-body-secondary': $index === 5 || $index === 6,
-          }"
-          (click)="selectWeekDay(weekday)"
-        >
-          {{ weekday }}
-        </div>
-      }
-      <date-picker [(selectedDate)]="selectedDate" />
-    </div>
-  </div>
-
+  <weekdays [(selectedDate)]="selectedDate" />
   <div class="border-bottom"></div>
   <div class="d-flex">
-    <div style="width: 100px"></div>
+    <div style="width: 130px"></div>
     <div
       class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-25 bg-body-secondary"
       style="font-size: 12px"
@@ -34,7 +14,6 @@
       <div class="col col-2 align-self-center text-center">KCal</div>
       <div class="col col-2 align-self-center text-center">G</div>
     </div>
-    <div style="width: 30px"></div>
   </div>
   <div class="border-bottom"></div>
   <div class="accordion accordion-flush" id="accordionFlush">
@@ -43,12 +22,13 @@
       <div class="accordion-item">
         <h2 class="accordion-header d-flex align-items-center">
           <button
-            class="accordion-button collapsed p-1 text-truncate text-muted fw-bold opacity-75"
+            class="accordion-button p-1 text-truncate text-muted fw-bold opacity-75 shadow-none"
+            [class.collapsed]="!isMealExpanded(mealTemplateEntry.position)"
             type="button"
             data-bs-toggle="collapse"
             [attr.data-bs-target]="'#flush-collapse' + $index"
-            (click)="setOpenedAccordionIndex($index)"
-            style="width: 100px"
+            (click)="toggleExpandedMeal(mealTemplateEntry.position)"
+            style="width: 130px"
           >
             {{ mealPositionMap[mealTemplateEntry.position] }}
           </button>
@@ -56,159 +36,117 @@
             <div
               class="row g-0 h-100 fw-light fst-italic"
               [class]="{
-                'bg-body-secondary': openedAccordionIndex() !== $index,
-                'bg-dark-subtle': openedAccordionIndex() === $index,
+                'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
+                'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
               }"
-              style="font-size: 12px"
+              style="font-size: 12px; transition: background-color 0.3s"
             >
+              @let positionStats = getPositionStats(mealTemplateEntry.position);
               <div class="col col-2 align-self-center text-center">
-                {{ getMealProtein(respectiveMeal).toFixed(1) }}
+                {{ positionStats.proteins.toFixed() }}
               </div>
               <div class="col col-2 align-self-center text-center">
-                {{ getMealCarbs(respectiveMeal).toFixed(1) }}
+                {{ positionStats.carbs.toFixed() }}
               </div>
               <div class="col col-2 align-self-center text-center">
-                {{ getMealFats(respectiveMeal).toFixed(1) }}
+                {{ positionStats.fats.toFixed() }}
               </div>
               <div class="col col-2 align-self-center text-center">
-                {{ getMealFiber(respectiveMeal).toFixed(1) }}
+                {{ positionStats.fiber.toFixed() }}
               </div>
               <div class="col col-2 align-self-center text-center">
-                {{ getMealCalories(respectiveMeal).toFixed(1) }}
+                {{ positionStats.calories.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center"></div>
+              <div class="col col-2 align-self-center text-center">
+                {{ positionStats.weight.toFixed() }}
+              </div>
             </div>
           </div>
-          <button
-            class="btn btn-success mx-1"
-            buttonIcon="iconoir:lens-plus"
-            (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position, collapsible)"
-            iconSize="16px"
-          ></button>
         </h2>
         <div
           #collapsible
           [id]="'flush-collapse' + $index"
           class="accordion-collapse collapse bg-body-secondary rounded"
+          [class.show]="isMealExpanded(mealTemplateEntry.position)"
           data-bs-parent="#accordionFlush"
         >
           @if (respectiveMeal) {
-            <div class="d-flex align-items-center p-1 gap-1">
-              <input
-                class="form-control form-control-sm meal-name-input text-center"
-                type="text"
-                [value]="respectiveMeal.name"
-                (input)="updateMealName($event.target.value, mealTemplateEntry.position)"
-              />
+            <div class="d-flex align-items-center p-1 gap-1 bg-body-tertiary">
               <button
                 class="btn btn-outline-secondary"
                 [class.btn-outline-success]="respectiveMeal.note"
                 buttonIcon="iconoir:notes"
                 iconSize="16px"
-                (click)="toggleEditMealNoteDialog()"
+                (click)="toggleEditMealNoteDialog(respectiveMeal.id, respectiveMeal.note)"
               ></button>
-              <ng-template #editMealNoteDialog>
-                <textarea
-                  class="form-control form-control-sm meal-name-input text-center"
-                  rows="3"
-                  placeholder="Meal note"
-                  [value]="respectiveMeal.note"
-                  (input)="
-                    updateMealNote(
-                      $any($event.target).value,
-                      respectiveMeal.id
-                    )
-                  "
-                ></textarea>
-              </ng-template>
+              <input
+                class="form-control form-control-sm shadow-none text-center bg-dark-subtle"
+                type="text"
+                [value]="respectiveMeal.name"
+                (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"
+              />
             </div>
-            @for (food of respectiveMeal.foods; track $index; let isOdd = $odd) {
-              <div class="d-flex mb-1" [class.bg-body-tertiary]="isOdd">
-                <div
-                  class="d-flex align-items-center ps-1 border-end border-dark-subtle"
-                  style="min-width: 100px; width: 20%; font-size: 12px"
-                >
-                  {{ food.name }}
-                </div>
-                <div
-                  class="row g-0 fw-light fst-italic flex-grow-1 align-self-stretch"
-                  style="font-size: 12px"
-                >
-                  @let foodWeightMultiplier = food.weight * 0.01;
-                  <div
-                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center m-0"
-                  >
-                    {{ (food.protein * foodWeightMultiplier).toFixed(1) }}
-                  </div>
-                  <div
-                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
-                  >
-                    {{ (food.carbs * foodWeightMultiplier).toFixed(1) }}
-                  </div>
-                  <div
-                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
-                  >
-                    {{ (food.fats * foodWeightMultiplier).toFixed(1) }}
-                  </div>
-                  <div
-                    class="col col-2 align-self-stretch text-center border-end border-dark-subtle align-content-center"
-                  >
-                    {{ (food.fiber * foodWeightMultiplier).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 align-self-stretch text-center align-content-center">
-                    {{ (food.calories * foodWeightMultiplier).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 align-self-stretch text-center align-content-center">
-                    <input
-                      type="number"
-                      class="form-control form-control-sm text-center p-0 border border-success-subtle bg-body-tertiary gram-input"
-                      [value]="food.weight"
-                      (input)="
-                        updateFoodWeight(mealTemplateEntry.position, $index, $event.target.value)
-                      "
-                    />
-                  </div>
-                </div>
-                <button
-                  class="btn btn-outline-warning mx-1 opacity-50 align-self-center"
-                  buttonIcon="iconoir:trash"
-                  iconSize="16px"
-                  (click)="removeFood(mealTemplateEntry.position, $index, respectiveMeal)"
-                ></button>
-              </div>
-            }
           }
+
+          @for (
+            recipe of getRespectiveRecipes(mealTemplateEntry.position);
+            track $index;
+            let isOdd = $odd
+          ) {
+            <diary-recipe
+              [recipe]="recipe"
+              (updateFoodWeight)="
+                updateRecipeFoodWeight(
+                  mealTemplateEntry.position,
+                  $index,
+                  $event.foodIndex,
+                  $event.newWeight
+                )
+              "
+              (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
+            />
+          }
+          <div class="p-1 bg-body-tertiary">
+            <button
+              class="btn btn-outline-primary btn-sm w-100 opacity-60"
+              buttonIcon="pajamas:recipe"
+              (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
+              iconSize="24px"
+            >
+              Add recipe
+            </button>
+          </div>
+          @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd) {
+            <food-row
+              [food]="food"
+              [isOdd]="isOdd"
+              (removeFood)="removeFood(mealTemplateEntry.position, $index, respectiveMeal)"
+              (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
+            />
+          }
+          <div class="p-1 bg-body-tertiary">
+            <button
+              class="btn btn-outline-success btn-sm w-100 opacity-80"
+              buttonIcon="iconoir:lens-plus"
+              (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
+              iconSize="24px"
+            >
+              Add food
+            </button>
+          </div>
         </div>
       </div>
     }
   </div>
-  <div class="d-flex border-top">
-    <div class="fw-bold text-muted opacity-75 fst-italic" style="width: 100px">Total</div>
-    <div
-      class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-75"
-      style="font-size: 12px"
-    >
-      @let dayStats = getDayStats();
-      <div class="col col-2 text-center align-content-center bg-body-secondary border-start">
-        {{ dayStats.protein.toFixed(0) }}
-      </div>
-      <div class="col col-2 text-center align-content-center">
-        {{ dayStats.carbs.toFixed(0) }}
-      </div>
-      <div class="col col-2 text-center align-content-center bg-body-secondary">
-        {{ dayStats.fat.toFixed(0) }}
-      </div>
-      <div class="col col-2 text-center align-content-center">
-        {{ dayStats.fiber.toFixed(0) }}
-      </div>
-      <div class="col col-2 text-center align-content-center bg-body-secondary">
-        {{ dayStats.calories.toFixed(0) }}
-      </div>
-      <div class="col col-2 text-center align-content-center border-end">
-        {{ dayStats.weight.toFixed(0) }}
-      </div>
-    </div>
-    <div style="width: 30px"></div>
-  </div>
-  <div class="border-bottom"></div>
+  <total-row [stats]="getDayStats()" [fixedDecimals]="0" />
 </div>
+
+<ng-template #editMealNoteDialog>
+  <textarea
+    class="form-control form-control-sm meal-name-input text-center"
+    rows="3"
+    placeholder="Meal note"
+    [value]="editNoteMeal()"
+    (input)="updateMealNote(editNoteMealId(), $any($event.target).value)"
+  ></textarea>
+</ng-template>

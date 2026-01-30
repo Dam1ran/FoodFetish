@@ -1,0 +1,73 @@
+<div class="p-1 text-muted">Add recipe to diary</div>
+<div class="px-1 text-center fst-italic fs-5 my-1 bg-body-tertiary">
+  {{ respectiveRecipe()?.name }}
+</div>
+<div class="ps-1 d-flex justify-content-between align-items-center mb-1">
+  Pick a day
+  <div class="border px-2 rounded ms-auto" style="min-width: 120px">
+    {{ selectedDayJs().toISOString() | date }}
+  </div>
+  <date-picker [(selectedDate)]="selectedDate" />
+</div>
+<div class="px-1 d-flex justify-content-between align-items-center mb-1">
+  Meal position
+  <button
+    type="button"
+    class="btn btn-secondary dropdown-toggle align-self-center p-1"
+    data-bs-toggle="dropdown"
+    style="min-width: 148px"
+  >
+    {{ selectedMealPosition().label }}
+  </button>
+  <ul class="dropdown-menu p-0 overflow-hidden shadow-sm" style="min-width: 148px">
+    @for (mealPosition of mealPositions; track $index) {
+      @if (mealPosition.value !== 0) {
+        <li>
+          @let sameMealPosition = mealPosition.label === selectedMealPosition().label;
+          <span
+            class="dropdown-item cursor-pointer px-2 text-center"
+            (click)="selectedMealPosition.set(mealPosition)"
+            [class]="{
+              'fst-italic': sameMealPosition,
+            }"
+            [style]="{
+              'text-decoration': sameMealPosition ? 'underline' : 'unset',
+              'letter-spacing': sameMealPosition ? '1px' : '0.25px',
+              'text-underline-offset': '2px',
+            }"
+          >
+            {{ mealPosition.label }}
+          </span>
+        </li>
+      }
+    }
+  </ul>
+</div>
+<div class="px-1 d-flex justify-content-between align-items-center mb-1">
+  Portions
+  <input
+    class="form-control form-control-sm text-center bg-dark-subtle"
+    style="font-size: 12px; max-width: 148px; padding: 6px 2px !important"
+    min="1"
+    step="1"
+    inputmode="numeric"
+    [(ngModel)]="portions"
+    type="number"
+  />
+</div>
+
+<div class="d-flex justify-content-center p-1">
+  @let isDisabled = selectedMealPosition().value === 0 || portions() <= 0;
+  <button
+    buttonIcon="material-symbols:add-row-above-rounded"
+    class="btn"
+    [class]="{
+      'btn-outline-success': !isDisabled,
+      'btn-secondary': isDisabled,
+    }"
+    [disabled]="isDisabled"
+    (click)="addRecipe()"
+  >
+    Add
+  </button>
+</div>

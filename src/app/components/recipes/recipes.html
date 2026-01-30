@@ -1,0 +1,200 @@
+<div
+  class="content-wrapper d-flex justify-content-between gap-2 p-1 bg-body-tertiary border-bottom"
+>
+  <div class="position-relative">
+    <input
+      type="text"
+      placeholder="Filter by name"
+      class="form-control p-1"
+      [(ngModel)]="nameFilter"
+    />
+    <button
+      class="btn btn-sm btn-secondary p-0 position-absolute end-0 top-50 translate-middle-y me-2 z-1"
+      buttonIcon="mdi:close"
+      [iconSize]="'16px'"
+      (click)="nameFilter.set('')"
+    ></button>
+  </div>
+</div>
+
+<div
+  class="content-wrapper d-flex flex-column justify-content-between"
+  style="height: calc(100dvh - 100px)"
+>
+  <div class="overflow-y-auto">
+    @for (recipe of recipes(); track recipe.id) {
+      <div
+        class="accordion accordion-flush border my-1 rounded overflow-hidden"
+        id="accordionFlush"
+      >
+        <div class="accordion-item">
+          <h2 class="accordion-header d-flex align-items-center gap-1">
+            <button
+              class="btn btn-outline-primary ms-1 opacity-50"
+              buttonIcon="material-symbols:add-row-above-rounded"
+              iconSize="24px"
+              (click)="toggleAddRecipeToDiary(recipe.id)"
+            ></button>
+            <button
+              class="accordion-button collapsed shadow-none"
+              style="width: auto; padding: 10px 0.5rem"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#flush-collapse' + $index"
+            ></button>
+            <input
+              class="form-control form-control-sm text-center bg-dark-subtle"
+              style="font-size: 14px"
+              type="text"
+              [value]="recipe.name"
+              (input)="recipesService.updateRecipeName(recipe.id, $event.target.value)"
+            />
+            <input
+              class="form-control form-control-sm text-center bg-dark-subtle"
+              style="font-size: 12px; max-width: 30px; padding: 6px 2px !important"
+              placeholder="portions"
+              type="number"
+              min="1"
+              step="1"
+              inputmode="numeric"
+              [value]="recipe.portions"
+              (input)="recipesService.updateRecipePortions(recipe.id, $event.target.value)"
+            />
+            <button
+              class="btn btn-outline-secondary me-1"
+              [class.btn-outline-success]="recipe.note"
+              buttonIcon="iconoir:notes"
+              iconSize="24px"
+              (click)="toggleEditRecipeNoteDialog(recipe.id, recipe.note)"
+            ></button>
+          </h2>
+          <div
+            #collapsible
+            [id]="'flush-collapse' + $index"
+            class="accordion-collapse collapse rounded"
+            [class.show]="recipes()?.length === 1"
+            data-bs-parent="#accordionFlush"
+          >
+            <div
+              cdkDropList
+              (cdkDropListDropped)="
+                recipesService.changeFoodOrder(recipe.id, $event.previousIndex, $event.currentIndex)
+              "
+            >
+              @for (food of recipe.foods; track $index + food.id) {
+                <div
+                  class="d-flex bg-dark-subtle overflow-hidden px-1 align-items-center gap-1"
+                  style="font-size: 14px; margin-top: 2px"
+                  cdkDrag
+                >
+                  <div
+                    class="bg-warning-subtle opacity-25 d-flex align-content-center rounded-circle border border-warning-subtle"
+                  >
+                    <button
+                      class="btn-close p-0"
+                      (click)="recipesService.removeFood(recipe.id, $index)"
+                    ></button>
+                  </div>
+                  <div
+                    class="bg-body text-center align-content-center align-self-stretch text-muted opacity-60"
+                    style="min-width: 16px; font-size: 12px; padding: 0 2px"
+                  >
+                    {{ $index + 1 }}
+                  </div>
+                  <div class="flex-grow-1">{{ food.name }}</div>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body"
+                    [value]="food.weight"
+                    (input)="
+                      recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)
+                    "
+                  />
+                  <div class="bg-body-secondary" cdkDragHandle>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="p-1 bg-body-tertiary">
+              <button
+                class="btn btn-outline-success btn-sm w-100 opacity-90"
+                buttonIcon="iconoir:lens-plus"
+                (click)="$event.stopPropagation(); addFood(recipe.id)"
+                iconSize="16px"
+              >
+                Add food
+              </button>
+            </div>
+            @if (recipe.foods?.length) {
+              <div class="d-flex mt-1">
+                <div
+                  class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-25"
+                  style="font-size: 12px"
+                >
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">P</div>
+                  <div class="col col-2 text-center align-content-center">C</div>
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">Fa</div>
+                  <div class="col col-2 text-center align-content-center">Fi</div>
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">
+                    Kcal
+                  </div>
+                  <div class="col col-2 text-center align-content-center">g</div>
+                </div>
+                <div class="bg-body-secondary" style="width: 23px"></div>
+              </div>
+              <div class="d-flex">
+                <div
+                  class="row g-0 flex-grow-1 fw-bold text-muted fst-italic"
+                  style="font-size: 12px"
+                >
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">
+                    {{ getMealProtein(recipe).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 text-center align-content-center">
+                    {{ getMealCarbs(recipe).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">
+                    {{ getMealFats(recipe).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 text-center align-content-center">
+                    {{ getMealFiber(recipe).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 text-center align-content-center bg-body-secondary">
+                    {{ getMealCalories(recipe).toFixed(1) }}
+                  </div>
+                  <div class="col col-2 text-center align-content-center">
+                    {{ getMealWeight(recipe).toFixed(1) }}
+                  </div>
+                </div>
+                <div class="bg-body-secondary" style="width: 23px"></div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="fst-italic text-center bg-body-tertiary text-muted">No recipes found...</div>
+    }
+  </div>
+
+  <button
+    class="btn btn-outline-success p-1 rounded-top-0 rounded-bottom w-100 d-flex justify-content-between"
+    (click)="addRecipe()"
+  >
+    <iconify icon="pajamas:recipe" />
+    Add a recipe
+    <iconify icon="mdi:plus" />
+  </button>
+</div>
+
+<ng-template #editRecipeNoteDialog>
+  <textarea
+    class="form-control form-control-sm meal-name-input text-center"
+    rows="3"
+    placeholder="Recipe note"
+    [value]="editNoteRecipe()"
+    (input)="recipesService.updateRecipeNote(editNoteRecipeId(), $any($event.target).value)"
+  ></textarea>
+</ng-template>

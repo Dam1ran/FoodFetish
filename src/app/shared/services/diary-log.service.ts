@@ -1,0 +1,422 @@
+import { Injectable, signal } from '@angular/core';
+import { v7 } from 'uuid';
+import { DiaryLog } from '../entities/diary-log.entity';
+import { DiaryDay } from '../entities/diary-day.entity';
+import { DayTemplate, DayTemplateEntry } from '../entities/day-template.entity';
+import { Meal } from '../entities/meal.entity';
+import { MealPosition, MealPositionMap } from '../entities/meal-position.enum';
+import { Food } from '../entities/food.entity';
+import { Recipe } from '../entities/recipe.entity';
+import { Stats } from '../entities/stats.class';
+
+@Injectable({ providedIn: 'root' })
+export class DiaryLogService {
+  readonly diaryLog = signal<DiaryLog | undefined>(undefined);
+
+  constructor() {
+    this.setDiaryLog();
+    this.loadDiaryLog();
+  }
+
+  private setDiaryLog() {
+    const diaryLogRaw = localStorage.getItem('diaryLog');
+    if (!diaryLogRaw) {
+      const diaryLog = new DiaryLog();
+      localStorage.setItem('diaryLog', JSON.stringify(diaryLog));
+    }
+  }
+
+  private loadDiaryLog() {
+    this.diaryLog.set(JSON.parse(localStorage.getItem('diaryLog')));
+  }
+
+  getRespectiveMeal(isoDate: string, mealPosition: MealPosition) {
+    return this.diaryLog()
+      ?.diaryDays.find((day) => day.date === isoDate)
+      ?.dayTemplate.entries.find((entry) => entry.position === mealPosition)?.meal;
+  }
+
+  getRespectiveRecipes(isoDate: string, mealPosition: MealPosition) {
+    return this.diaryLog()
+      ?.diaryDays.find((day) => day.date === isoDate)
+      ?.dayTemplate.entries.find((entry) => entry.position === mealPosition)?.recipes;
+  }
+
+  addFood(isoDate: string, mealPosition: MealPosition, food: Food) {
+    food = { ...food };
+    mealPosition = Number(mealPosition);
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      let respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        respectiveEntry = new DayTemplateEntry(
+          mealPosition,
+          new Meal(v7(), MealPositionMap[mealPosition], [food]),
+          [],
+        );
+
+        respectiveDay.dayTemplate.entries.push(respectiveEntry);
+      } else {
+        respectiveEntry.meal.foods.push(food);
+      }
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  saveDiaryLog() {
+    localStorage.setItem(
+      'diaryLog',
+      JSON.stringify(this.diaryLog(), (key, value) => {
+        if (key === 'position' && typeof value === 'string') {
+          return MealPosition[value as keyof typeof MealPosition];
+        }
+        return value;
+      }),
+    );
+  }
+
+  updateMealName(isoDate: string, mealPosition: MealPosition, value: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveEntry.meal.name = value;
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  removeFood(isoDate: string, mealPosition: MealPosition, foodIndex: number) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveEntry.meal.foods = respectiveEntry.meal.foods.filter(
+        (_, index) => index !== foodIndex,
+      );
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  removeRecipeFromPosition(isoDate: string, mealPosition: MealPosition, recipeIndex: number) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveEntry.recipes = respectiveEntry.recipes.filter((_, index) => index !== recipeIndex);
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  updateRecipeFoodWeight(
+    isoDate: string,
+    mealPosition: MealPosition,
+    recipeIndex: number,
+    foodIndex: number,
+    weight: number,
+  ) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      const respectiveRecipe = respectiveEntry.recipes?.[recipeIndex];
+      if (!respectiveRecipe) {
+        return diaryLog;
+      }
+
+      const respectiveFood = respectiveRecipe.foods?.[foodIndex];
+      if (!respectiveFood) {
+        return diaryLog;
+      }
+
+      respectiveFood.weight = Number(weight);
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  clearMeal(isoDate: string, mealPosition: MealPosition) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveDay.dayTemplate.entries = respectiveDay.dayTemplate.entries.filter(
+        (entry) => entry.position !== mealPosition,
+      );
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  updateFoodWeight(isoDate: string, mealPosition: MealPosition, foodIndex: number, weight: number) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveEntry.meal.foods[foodIndex].weight = Number(weight);
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  getDayStats(isoDate: string) {
+    const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
+    const stats = new Stats();
+    if (!respectiveDay) {
+      return stats;
+    }
+
+    for (const entry of respectiveDay.dayTemplate.entries) {
+      const allFoods = [...entry.meal.foods, ...entry.recipes.flatMap((r) => r.foods)];
+      stats.proteins += allFoods.reduce((acc, food) => acc + food.protein * food.weight * 0.01, 0);
+      stats.carbs += allFoods.reduce((acc, food) => acc + food.carbs * food.weight * 0.01, 0);
+      stats.fats += allFoods.reduce((acc, food) => acc + food.fats * food.weight * 0.01, 0);
+      stats.fiber += allFoods.reduce((acc, food) => acc + food.fiber * food.weight * 0.01, 0);
+      stats.calories += allFoods.reduce((acc, food) => acc + food.calories * food.weight * 0.01, 0);
+      stats.weight += allFoods.reduce((acc, food) => acc + food.weight, 0);
+    }
+
+    return stats;
+  }
+
+  getPositionStats(isoDate: string, mealPosition: MealPosition) {
+    const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
+    const stats = new Stats();
+    if (!respectiveDay) {
+      return stats;
+    }
+
+    const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+      (entry) => entry.position === mealPosition,
+    );
+    if (!respectiveEntry) {
+      return stats;
+    }
+
+    const allFoods = [
+      ...respectiveEntry.meal.foods,
+      ...respectiveEntry.recipes.flatMap((r) => r.foods),
+    ];
+    return {
+      proteins: allFoods.reduce((acc, food) => acc + food.protein * food.weight * 0.01, 0),
+      carbs: allFoods.reduce((acc, food) => acc + food.carbs * food.weight * 0.01, 0),
+      fats: allFoods.reduce((acc, food) => acc + food.fats * food.weight * 0.01, 0),
+      fiber: allFoods.reduce((acc, food) => acc + food.fiber * food.weight * 0.01, 0),
+      calories: allFoods.reduce((acc, food) => acc + food.calories * food.weight * 0.01, 0),
+      weight: allFoods.reduce((acc, food) => acc + food.weight, 0),
+    };
+  }
+
+  updateMealNote(isoDate: string, mealId: string, note: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.meal.id === mealId,
+      );
+
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      respectiveEntry.meal.note = note;
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  getExpandedMeal() {
+    const currentExpandedMealRaw = localStorage.getItem('expandedMeal');
+    const currentExpandedMeal = currentExpandedMealRaw ? JSON.parse(currentExpandedMealRaw) : null;
+    return currentExpandedMeal;
+  }
+
+  toggleExpandedMeal(isoDate: string, mealPosition: MealPosition) {
+    const currentExpandedMeal = this.getExpandedMeal();
+
+    localStorage.setItem(
+      'expandedMeal',
+      JSON.stringify({
+        isoDate:
+          currentExpandedMeal?.isoDate === isoDate &&
+          currentExpandedMeal?.mealPosition === mealPosition
+            ? ''
+            : isoDate,
+        mealPosition:
+          currentExpandedMeal?.isoDate === isoDate &&
+          currentExpandedMeal?.mealPosition === mealPosition
+            ? MealPosition.None
+            : mealPosition,
+      }),
+    );
+  }
+
+  expandMeal(isoDate: string, mealPosition: MealPosition) {
+    localStorage.setItem('expandedMeal', JSON.stringify({ isoDate, mealPosition }));
+  }
+
+  addRecipe(isoDate: string, mealPosition: MealPosition, portions: number, recipe: Recipe) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      let respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      const recipeCopy = new Recipe(
+        v7(),
+        recipe.name,
+        recipe.foods.map((food) => {
+          return new Food(
+            food.id,
+            food.name,
+            food.macroCategory,
+            food.protein,
+            food.carbs,
+            food.fats,
+            food.fiber,
+            food.calories,
+            food.weight * (portions / recipe.portions),
+            food.note,
+          );
+        }),
+        portions,
+        recipe.note,
+      );
+      if (!respectiveEntry) {
+        respectiveEntry = new DayTemplateEntry(
+          mealPosition,
+          new Meal(v7(), MealPositionMap[mealPosition], []),
+          [recipeCopy],
+        );
+        respectiveDay.dayTemplate.entries.push(respectiveEntry);
+      } else {
+        respectiveEntry.recipes.push(recipeCopy);
+      }
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  hasFoodOnDate(isoDate: string) {
+    const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
+    if (!respectiveDay) {
+      return false;
+    }
+
+    for (const entry of respectiveDay.dayTemplate.entries) {
+      if (entry.meal.foods.length > 0 || entry.recipes.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

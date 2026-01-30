@@ -1,0 +1,25 @@
+:host {
+  height: calc(100vh - 56px);
+}
+
+.gram-input {
+  box-shadow: none;
+  border-radius: 2px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  max-width: 60px;
+}
+
+div[cdkDragHandle] {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 15px;
+  cursor: grab;
+  opacity: 0.6;
+  div {
+    height: 15px;
+    border-left: 3px dotted #777777;
+  }
+}

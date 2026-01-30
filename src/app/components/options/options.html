@@ -1,0 +1,76 @@
+<div class="content-wrapper">
+  <div class="border rounded m-1 mb-0">
+    <div class="mx-1">Foods</div>
+    <div class="d-flex justify-content-between p-1 bg-body-tertiary">
+      <button
+        class="btn btn-outline-secondary p-0 px-1 rounded-0"
+        iconSize="24px"
+        buttonIcon="iconoir:save-floppy-disk"
+        [disabled]="!foodsService.foods().length"
+        (click)="foodsService.downloadFoods()"
+      >
+        Save ({{ foodsService.foods().length }})
+      </button>
+      <input
+        #jsonUploadFoods
+        type="file"
+        accept=".json"
+        class="d-none"
+        (change)="onLoadFoodsFromFile($event)"
+      />
+      <button
+        class="btn btn-outline-secondary p-0 px-1 rounded-0"
+        iconSize="24px"
+        buttonIcon="iconoir:load-action-floppy"
+        (click)="jsonUploadFoods.click()"
+      >
+        Load
+      </button>
+    </div>
+  </div>
+  <div class="border rounded m-1 mb-0">
+    <div class="mx-1">Recipes</div>
+    <div class="d-flex justify-content-between p-1 bg-body-tertiary">
+      <button
+        class="btn btn-outline-secondary p-0 px-1 rounded-0"
+        iconSize="24px"
+        buttonIcon="iconoir:save-floppy-disk"
+        [disabled]="!recipesService.recipes().length"
+        (click)="recipesService.downloadRecipes()"
+      >
+        Save ({{ recipesService.recipes().length }})
+      </button>
+      <input
+        #jsonUploadRecipes
+        type="file"
+        accept=".json"
+        class="d-none"
+        (change)="onLoadRecipesFromFile($event)"
+      />
+      <button
+        class="btn btn-outline-secondary p-0 px-1 rounded-0"
+        iconSize="24px"
+        buttonIcon="iconoir:load-action-floppy"
+        (click)="jsonUploadRecipes.click()"
+      >
+        Load
+      </button>
+    </div>
+  </div>
+  <div class="border rounded m-1 mb-0 bg-warning-subtle">
+    <div class="mx-1">Storage reset</div>
+    <div class="d-flex flex-column align-items-center p-1 pt-0 bg-body-tertiary">
+      <div class="p-1 text-warning" style="font-size: 12px">
+        Make sure you saved you data before clearing...
+      </div>
+      <button
+        class="btn btn-outline-warning p-0 px-1 opacity-25"
+        iconSize="24px"
+        buttonIcon="grommet-icons:clear"
+        (click)="clearAllMemory()"
+      >
+        Clear all memory!
+      </button>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,7 @@
       </div>
       <div class="mt-4 mx-2 text-start bg-dark-subtle rounded px-2 py-1">
         For now information is stored in browser memory.
-        Food list can be saved/loaded separately.
+        Some entities can be saved/loaded separately.
       </div>
     </div>
   </div>
@@ -23,9 +23,23 @@
   <a
     class="nav-link fw-bold text-center bg-body-tertiary rounded m-1 p-1 opacity-75 text-decoration-underline"
     style="text-underline-offset: 2px"
+    [routerLink]="routePaths.recipes"
+  >
+    Recipes
+  </a>
+  <a
+    class="nav-link fw-bold text-center bg-body-tertiary rounded m-1 p-1 opacity-75 text-decoration-underline"
+    style="text-underline-offset: 2px"
     [routerLink]="routePaths.myFoods"
   >
     My foods
+  </a>
+  <a
+    class="nav-link text-center bg-body-tertiary rounded m-1 p-1 opacity-75 text-decoration-underline"
+    style="text-underline-offset: 2px"
+    [routerLink]="routePaths.options"
+  >
+    Options
   </a>
   <a
     class="nav-link text-center bg-body-tertiary rounded m-1 mt-4 p-1 opacity-40"
@@ -33,7 +47,9 @@
     [routerLink]="routePaths.releaseNotes"
   >
     <span class="release-notes">Release notes</span>
-    <div class="version">{{ versionService.releases[0].version }}</div>
+    @if (versionService.isNewVersion()) {
+      <div class="version">{{ versionService.releases[0].version }}</div>
+    }
   </a>
 
   <a

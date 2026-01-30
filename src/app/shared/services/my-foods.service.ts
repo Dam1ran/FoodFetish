@@ -41,7 +41,7 @@ export class FoodsService {
     localStorage.setItem('foods', JSON.stringify(this.foods()));
   }
 
-  saveFoods() {
+  downloadFoods() {
     const json = JSON.stringify(this.foods());
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -52,9 +52,12 @@ export class FoodsService {
     URL.revokeObjectURL(url);
   }
 
-  loadFoodsFromJson(json: string) {
-    const foods = JSON.parse(json);
-    this.foods.set(foods);
+  setFoods(foods: Food[]) {
     localStorage.setItem('foods', JSON.stringify(foods));
+    this.loadFoods();
+  }
+
+  getFoodById(foodId: string) {
+    return this.foods().find((f) => f.id === foodId);
   }
 }
