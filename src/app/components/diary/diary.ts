@@ -12,7 +12,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { FoodRow } from './components/food-row/food-row';
 import { DiaryRecipe } from './components/diary-recipe/diary-recipe';
 import { TotalRow } from './components/total-row/total-row';
@@ -37,6 +37,7 @@ import { RoutePaths } from '../../shared/routes/route-paths';
     TotalRow,
     Weekdays,
     WeightInBar,
+    DatePipe,
   ],
   templateUrl: './diary.html',
 })
@@ -44,7 +45,9 @@ export class Diary implements AfterViewInit {
   readonly diaryDate = input('');
 
   readonly selectedDate = model<NgbDateStruct>(undefined);
-  readonly selectedDayJs = computed(() => DayJsHelper.fromNgbDateStruct(this.selectedDate()));
+  readonly selectedDayJs = computed(
+    () => this.selectedDate() && DayJsHelper.fromNgbDateStruct(this.selectedDate()),
+  );
   ngAfterViewInit() {
     if (this.diaryDate()) {
       this.selectedDate.set(DayJsHelper.toNgbDateStruct(this.diaryDate()));

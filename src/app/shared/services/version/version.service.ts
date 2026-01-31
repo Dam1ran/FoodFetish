@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.3.1',
+      date: '31.01.2026',
+      changes: [
+        {
+          description: 'Diary UX improvements.',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.3.0',
       date: '31.01.2026',
       changes: [
