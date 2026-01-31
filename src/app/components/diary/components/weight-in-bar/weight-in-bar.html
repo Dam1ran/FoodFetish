@@ -1,12 +1,12 @@
-<div class="rounded mt-1 overflow-hidden bg-body-secondary">
-  <div
-    class="fst-italic text-muted bg-body-tertiary w-100 d-flex"
-    style="font-size: 14px; line-height: 14px"
-  >
-    <span class="opacity-25">Daily weight in</span>
-    <div class="mx-auto fw-semibold">{{ isoDate() | date }}</div>
-  </div>
-  @if (weights().length) {
+@if (weights().length) {
+  <div class="rounded mt-1 overflow-hidden bg-body-secondary">
+    <div
+      class="fst-italic text-muted bg-body-tertiary w-100 d-flex"
+      style="font-size: 14px; line-height: 14px"
+    >
+      <span class="opacity-25">Daily weight in</span>
+      <div class="mx-auto fw-semibold">{{ isoDate() | date }}</div>
+    </div>
     <svg class="w-100" style="pointer-events: none; height: 64px">
       @for (weight of weights(); track $index) {
         <circle
@@ -40,45 +40,46 @@
         }
       }
     </svg>
-  }
-  @if (!weightInputDisabled()) {
-    <div class="d-flex">
-      <div class="flex-grow-1 px-1 d-flex align-items-center mt-3">
-        <iconify class="opacity-50" icon="ph:tilde-fill" />
-        <div class="ms-1 fw-semibold opacity-75" style="font-size: 14px">
-          {{
-            diaryLogService
-              .getWeightByFormula(isoDate(), optionsService.options().weightFormulaBackDays)
-              .toFixed(1)
-          }}
-          kg
+
+    @if (!weightInputDisabled()) {
+      <div class="d-flex">
+        <div class="flex-grow-1 px-1 d-flex align-items-center mt-3">
+          <iconify class="opacity-50" icon="ph:tilde-fill" />
+          <div class="ms-1 fw-semibold opacity-75" style="font-size: 14px">
+            {{
+              diaryLogService
+                .getWeightByFormula(isoDate(), optionsService.options().weightFormulaBackDays)
+                .toFixed(1)
+            }}
+            kg
+          </div>
+        </div>
+        <div
+          class="position-relative d-flex justify-content-center align-items-center overflow-hidden mt-3 me-1"
+          style="width: 48px; height: 48px"
+        >
+          <iconify
+            class="position-absolute z-0 opacity-60"
+            [class]="{
+              'text-info-emphasis': diaryLogService.getCurrentWeight(isoDate()),
+              'text-warning-emphasis': !diaryLogService.getCurrentWeight(isoDate()),
+            }"
+            style="transform: scaleX(1.25)"
+            icon="iconoir:weight"
+            size="3rem"
+          />
+          <input
+            type="number"
+            inputmode="numeric"
+            class="form-control text-center p-0 shadow-none z-1 border-0"
+            style="width: 44px; background-color: transparent; margin-top: 10px"
+            [placeholder]="diaryLogService.getCurrentWeight(isoDate()) ? 'kg' : '?'"
+            [disabled]="weightInputDisabled()"
+            [value]="diaryLogService.getCurrentWeight(isoDate())"
+            (blur)="diaryLogService.updateCurrentWeight(isoDate(), $event.target.value)"
+          />
         </div>
       </div>
-      <div
-        class="position-relative d-flex justify-content-center align-items-center overflow-hidden mt-3 me-1"
-        style="width: 48px; height: 48px"
-      >
-        <iconify
-          class="position-absolute z-0 opacity-60"
-          [class]="{
-            'text-info-emphasis': diaryLogService.getCurrentWeight(isoDate()),
-            'text-warning-emphasis': !diaryLogService.getCurrentWeight(isoDate()),
-          }"
-          style="transform: scaleX(1.25)"
-          icon="iconoir:weight"
-          size="3rem"
-        />
-        <input
-          type="number"
-          inputmode="numeric"
-          class="form-control text-center p-0 shadow-none z-1 border-0"
-          style="width: 44px; background-color: transparent; margin-top: 10px"
-          [placeholder]="diaryLogService.getCurrentWeight(isoDate()) ? 'kg' : '?'"
-          [disabled]="weightInputDisabled()"
-          [value]="diaryLogService.getCurrentWeight(isoDate())"
-          (blur)="diaryLogService.updateCurrentWeight(isoDate(), $event.target.value)"
-        />
-      </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+}
