@@ -442,7 +442,11 @@ export class DiaryLogService {
         respectiveDay = newDay;
       }
 
-      respectiveDay.dayTemplate.weight = Number(value);
+      if (value) {
+        respectiveDay.dayTemplate.weight = Number(value);
+      } else {
+        delete respectiveDay.dayTemplate.weight;
+      }
 
       return diaryLogCopy;
     });
