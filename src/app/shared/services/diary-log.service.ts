@@ -1,5 +1,7 @@
+/* eslint-disable max-lines */
 import { Injectable, signal } from '@angular/core';
 import { v7 } from 'uuid';
+import dayjs from 'dayjs';
 import { DiaryLog } from '../entities/diary-log.entity';
 import { DiaryDay } from '../entities/diary-day.entity';
 import { DayTemplate, DayTemplateEntry } from '../entities/day-template.entity';
@@ -418,5 +420,80 @@ export class DiaryLogService {
       }
     }
     return false;
+  }
+
+  getCurrentWeight(isoDate: string) {
+    const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
+    if (!respectiveDay) {
+      return null;
+    }
+
+    return respectiveDay.dayTemplate.weight ?? null;
+  }
+
+  updateCurrentWeight(isoDate: string, value: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      respectiveDay.dayTemplate.weight = Number(value);
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  getWeightByFormula(isoDate: string, weightFormulaBackDays: number) {
+    const currentDate = dayjs(isoDate).utc();
+    const weights: number[] = [];
+    for (let i = 0; i < weightFormulaBackDays; i++) {
+      const checkDate = currentDate.subtract(i, 'day').toISOString();
+      const weight = this.getCurrentWeight(checkDate);
+      if (weight) {
+        weights.push(weight);
+      }
+    }
+
+    if (!weights.length) {
+      return 0;
+    }
+
+    weights.sort();
+    if (weights.length <= 3) {
+      return weights.reduce((acc, w) => acc + w, 0) / weights.length;
+    }
+
+    const midIndex = Math.floor(weights.length / 2);
+    if (weights.length % 2 === 0) {
+      return (weights[midIndex - 1] + weights[midIndex]) / 2;
+    } else {
+      return (weights[midIndex - 1] + weights[midIndex] + weights[midIndex + 1]) / 3;
+    }
+  }
+
+  getWeights(isoDate: string, weightFormulaBackDays: number) {
+    const currentDate = dayjs.min(
+      dayjs(isoDate).utc().startOf('day'),
+      dayjs().utc().startOf('day'),
+    );
+    const weights: number[] = [];
+    let weight = 0;
+    for (let i = 0; i < weightFormulaBackDays; i++) {
+      const checkDate = currentDate.subtract(i, 'day').toISOString();
+      weight = this.getCurrentWeight(checkDate);
+      if (weight) {
+        weights.push(weight);
+      }
+    }
+    weights.reverse();
+
+    return weights;
   }
 }

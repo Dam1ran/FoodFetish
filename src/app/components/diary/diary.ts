@@ -17,6 +17,7 @@ import { FoodRow } from './components/food-row/food-row';
 import { DiaryRecipe } from './components/diary-recipe/diary-recipe';
 import { TotalRow } from './components/total-row/total-row';
 import { Weekdays } from './components/weekday/weekdays';
+import { WeightInBar } from './components/weight-in-bar/weight-in-bar';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { Meal } from '../../shared/entities/meal.entity';
@@ -35,6 +36,7 @@ import { RoutePaths } from '../../shared/routes/route-paths';
     DiaryRecipe,
     TotalRow,
     Weekdays,
+    WeightInBar,
   ],
   templateUrl: './diary.html',
 })
@@ -84,7 +86,7 @@ export class Diary implements AfterViewInit {
   }
 
   protected readonly diaryLogService = inject(DiaryLogService);
-  mealPositionMap = MealPositionMap;
+  protected readonly mealPositionMap = MealPositionMap;
   getRespectiveMeal(mealPosition: MealPosition) {
     return this.diaryLogService.getRespectiveMeal(this.selectedDayJs().toISOString(), mealPosition);
   }

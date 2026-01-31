@@ -12,6 +12,24 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.3.0',
+      date: '31.01.2026',
+      changes: [
+        {
+          description: 'Added weight in widget with modified median formula (7days).',
+          type: VersionChangeType.Feature,
+        },
+        {
+          description: 'Some options added.',
+          type: VersionChangeType.Maintenance,
+        },
+        {
+          description: 'Minor fixes.',
+          type: VersionChangeType.Fix,
+        },
+      ],
+    },
+    {
       version: '1.2.0',
       date: '30.01.2026',
       changes: [

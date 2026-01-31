@@ -1,0 +1,77 @@
+<div class="rounded mt-1 overflow-hidden bg-body-secondary">
+  <div
+    class="fst-italic text-muted bg-body-tertiary w-100"
+    style="font-size: 14px; line-height: 14px"
+  >
+    <span class="opacity-25">Daily weight in</span>
+    <span class="ms-4 fw-semibold">{{ isoDate() | date }}</span>
+  </div>
+  <svg class="w-100" style="pointer-events: none; height: 64px">
+    @for (weight of weights(); track $index) {
+      <circle
+        [attr.cx]="`${(96 / Math.max(weights().length - 1, 1)) * $index + 2}%`"
+        [attr.cy]="`${weightsRange() === 0 ? 50 : ((weightsMax() + weightsRange() * 0.1 - weight) / (weightsRange() * 1.5)) * 100}%`"
+        r="4"
+        fill="rgba(from var(--bs-info-text-emphasis) r g b / 0.5)"
+      />
+
+      @if ($index < weights().length - 1) {
+        <line
+          [attr.x1]="`${(96 / (weights().length - 1)) * $index + 2}%`"
+          [attr.y1]="`${weightsRange() === 0 ? 50 : ((weightsMax() + weightsRange() * 0.1 - weight) / (weightsRange() * 1.5)) * 100}%`"
+          [attr.x2]="`${(96 / (weights().length - 1)) * ($index + 1) + 2}%`"
+          [attr.y2]="`${weightsRange() === 0 ? 50 : ((weightsMax() + weightsRange() * 0.1 - weights()[$index + 1]) / (weightsRange() * 1.5)) * 100}%`"
+          stroke="rgba(from var(--bs-info-text-emphasis) r g b / 0.4)"
+          stroke-width="1"
+        />
+      }
+      @if (weight) {
+        <text
+          [attr.x]="`${(88 / Math.max(weights().length - 1, 1)) * $index + 6}%`"
+          y="100%"
+          fill="rgba(from var(--bs-info-text-emphasis) r g b / 0.5)"
+          font-size="12px"
+          font-style="italic"
+          text-anchor="middle"
+        >
+          {{ weight.toFixed(1) }}
+        </text>
+      }
+    }
+  </svg>
+
+  <div class="d-flex">
+    <div class="flex-grow-1 px-1 d-flex align-items-center mt-3">
+      <iconify class="opacity-50" icon="ph:tilde-fill" />
+      <div class="ms-1 fw-semibold opacity-75" style="font-size: 14px">
+        {{
+          diaryLogService
+            .getWeightByFormula(isoDate(), optionsService.options().weightFormulaBackDays)
+            .toFixed(1)
+        }}
+        kg
+      </div>
+    </div>
+    <div
+      class="position-relative d-flex justify-content-center align-items-center overflow-hidden mt-3 me-1"
+      style="width: 48px; height: 48px"
+    >
+      <iconify
+        class="position-absolute z-0 text-info-emphasis opacity-75"
+        style="transform: scaleX(1.25)"
+        icon="iconoir:weight"
+        size="3rem"
+      />
+      <input
+        type="number"
+        inputmode="numeric"
+        class="form-control text-center p-0 shadow-none z-1 border-0"
+        style="width: 44px; background-color: transparent; margin-top: 10px"
+        placeholder="kg"
+        [disabled]="weightInputDisabled()"
+        [value]="diaryLogService.getCurrentWeight(isoDate())"
+        (blur)="diaryLogService.updateCurrentWeight(isoDate(), $event.target.value)"
+      />
+    </div>
+  </div>
+</div>
