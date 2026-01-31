@@ -32,10 +32,7 @@ export class WeightInBar {
       return [];
     }
 
-    return this.diaryLogService.getWeights(
-      this.isoDate(),
-      this.optionsService.options().weightFormulaBackDays,
-    );
+    return this.diaryLogService.getWeights(this.isoDate(), 11);
   }
 
   weightsMax = computed(() => Math.max(...this.weights()));
