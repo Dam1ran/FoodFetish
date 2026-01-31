@@ -1,10 +1,10 @@
 <div class="rounded mt-1 overflow-hidden bg-body-secondary">
   <div
-    class="fst-italic text-muted bg-body-tertiary w-100"
+    class="fst-italic text-muted bg-body-tertiary w-100 d-flex"
     style="font-size: 14px; line-height: 14px"
   >
     <span class="opacity-25">Daily weight in</span>
-    <span class="ms-4 fw-semibold">{{ isoDate() | date }}</span>
+    <div class="mx-auto fw-semibold">{{ isoDate() | date }}</div>
   </div>
   <svg class="w-100" style="pointer-events: none; height: 64px">
     @for (weight of weights(); track $index) {
