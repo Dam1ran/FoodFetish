@@ -1,5 +1,4 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import dayjs from 'dayjs';
 import { DiaryLogService } from '../../../../shared/services/diary-log.service';
 import { IconifyComponent } from '../../../../shared/components/iconify.component';
@@ -7,7 +6,7 @@ import { OptionsService } from '../../../../shared/services/options/options.serv
 
 @Component({
   selector: 'weight-in-bar',
-  imports: [IconifyComponent, DatePipe],
+  imports: [IconifyComponent],
   templateUrl: './weight-in-bar.html',
   styles: `
     input {
