@@ -105,7 +105,7 @@
                     type="number"
                     class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body"
                     [value]="food.weight"
-                    (input)="
+                    (blur)="
                       recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)
                     "
                   />

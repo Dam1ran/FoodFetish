@@ -3,11 +3,8 @@ import { Meal } from './meal.entity';
 import { Recipe } from './recipe.entity';
 
 export class DayTemplate {
-  entries: {
-    position: MealPosition;
-    meal: Meal;
-    recipes: Recipe[];
-  }[] = [];
+  entries: DayTemplateEntry[] = [];
+  weight: number;
 }
 
 export class DayTemplateEntry {

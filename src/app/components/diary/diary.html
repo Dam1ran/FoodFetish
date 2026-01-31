@@ -106,16 +106,6 @@
               (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
             />
           }
-          <div class="p-1 bg-body-tertiary">
-            <button
-              class="btn btn-outline-primary btn-sm w-100 opacity-60"
-              buttonIcon="pajamas:recipe"
-              (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
-              iconSize="24px"
-            >
-              Add recipe
-            </button>
-          </div>
           @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd) {
             <food-row
               [food]="food"
@@ -124,9 +114,17 @@
               (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
             />
           }
-          <div class="p-1 bg-body-tertiary">
+          <div class="p-1 bg-body-tertiary d-flex gap-1">
             <button
-              class="btn btn-outline-success btn-sm w-100 opacity-80"
+              class="btn btn-outline-primary btn-sm opacity-60 flex-grow-1"
+              buttonIcon="pajamas:recipe"
+              (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
+              iconSize="24px"
+            >
+              Add recipe
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm opacity-80 flex-grow-1"
               buttonIcon="iconoir:lens-plus"
               (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
               iconSize="24px"
@@ -139,6 +137,8 @@
     }
   </div>
   <total-row [stats]="getDayStats()" [fixedDecimals]="0" />
+
+  <weight-in-bar [isoDate]="selectedDayJs().toISOString()"/>
 </div>
 
 <ng-template #editMealNoteDialog>

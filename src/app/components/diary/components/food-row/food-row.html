@@ -34,7 +34,7 @@
         class="form-control form-control-sm text-center p-0 border border-success-subtle bg-body shadow-none"
         style="border-radius: 4px"
         [value]="food().weight"
-        (input)="updateFoodWeight.emit($event.target.value)"
+        (blur)="updateFoodWeight.emit($event.target.value)"
       />
     </div>
   </div>

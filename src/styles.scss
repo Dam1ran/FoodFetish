@@ -11,8 +11,8 @@
 }
 
 ::-webkit-scrollbar {
-  height: 12px;
-  width: 12px;
+  height: 8px;
+  width: 8px;
   z-index: 50;
 }
 
@@ -146,11 +146,19 @@ td {
 
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+.ngb-dp-today {
+  background-color: rgba(220, 160, 5, 0.25);
+  border-radius: 50%;
+  color: rgba(240, 240, 240, 0.9);
+  font-weight: bold;
+  font-size: 18px;
 }
