@@ -16,7 +16,7 @@ export class VersionService {
       date: '1.02.2026',
       changes: [
         {
-          description: 'Barcode scanner for add food and diary.',
+          description: 'Barcode scanner for `Add food` and `Diary`. Some improvements.',
           type: VersionChangeType.Feature,
         },
       ],

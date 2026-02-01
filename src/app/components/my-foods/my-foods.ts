@@ -75,7 +75,7 @@ export class MyFoods {
 
   protected editFood(food: Food) {
     const modal = this.modalService.open(AddEditFood);
-    modal.componentInstance.food.set(food);
+    modal.componentInstance.food.set({ barcode: null, ...food });
   }
 
   protected deleteFood(food: Food) {
