@@ -1,4 +1,14 @@
-import { Component, computed, inject, input, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  signal,
+  viewChild,
+  viewChildren,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -25,7 +35,7 @@ import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
   templateUrl: './recipes.html',
   styleUrl: './recipes.scss',
 })
-export class Recipes {
+export class Recipes implements AfterViewInit {
   protected readonly router = inject(Router);
   protected readonly recipesService = inject(RecipesService);
   protected readonly modalService = inject(NgbModal);
@@ -49,6 +59,10 @@ export class Recipes {
         this.editNoteRecipeId.set('');
         this.editNoteRecipe.set('');
       });
+  }
+  private readonly weightInputRefs = viewChildren<ElementRef<HTMLInputElement>>('weightInput');
+  ngAfterViewInit() {
+    this.weightInputRefs()?.at(-1).nativeElement.focus();
   }
 
   toggleAddRecipeToDiary(recipeId: string) {
