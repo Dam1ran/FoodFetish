@@ -12,6 +12,20 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.6.1',
+      date: '1.02.2026',
+      changes: [
+        {
+          description: 'Persist expanded recipe.',
+          type: VersionChangeType.Maintenance,
+        },
+        {
+          description: 'Load recipes bugfix.',
+          type: VersionChangeType.Fix,
+        },
+      ],
+    },
+    {
       version: '1.6.0',
       date: '1.02.2026',
       changes: [

@@ -8,9 +8,11 @@ import { Recipe } from '../entities/recipe.entity';
 export class RecipesService {
   protected readonly foodsService = inject(FoodsService);
   readonly recipes = signal<Recipe[]>([]);
+  readonly expandedRecipeId = signal('');
 
   constructor() {
     this.loadRecipes();
+    this.loadExpandedRecipeId();
   }
 
   private loadRecipes() {
@@ -19,6 +21,15 @@ export class RecipesService {
       this.recipes.set(JSON.parse(recipesRaw));
     } else {
       this.recipes.set([]);
+    }
+  }
+
+  private loadExpandedRecipeId() {
+    const expandedRecipeIdRaw = localStorage.getItem('expandedRecipeId');
+    if (expandedRecipeIdRaw) {
+      this.expandedRecipeId.set(JSON.parse(expandedRecipeIdRaw));
+    } else {
+      this.expandedRecipeId.set('');
     }
   }
 
@@ -43,6 +54,8 @@ export class RecipesService {
   addRecipe() {
     this.recipes.update((recipes) => [new Recipe(v7(), 'Empty recipe'), ...recipes]);
     this.saveRecipes();
+
+    return this.recipes()[0].id;
   }
 
   updateRecipeName(recipeId: string, newName: string) {
@@ -146,5 +159,18 @@ export class RecipesService {
 
   getRecipeById(recipeId: string) {
     return this.recipes().find((r) => r.id === recipeId);
+  }
+
+  setExpandedRecipeId(recipeId: string) {
+    this.expandedRecipeId.set(recipeId);
+    localStorage.setItem('expandedRecipeId', JSON.stringify(this.expandedRecipeId()));
+  }
+  toggleExpandedRecipeId(recipeId: string) {
+    if (recipeId === this.expandedRecipeId()) {
+      this.expandedRecipeId.set('');
+    } else {
+      this.expandedRecipeId.set(recipeId);
+    }
+    localStorage.setItem('expandedRecipeId', JSON.stringify(this.expandedRecipeId()));
   }
 }
