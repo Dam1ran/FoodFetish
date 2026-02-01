@@ -1,3 +1,4 @@
+import { Activity } from './activity.entity';
 import { MealPosition } from './meal-position.enum';
 import { Meal } from './meal.entity';
 import { Recipe } from './recipe.entity';
@@ -7,6 +8,7 @@ export class DayTemplate {
   weight: number;
   note: string;
   waterMl: number;
+  activities: Activity[] = [];
 }
 
 export class DayTemplateEntry {

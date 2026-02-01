@@ -1,0 +1,86 @@
+<div class="bg-body rounded mt-1 rounded overflow-hidden">
+  <div class="d-flex align-items-center bg-body-tertiary">
+    <div class="text-muted text-center flex-grow-1 opacity-50" style="font-size: 12px">
+      Activities
+    </div>
+    <button
+      class="btn btn-sm"
+      iconSize="24px"
+      buttonIcon="iconamoon:sign-plus-bold"
+      (click)="diaryLogService.addActivity(isoDate())"
+    ></button>
+  </div>
+  <div class="d-flex flex-column" style="gap: 1px; padding: 1px 0px">
+    @for (
+      activity of diaryLogService.getActivities(isoDate());
+      track $index;
+      let activityIndex = $index
+    ) {
+      <div class="d-flex align-items-center rounded-top overflow-hidden bg-body-secondary">
+        <button
+          class="btn btn-outline-warning btn-sm opacity-25 ms-1"
+          buttonIcon="iconoir:trash"
+          iconSize="16px"
+          (click)="diaryLogService.removeActivity(isoDate(), $index)"
+        ></button>
+        <div class="px-1 d-flex align-items-center justify-content-between flex-grow-1 p-1 pe-0">
+          <button
+            type="button"
+            class="btn btn-secondary dropdown-toggle flex-grow-1 mx-auto after-none"
+            style="max-width: 150px; padding: 2px 4px"
+            data-bs-toggle="dropdown"
+          >
+            <div class="d-flex justify-content-between">
+              <iconify [icon]="activityTypeIconMap[activity.type].icon" />
+              {{ activitiesTypes[activity.type].label }}
+            </div>
+          </button>
+          <ul class="dropdown-menu p-0 overflow-hidden shadow-sm" style="min-width: 150px">
+            @for (activityType of activitiesTypes; track $index) {
+              @if (activityType.value) {
+                <li>
+                  <span
+                    class="dropdown-item cursor-pointer px-2 text-center"
+                    (click)="
+                      diaryLogService.setActivityType(isoDate(), activityIndex, activityType.value)
+                    "
+                  >
+                    {{ activityType.label }}
+                  </span>
+                </li>
+              }
+            }
+          </ul>
+          <div class="mx-1" style="padding: 2px 0">
+            <ngb-timepicker
+              size="small"
+              [spinners]="false"
+              [(ngModel)]="activity.time"
+              (change)="diaryLogService.saveDiaryLog()"
+            />
+          </div>
+          <input
+            class="form-control form-control-sm shadow-none text-center border border-info-subtle rounded-circle opacity-75 mx-1"
+            type="number"
+            inputmode="numeric"
+            step="1"
+            min="0"
+            placeholder="m"
+            style="width: 30px; padding: 0"
+            [(ngModel)]="activity.durationMinutes"
+            (blur)="diaryLogService.saveDiaryLog()"
+          />
+        </div>
+      </div>
+      <div>
+        <input
+          class="form-control form-control-sm shadow-none text-center border-none rounded-top-0 opacity-75"
+          type="text"
+          placeholder="Activity note"
+          [(ngModel)]="activity.note"
+          (blur)="diaryLogService.saveDiaryLog()"
+        />
+      </div>
+    }
+  </div>
+</div>

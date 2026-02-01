@@ -19,6 +19,7 @@ import { DiaryRecipe } from './components/diary-recipe/diary-recipe';
 import { TotalRow } from './components/total-row/total-row';
 import { Weekdays } from './components/weekday/weekdays';
 import { WeightInWidget } from './components/weight-in-widget/weight-in-widget';
+import { ActivityWidget } from './components/activity-widget/activity-widget';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { Meal } from '../../shared/entities/meal.entity';
@@ -41,6 +42,7 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
     WeightInWidget,
     DatePipe,
     IconifyComponent,
+    ActivityWidget,
   ],
   templateUrl: './diary.html',
 })

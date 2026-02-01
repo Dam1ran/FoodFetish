@@ -162,3 +162,23 @@ input[type='number'] {
   font-weight: bold;
   font-size: 18px;
 }
+
+ngb-timepicker {
+  input {
+    width: 36px !important;
+    font-size: 12px !important;
+    padding: 5px 0 !important;
+  }
+  .ngb-tp-input-container {
+    width: unset;
+  }
+  .ngb-tp-spacer {
+    width: 0.5em;
+  }
+}
+
+.after-none {
+  &:after {
+    display: none;
+  }
+}
