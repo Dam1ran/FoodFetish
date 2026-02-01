@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.3.2',
+      date: '31.01.2026',
+      changes: [
+        {
+          description: 'Diary indicator react on weight in also. Some corrections',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.3.1',
       date: '31.01.2026',
       changes: [
@@ -26,7 +36,7 @@ export class VersionService {
       date: '31.01.2026',
       changes: [
         {
-          description: 'Added weight in widget with modified median formula (7days).',
+          description: 'Added weight-in widget with modified median formula (7days).',
           type: VersionChangeType.Feature,
         },
         {

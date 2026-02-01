@@ -50,11 +50,24 @@ export class Weekdays implements OnInit {
 
   protected readonly diaryLogService = inject(DiaryLogService);
 
-  hasFood(weekday: string) {
-    return this.diaryLogService.hasFoodOnDate(
+  getIndicatorStatusColor(weekday: string) {
+    const hasFood = this.diaryLogService.hasFoodOnDate(
       this.selectedDayJs()
         .isoWeekday(this.weekdays.indexOf(weekday) + 1)
         .toISOString(),
     );
+    const hasWeightIn = this.diaryLogService.hasWeightInOnDate(
+      this.selectedDayJs()
+        .isoWeekday(this.weekdays.indexOf(weekday) + 1)
+        .toISOString(),
+    );
+
+    if (hasFood && hasWeightIn) {
+      return 'rgba(60, 140, 70)';
+    } else if (hasFood || hasWeightIn) {
+      return 'rgba(150, 120, 70)';
+    } else {
+      return 'rgba(90, 90, 90)';
+    }
   }
 }

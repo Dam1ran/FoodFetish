@@ -15,8 +15,8 @@
         <div class="text-center">{{ weekday }}.</div>
         <div
           class="rounded m-auto"
-          style="width: 6px; height: 6px"
-          [style.background-color]="hasFood(weekday) ? 'rgba(60, 120, 70)' : 'rgba(80, 80, 80)'"
+          style="width: 10px; height: 10px"
+          [style.background-color]="getIndicatorStatusColor(weekday)"
         ></div>
       </div>
     }

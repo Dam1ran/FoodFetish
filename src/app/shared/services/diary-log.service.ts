@@ -422,6 +422,10 @@ export class DiaryLogService {
     return false;
   }
 
+  hasWeightInOnDate(isoDate: string) {
+    return !!this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate?.weight;
+  }
+
   getCurrentWeight(isoDate: string) {
     const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
     if (!respectiveDay) {

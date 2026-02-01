@@ -48,6 +48,14 @@ export class Diary implements AfterViewInit {
   readonly selectedDayJs = computed(
     () => this.selectedDate() && DayJsHelper.fromNgbDateStruct(this.selectedDate()),
   );
+  readonly isTodaySelected = computed(
+    () =>
+      this.selectedDate() &&
+      DayJsHelper.fromNgbDateStruct(this.selectedDate()).isSame(
+        DayJsHelper.getStartOfToday(),
+        'day',
+      ),
+  );
   ngAfterViewInit() {
     if (this.diaryDate()) {
       this.selectedDate.set(DayJsHelper.toNgbDateStruct(this.diaryDate()));

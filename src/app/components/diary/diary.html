@@ -1,6 +1,11 @@
 <div class="content-wrapper">
   <div
-    class="fst-italic text-muted bg-body-tertiary text-center fw-semibold opacity-75"
+    class="bg-body-tertiary text-center opacity-75"
+    [class]="{
+      'fst-italic': !isTodaySelected(),
+      'fw-semibold': isTodaySelected(),
+      'text-muted': !isTodaySelected()
+    }"
     style="font-size: 14px; line-height: 16px"
   >
     {{ selectedDayJs()?.toISOString() | date }}
@@ -142,7 +147,7 @@
       </div>
     }
   </div>
-    <total-row [stats]="getDayStats()" [fixedDecimals]="0"/>
+  <total-row [stats]="getDayStats()" [fixedDecimals]="0" />
   <weight-in-bar [isoDate]="selectedDayJs().toISOString()" />
 </div>
 
