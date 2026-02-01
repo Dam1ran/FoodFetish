@@ -12,8 +12,18 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.5.0',
+      date: '1.02.2026',
+      changes: [
+        {
+          description: 'Activities widget. Some small adjustments.',
+          type: VersionChangeType.Feature,
+        },
+      ],
+    },
+    {
       version: '1.4.0',
-      date: '31.01.2026',
+      date: '01.02.2026',
       changes: [
         {
           description: 'Water track, day note. Some small adjustments.',

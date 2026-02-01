@@ -193,7 +193,8 @@
     }
   </div>
   <total-row [stats]="getDayStats()" [fixedDecimals]="0" />
-  <weight-in-widget [isoDate]="selectedDayJs().toISOString()" />
+  <weight-in-widget [isoDate]="selectedDayJs().toISOString()" class="mt-1 d-block" />
+  <activity-widget [isoDate]="selectedDayJs().toISOString()" />
 </div>
 
 <ng-template #editMealNoteDialog>

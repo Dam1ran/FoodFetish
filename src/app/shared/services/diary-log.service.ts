@@ -10,6 +10,7 @@ import { MealPosition, MealPositionMap } from '../entities/meal-position.enum';
 import { Food } from '../entities/food.entity';
 import { Recipe } from '../entities/recipe.entity';
 import { Stats } from '../entities/stats.class';
+import { Activity, ActivityType } from '../entities/activity.entity';
 
 @Injectable({ providedIn: 'root' })
 export class DiaryLogService {
@@ -571,5 +572,73 @@ export class DiaryLogService {
     weights.reverse();
 
     return weights;
+  }
+
+  getActivities(isoDate: string) {
+    return (
+      this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate.activities ?? []
+    );
+  }
+
+  addActivity(isoDate: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      const respectiveActivities = respectiveDay.dayTemplate.activities;
+      const today = dayjs();
+      const activity = new Activity({ hour: today.hour(), minute: today.minute(), second: 0 });
+      if (respectiveActivities?.length) {
+        respectiveActivities.push(activity);
+      } else {
+        respectiveDay.dayTemplate.activities = [activity];
+      }
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  removeActivity(isoDate: string, activityIndex: number) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      respectiveDay.dayTemplate.activities = respectiveDay.dayTemplate.activities.filter(
+        (_, index) => index !== activityIndex,
+      );
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  setActivityType(isoDate: string, activityIndex: number, activityType: ActivityType) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      respectiveDay.dayTemplate.activities[activityIndex].type = activityType;
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
   }
 }
