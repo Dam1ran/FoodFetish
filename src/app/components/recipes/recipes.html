@@ -83,7 +83,7 @@
                 recipesService.changeFoodOrder(recipe.id, $event.previousIndex, $event.currentIndex)
               "
             >
-              @for (food of recipe.foods; track $index + food.id) {
+              @for (food of recipe.foods; track $index + food.id; let isLast = $last) {
                 <div
                   class="d-flex bg-dark-subtle overflow-hidden px-1 align-items-center gap-1"
                   style="font-size: 14px; margin-top: 2px"
@@ -112,6 +112,7 @@
                       recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)
                     "
                     #weightInput
+                    [attr.to-focus]="isLast && recipesService.expandedRecipeId() === recipe.id"
                   />
                   <div class="bg-body-secondary" cdkDragHandle>
                     <div></div>

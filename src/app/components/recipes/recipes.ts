@@ -62,7 +62,9 @@ export class Recipes implements AfterViewInit {
   }
   private readonly weightInputRefs = viewChildren<ElementRef<HTMLInputElement>>('weightInput');
   ngAfterViewInit() {
-    this.weightInputRefs()?.at(-1).nativeElement.focus();
+    this.weightInputRefs()
+      ?.find((el) => el.nativeElement.attributes.getNamedItem('to-focus').value === 'true')
+      ?.nativeElement.focus();
   }
 
   toggleAddRecipeToDiary(recipeId: string) {
