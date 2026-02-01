@@ -61,10 +61,15 @@ export class Weekdays implements OnInit {
         .isoWeekday(this.weekdays.indexOf(weekday) + 1)
         .toISOString(),
     );
+    const hasWater = this.diaryLogService.hasWaterOnDate(
+      this.selectedDayJs()
+        .isoWeekday(this.weekdays.indexOf(weekday) + 1)
+        .toISOString(),
+    );
 
-    if (hasFood && hasWeightIn) {
+    if (hasFood && hasWeightIn && hasWater) {
       return 'rgba(60, 140, 70)';
-    } else if (hasFood || hasWeightIn) {
+    } else if (hasFood || hasWeightIn || hasWater) {
       return 'rgba(150, 120, 70)';
     } else {
       return 'rgba(90, 90, 90)';

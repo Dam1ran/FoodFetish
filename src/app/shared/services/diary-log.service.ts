@@ -274,6 +274,71 @@ export class DiaryLogService {
     return stats;
   }
 
+  getDayNote(isoDate: string) {
+    return (
+      this.diaryLog()?.diaryDays?.find((day) => day.date === isoDate)?.dayTemplate?.note ?? null
+    );
+  }
+  updateDayNote(isoDate: string, value: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      respectiveDay.dayTemplate.note = value;
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  getDayWater(isoDate: string) {
+    return (
+      this.diaryLog()?.diaryDays?.find((day) => day.date === isoDate)?.dayTemplate?.waterMl ?? null
+    );
+  }
+
+  updateDayWater(isoDate: string, value: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      let respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        const newDay = new DiaryDay(isoDate, new DayTemplate());
+        diaryLogCopy.diaryDays.push(newDay);
+        respectiveDay = newDay;
+      }
+
+      if (value) {
+        respectiveDay.dayTemplate.waterMl = Number(value);
+      } else {
+        delete respectiveDay.dayTemplate.waterMl;
+      }
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
+  addDayWater(isoDate: string, value: number) {
+    this.updateDayWater(isoDate, (this.getDayWater(isoDate) + value).toString());
+  }
+  subtractDayWater(isoDate: string, value: number) {
+    const currentWaterMl = this.getDayWater(isoDate);
+    if (currentWaterMl <= value) {
+      this.updateDayWater(isoDate, '');
+    } else {
+      this.updateDayWater(isoDate, (currentWaterMl - value).toString());
+    }
+  }
+
   getPositionStats(isoDate: string, mealPosition: MealPosition) {
     const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
     const stats = new Stats();
@@ -424,6 +489,9 @@ export class DiaryLogService {
 
   hasWeightInOnDate(isoDate: string) {
     return !!this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate?.weight;
+  }
+  hasWaterOnDate(isoDate: string) {
+    return !!this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate?.waterMl;
   }
 
   getCurrentWeight(isoDate: string) {

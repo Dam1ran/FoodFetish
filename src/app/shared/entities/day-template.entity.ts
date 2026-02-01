@@ -5,6 +5,8 @@ import { Recipe } from './recipe.entity';
 export class DayTemplate {
   entries: DayTemplateEntry[] = [];
   weight: number;
+  note: string;
+  waterMl: number;
 }
 
 export class DayTemplateEntry {

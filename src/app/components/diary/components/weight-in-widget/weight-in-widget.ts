@@ -5,9 +5,9 @@ import { IconifyComponent } from '../../../../shared/components/iconify.componen
 import { OptionsService } from '../../../../shared/services/options/options.service';
 
 @Component({
-  selector: 'weight-in-bar',
+  selector: 'weight-in-widget',
   imports: [IconifyComponent],
-  templateUrl: './weight-in-bar.html',
+  templateUrl: './weight-in-widget.html',
   styles: `
     input {
       color: var(--bs-info-text-emphasis);
@@ -19,7 +19,7 @@ import { OptionsService } from '../../../../shared/services/options/options.serv
     }
   `,
 })
-export class WeightInBar {
+export class WeightInWidget {
   Math = Math;
 
   protected readonly diaryLogService = inject(DiaryLogService);

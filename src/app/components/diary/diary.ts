@@ -8,6 +8,7 @@ import {
   model,
   AfterViewInit,
   effect,
+  TemplateRef,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +18,7 @@ import { FoodRow } from './components/food-row/food-row';
 import { DiaryRecipe } from './components/diary-recipe/diary-recipe';
 import { TotalRow } from './components/total-row/total-row';
 import { Weekdays } from './components/weekday/weekdays';
-import { WeightInBar } from './components/weight-in-bar/weight-in-bar';
+import { WeightInWidget } from './components/weight-in-widget/weight-in-widget';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { Meal } from '../../shared/entities/meal.entity';
@@ -25,6 +26,7 @@ import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
 import { MealPosition, MealPositionMap } from '../../shared/entities/meal-position.enum';
 import { RoutePaths } from '../../shared/routes/route-paths';
+import { IconifyComponent } from '../../shared/components/iconify.component';
 
 @Component({
   selector: 'diary',
@@ -36,8 +38,9 @@ import { RoutePaths } from '../../shared/routes/route-paths';
     DiaryRecipe,
     TotalRow,
     Weekdays,
-    WeightInBar,
+    WeightInWidget,
     DatePipe,
+    IconifyComponent,
   ],
   templateUrl: './diary.html',
 })
@@ -188,5 +191,9 @@ export class Diary implements AfterViewInit {
       mealPosition,
       recipeIndex,
     );
+  }
+
+  toggleEditDayNoteDialog(dialog: TemplateRef<HTMLTextAreaElement>) {
+    this.modalService.open(dialog, { size: 'sm', centered: true });
   }
 }

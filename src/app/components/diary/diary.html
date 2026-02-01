@@ -4,7 +4,7 @@
     [class]="{
       'fst-italic': !isTodaySelected(),
       'fw-semibold': isTodaySelected(),
-      'text-muted': !isTodaySelected()
+      'text-muted': !isTodaySelected(),
     }"
     style="font-size: 14px; line-height: 16px"
   >
@@ -13,7 +13,52 @@
   <weekdays [(selectedDate)]="selectedDate" />
   <div class="border-bottom"></div>
   <div class="d-flex">
-    <div style="width: 130px"></div>
+    <div class="d-flex justify-content-between align-items-center p-1" style="width: 130px">
+      <button
+        class="btn p-0 opacity-35 d-flex justify-content-between rounded"
+        style="border: 1px solid transparent"
+        [class.btn-outline-info]="diaryLogService.getDayNote(selectedDayJs().toISOString())"
+        (click)="toggleEditDayNoteDialog(editDayNoteDialog)"
+      >
+        <iconify icon="iconoir:notes" />
+      </button>
+      <div class="d-flex align-items-center">
+        <button
+          class="btn p-0 d-flex justify-content-between position-relative"
+          style="width: fit-content"
+          (click)="diaryLogService.subtractDayWater(selectedDayJs().toISOString(), 100)"
+        >
+          <iconify
+            size="16px"
+            icon="iconamoon:sign-minus-bold"
+            class="position-absolute z-1 translate-middle top-50 start-50 text-info-emphasis"
+          />
+          <iconify icon="mdi:glass-outline" class="z-0 opacity-30" />
+        </button>
+        <div
+          class="text-center rounded"
+          style="width: 40px;"
+        >
+        @if (diaryLogService.getDayWater(selectedDayJs().toISOString()); as waterMl) {
+          {{ (waterMl / 1000).toFixed(1) }}L
+        } @else {
+          ?
+        }
+        </div>
+        <button
+          class="btn p-0 d-flex justify-content-between position-relative"
+          style="width: fit-content"
+          (click)="diaryLogService.addDayWater(selectedDayJs().toISOString(), 100)"
+        >
+          <iconify
+            size="16px"
+            icon="iconamoon:sign-plus-bold"
+            class="position-absolute z-1 translate-middle top-50 start-50 text-info-emphasis"
+          />
+          <iconify icon="mdi:glass-outline" class="z-0 opacity-30" />
+        </button>
+      </div>
+    </div>
     <div
       class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-25 bg-body-secondary"
       style="font-size: 12px"
@@ -148,15 +193,27 @@
     }
   </div>
   <total-row [stats]="getDayStats()" [fixedDecimals]="0" />
-  <weight-in-bar [isoDate]="selectedDayJs().toISOString()" />
+  <weight-in-widget [isoDate]="selectedDayJs().toISOString()" />
 </div>
 
 <ng-template #editMealNoteDialog>
   <textarea
-    class="form-control form-control-sm meal-name-input text-center"
+    class="form-control form-control-sm text-center"
     rows="3"
     placeholder="Meal note"
     [value]="editNoteMeal()"
     (input)="updateMealNote(editNoteMealId(), $any($event.target).value)"
+  ></textarea>
+</ng-template>
+
+<ng-template #editDayNoteDialog>
+  <textarea
+    class="form-control form-control-sm text-center"
+    rows="3"
+    placeholder="Day note"
+    [value]="diaryLogService.getDayNote(selectedDayJs().toISOString())"
+    (input)="
+      diaryLogService.updateDayNote(selectedDayJs().toISOString(), $any($event.target).value)
+    "
   ></textarea>
 </ng-template>
