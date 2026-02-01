@@ -36,10 +36,13 @@
               (click)="toggleAddRecipeToDiary(recipe.id)"
             ></button>
             <button
-              class="accordion-button collapsed shadow-none"
+              class="accordion-button shadow-none"
+              [class.collapsed]="recipesService.expandedRecipeId() !== recipe.id"
               style="width: auto; padding: 10px 0.5rem"
               data-bs-toggle="collapse"
               [attr.data-bs-target]="'#flush-collapse' + $index"
+
+              (click)="recipesService.toggleExpandedRecipeId(recipe.id)"
             ></button>
             <input
               class="form-control form-control-sm text-center bg-dark-subtle"
@@ -71,7 +74,7 @@
             #collapsible
             [id]="'flush-collapse' + $index"
             class="accordion-collapse collapse rounded"
-            [class.show]="recipes()?.length === 1"
+            [class.show]="recipesService.expandedRecipeId() === recipe.id"
             data-bs-parent="#accordionFlush"
           >
             <div

@@ -29,7 +29,7 @@ export function isValidFood(obj): obj is Food {
     typeof obj.fiber === 'number' &&
     typeof obj.calories === 'number' &&
     typeof obj.weight === 'number' &&
-    typeof obj.barcode === 'string' &&
+    (!obj.barcode || typeof obj.barcode === 'string') &&
     typeof obj.note === 'string'
   );
 }
