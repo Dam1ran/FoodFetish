@@ -494,6 +494,11 @@ export class DiaryLogService {
   hasWaterOnDate(isoDate: string) {
     return !!this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate?.waterMl;
   }
+  hasActivitiesOnDate(isoDate: string) {
+    return !!this.diaryLog()
+      ?.diaryDays.find((day) => day.date === isoDate)
+      ?.dayTemplate?.activities?.some((a) => !!a.durationMinutes && a.type !== ActivityType.None);
+  }
 
   getCurrentWeight(isoDate: string) {
     const respectiveDay = this.diaryLog()?.diaryDays.find((day) => day.date === isoDate);
