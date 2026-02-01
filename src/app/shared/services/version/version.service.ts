@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.6.0',
+      date: '1.02.2026',
+      changes: [
+        {
+          description: 'Barcode scanner for add food and diary.',
+          type: VersionChangeType.Feature,
+        },
+      ],
+    },
+    {
       version: '1.5.0',
       date: '1.02.2026',
       changes: [

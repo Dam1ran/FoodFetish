@@ -35,6 +35,7 @@
         style="border-radius: 4px"
         [value]="food().weight"
         (blur)="updateFoodWeight.emit($event.target.value)"
+        #weightInput
       />
     </div>
   </div>

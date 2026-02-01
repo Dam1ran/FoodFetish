@@ -1,0 +1,48 @@
+@if (isScanning() && !respectiveFood()) {
+  <div class="mt-2"></div>
+  <div class="position-relative">
+    <zxing-scanner
+      (scanSuccess)="onCodeResult($event)"
+      [formats]="formats"
+      [autofocusEnabled]="true"
+    />
+    <div class="position-absolute d-flex align-items-center" style="inset: 0; pointer-events: none">
+      <div
+        class="border-top border-bottom border-warning w-75 m-auto position-relative"
+        style="height: 60%"
+      >
+        <div class="laser"></div>
+      </div>
+    </div>
+  </div>
+}
+@if (!isScanning() && !respectiveFood()) {
+  <div class="d-flex opacity-50 p-1 gap-1">
+    <button
+      class="btn btn-sm btn-outline-warning mx-auto flex-grow-1"
+      (click)="code.set(''); isScanning.set(true)"
+      [disabled]="isScanning()"
+    >
+      Re-scan
+    </button>
+  </div>
+  <div class="m-1">
+    <input
+      class="form-control form-control-sm border-warning-subtle text-center opacity-75 fs-5"
+      [(ngModel)]="code"
+      (click)="$event.stopPropagation()"
+    />
+  </div>
+}
+@if (code() && !respectiveFood()) {
+  <div class="d-flex opacity-50 p-1 gap-1">
+    <button
+      class="btn btn-sm btn-outline-success mx-auto flex-grow-1"
+      (click)="onAddAsNewFood(code())"
+      [disabled]="isScanning()"
+      buttonIcon="mdi:plus"
+    >
+      Add as new food
+    </button>
+  </div>
+}

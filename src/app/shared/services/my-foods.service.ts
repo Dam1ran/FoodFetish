@@ -60,4 +60,7 @@ export class FoodsService {
   getFoodById(foodId: string) {
     return this.foods().find((f) => f.id === foodId);
   }
+  getFoodByBarcode(barcode: string) {
+    return this.foods().find((f) => f.barcode === barcode);
+  }
 }
