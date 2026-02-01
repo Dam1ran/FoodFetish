@@ -1,0 +1,18 @@
+@if (isScanning()) {
+  <div class="mt-2"></div>
+  <div class="position-relative">
+    <zxing-scanner
+      (scanSuccess)="onCodeResult($event)"
+      [formats]="formats"
+      [autofocusEnabled]="true"
+    />
+    <div class="position-absolute d-flex align-items-center" style="inset: 0; pointer-events: none">
+      <div
+        class="border-top border-bottom border-warning w-75 m-auto position-relative"
+        style="height: 60%"
+      >
+        <div class="laser"></div>
+      </div>
+    </div>
+  </div>
+}

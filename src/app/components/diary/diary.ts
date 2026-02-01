@@ -20,6 +20,7 @@ import { TotalRow } from './components/total-row/total-row';
 import { Weekdays } from './components/weekday/weekdays';
 import { WeightInWidget } from './components/weight-in-widget/weight-in-widget';
 import { ActivityWidget } from './components/activity-widget/activity-widget';
+import { DiaryBarcodeScanner } from './components/diary-barcode-scanner/diary-barcode-scanner';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { Meal } from '../../shared/entities/meal.entity';
@@ -197,5 +198,12 @@ export class Diary implements AfterViewInit {
 
   toggleEditDayNoteDialog(dialog: TemplateRef<HTMLTextAreaElement>) {
     this.modalService.open(dialog, { size: 'sm', centered: true });
+  }
+
+  onScanBarcodeClick(mealPosition: MealPosition) {
+    const scanner = this.modalService.open(DiaryBarcodeScanner, { size: 'sm', centered: true });
+
+    scanner.componentInstance.isoDate.set(this.selectedDayJs().toISOString());
+    scanner.componentInstance.mealPosition.set(mealPosition);
   }
 }

@@ -11,6 +11,7 @@ export class Food {
     public fiber = 0,
     public calories = 0,
     public weight = 100,
+    public barcode = '',
     public note = '',
   ) {}
 }
@@ -28,6 +29,7 @@ export function isValidFood(obj): obj is Food {
     typeof obj.fiber === 'number' &&
     typeof obj.calories === 'number' &&
     typeof obj.weight === 'number' &&
+    typeof obj.barcode === 'string' &&
     typeof obj.note === 'string'
   );
 }

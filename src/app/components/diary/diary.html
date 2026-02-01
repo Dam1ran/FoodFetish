@@ -35,15 +35,12 @@
           />
           <iconify icon="mdi:glass-outline" class="z-0 opacity-30" />
         </button>
-        <div
-          class="text-center rounded"
-          style="width: 40px;"
-        >
-        @if (diaryLogService.getDayWater(selectedDayJs().toISOString()); as waterMl) {
-          {{ (waterMl / 1000).toFixed(1) }}L
-        } @else {
-          ?
-        }
+        <div class="text-center rounded" style="width: 40px">
+          @if (diaryLogService.getDayWater(selectedDayJs().toISOString()); as waterMl) {
+            {{ (waterMl / 1000).toFixed(1) }}L
+          } @else {
+            ?
+          }
         </div>
         <button
           class="btn p-0 d-flex justify-content-between position-relative"
@@ -162,12 +159,13 @@
               (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
             />
           }
-          @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd) {
+          @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd; let isLast = $last) {
             <food-row
               [food]="food"
               [isOdd]="isOdd"
               (removeFood)="removeFood(mealTemplateEntry.position, $index, respectiveMeal)"
               (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
+              [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
             />
           }
           <div class="p-1 bg-body-tertiary d-flex gap-1">
@@ -176,16 +174,27 @@
               buttonIcon="pajamas:recipe"
               (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
               iconSize="24px"
+              [minWidthPx]="100"
             >
-              Add recipe
+              Recipe
+            </button>
+            <button
+              class="btn btn-outline-success btn-sm opacity-50 flex-grow-1"
+              buttonIcon="si:barcode-fill"
+              (click)="$event.stopPropagation(); onScanBarcodeClick(mealTemplateEntry.position)"
+              iconSize="24px"
+              [minWidthPx]="100"
+            >
+              Barcode
             </button>
             <button
               class="btn btn-outline-success btn-sm opacity-80 flex-grow-1"
               buttonIcon="iconoir:lens-plus"
               (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
               iconSize="24px"
+              [minWidthPx]="100"
             >
-              Add food
+              Food
             </button>
           </div>
         </div>

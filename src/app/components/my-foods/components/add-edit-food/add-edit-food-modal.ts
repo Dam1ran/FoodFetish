@@ -7,7 +7,7 @@ import {
   AfterViewInit,
   ElementRef,
 } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { form, FormField } from '@angular/forms/signals';
 import { IconifyComponent } from '../../../../shared/components/iconify.component';
 import { FoodsService } from '../../../../shared/services/my-foods.service';
@@ -16,10 +16,12 @@ import {
   FoodMacroCategoryMap,
 } from '../../../../shared/entities/food-macro-category.enum';
 import { Food } from '../../../../shared/entities/food.entity';
+import { BarcodeScanner } from '../../../../shared/components/barcode-scanner/barcode-scanner';
+import { ButtonIconDirective } from '../../../../shared/directives/button-icon.directive';
 
 @Component({
   selector: 'add-edit-food-modal',
-  imports: [IconifyComponent, FormField],
+  imports: [IconifyComponent, FormField, ButtonIconDirective],
   templateUrl: './add-edit-food-modal.html',
 })
 export class AddEditFood implements AfterViewInit {
@@ -27,9 +29,10 @@ export class AddEditFood implements AfterViewInit {
   protected readonly foodMacroCategoryMap = FoodMacroCategoryMap;
 
   private readonly modalService = inject(NgbModal);
+  private readonly activeModal = inject(NgbActiveModal);
   private readonly foodsService = inject(FoodsService);
 
-  readonly food = model<Food>(new Food());
+  readonly food = model<Food>(new Food(undefined, 'new food'));
   protected readonly form = form(this.food);
 
   protected readonly macroCategories = Object.keys(FoodMacroCategory)
@@ -60,6 +63,17 @@ export class AddEditFood implements AfterViewInit {
 
   addEditFood() {
     this.foodsService.addEditFood({ ...this.food() });
-    this.modalService.dismissAll();
+    this.activeModal.close();
+  }
+
+  onScanBarcodeClick() {
+    void this.modalService
+      .open(BarcodeScanner, { size: 'sm', centered: true })
+      .result.then((value) => {
+        if (value) {
+          this.form.barcode().value.set(value);
+        }
+      })
+      .catch();
   }
 }

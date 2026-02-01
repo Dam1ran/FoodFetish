@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "startLan": "ng serve --host 192.168.0.32",
+    "startLan": "ng serve --host 192.168.0.32 --ssl true",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
@@ -33,6 +33,8 @@
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
     "@ng-bootstrap/ng-bootstrap": "^20.0.0",
+    "@zxing/library": "^0.21.3",
+    "@zxing/ngx-scanner": "^21.0.0",
     "bootstrap": "^5.3.8",
     "dayjs": "^1.11.19",
     "iconify-icon": "^3.0.2",
