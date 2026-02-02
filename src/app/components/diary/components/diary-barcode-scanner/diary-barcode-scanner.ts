@@ -31,8 +31,8 @@ export class DiaryBarcodeScanner implements OnDestroy {
   readonly mealPosition = signal(MealPosition.None);
 
   protected readonly code = model('');
-  protected readonly respectiveFood = computed(() =>
-    this.foodsService.getFoodByBarcode(this.code()),
+  protected readonly respectiveFood = computed(
+    () => this.code() && this.foodsService.getFoodByBarcode(this.code()),
   );
 
   constructor() {
