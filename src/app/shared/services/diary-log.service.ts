@@ -205,6 +205,45 @@ export class DiaryLogService {
     this.saveDiaryLog();
   }
 
+  removeFoodFromRecipe(
+    isoDate: string,
+    mealPosition: MealPosition,
+    recipeIndex: number,
+    foodIndex: number,
+  ) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      const respectiveRecipe = respectiveEntry.recipes?.[recipeIndex];
+      if (!respectiveRecipe) {
+        return diaryLog;
+      }
+
+      const respectiveFood = respectiveRecipe.foods?.[foodIndex];
+      if (!respectiveFood) {
+        return diaryLog;
+      }
+
+      respectiveRecipe.foods = respectiveRecipe.foods.filter((_, index) => index !== foodIndex);
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
+
   clearMeal(isoDate: string, mealPosition: MealPosition) {
     this.diaryLog.update((diaryLog) => {
       const diaryLogCopy = { ...diaryLog };

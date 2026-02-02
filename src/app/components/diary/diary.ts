@@ -185,6 +185,15 @@ export class Diary implements AfterViewInit {
     );
   }
 
+  removeFoodFromRecipe(mealPosition: MealPosition, recipeIndex: number, foodIndex: number) {
+    this.diaryLogService.removeFoodFromRecipe(
+      this.selectedDayJs().toISOString(),
+      mealPosition,
+      recipeIndex,
+      foodIndex,
+    );
+  }
+
   removeRecipeFromPosition(mealPosition: MealPosition, recipeIndex: number) {
     this.diaryLogService.removeRecipeFromPosition(
       this.selectedDayJs().toISOString(),

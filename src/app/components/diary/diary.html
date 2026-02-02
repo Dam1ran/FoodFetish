@@ -157,6 +157,7 @@
                 )
               "
               (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
+              (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
             />
           }
           @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd; let isLast = $last) {
