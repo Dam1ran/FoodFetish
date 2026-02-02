@@ -21,6 +21,7 @@ import { Weekdays } from './components/weekday/weekdays';
 import { WeightInWidget } from './components/weight-in-widget/weight-in-widget';
 import { ActivityWidget } from './components/activity-widget/activity-widget';
 import { DiaryBarcodeScanner } from './components/diary-barcode-scanner/diary-barcode-scanner';
+import { MacrosWidget } from './components/macros-widget/macros-widget';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { Meal } from '../../shared/entities/meal.entity';
@@ -44,6 +45,7 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
     DatePipe,
     IconifyComponent,
     ActivityWidget,
+    MacrosWidget,
   ],
   templateUrl: './diary.html',
 })

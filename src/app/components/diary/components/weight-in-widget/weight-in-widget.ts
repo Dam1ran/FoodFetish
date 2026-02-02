@@ -20,7 +20,7 @@ import { OptionsService } from '../../../../shared/services/options/options.serv
   `,
 })
 export class WeightInWidget {
-  Math = Math;
+  protected readonly Math = Math;
 
   protected readonly diaryLogService = inject(DiaryLogService);
   protected readonly optionsService = inject(OptionsService);

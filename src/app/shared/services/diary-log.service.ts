@@ -533,7 +533,7 @@ export class DiaryLogService {
   }
 
   getWeightByFormula(isoDate: string, weightFormulaBackDays: number) {
-    const currentDate = dayjs(isoDate).utc();
+    const currentDate = dayjs(isoDate).utc().startOf('day');
     const weights: number[] = [];
     for (let i = 0; i < weightFormulaBackDays; i++) {
       const checkDate = currentDate.subtract(i, 'day').toISOString();
