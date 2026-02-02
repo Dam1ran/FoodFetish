@@ -74,10 +74,11 @@
             ></button>
           </td>
           <td
-            class="text-truncate1"
+            class="py-1"
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
             [class.cursor-pointer]="diaryDate()"
             (click)="addFoodToDiaryOrRecipe(food)"
+            style="font-size: 12px;"
           >
             {{ food.name }}
           </td>
