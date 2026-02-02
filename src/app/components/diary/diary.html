@@ -163,7 +163,7 @@
             <food-row
               [food]="food"
               [isOdd]="isOdd"
-              (removeFood)="removeFood(mealTemplateEntry.position, $index, respectiveMeal)"
+              (removeFood)="removeFood(mealTemplateEntry.position, $index)"
               (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
               [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
             />

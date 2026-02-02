@@ -24,7 +24,6 @@ import { DiaryBarcodeScanner } from './components/diary-barcode-scanner/diary-ba
 import { MacrosWidget } from './components/macros-widget/macros-widget';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
-import { Meal } from '../../shared/entities/meal.entity';
 import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
 import { MealPosition, MealPositionMap } from '../../shared/entities/meal-position.enum';
@@ -120,12 +119,8 @@ export class Diary implements AfterViewInit {
     this.diaryLogService.updateMealName(this.selectedDayJs().toISOString(), mealPosition, value);
   }
 
-  removeFood(mealPosition: MealPosition, foodIndex: number, respectiveMeal: Meal) {
+  removeFood(mealPosition: MealPosition, foodIndex: number) {
     this.diaryLogService.removeFood(this.selectedDayJs().toISOString(), mealPosition, foodIndex);
-
-    if (!respectiveMeal.foods.length) {
-      this.diaryLogService.clearMeal(this.selectedDayJs().toISOString(), mealPosition);
-    }
   }
 
   updateFoodWeight(mealPosition: MealPosition, foodIndex: number, weight: string) {
