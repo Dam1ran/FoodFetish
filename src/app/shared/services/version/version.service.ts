@@ -12,8 +12,18 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.7.1',
+      date: '02.02.2026',
+      changes: [
+        {
+          description: 'Redesign activity widget.',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.7.0',
-      date: '1.02.2026',
+      date: '02.02.2026',
       changes: [
         {
           description:
@@ -24,7 +34,7 @@ export class VersionService {
     },
     {
       version: '1.6.1',
-      date: '1.02.2026',
+      date: '01.02.2026',
       changes: [
         {
           description: 'Persist expanded recipe.',
@@ -38,7 +48,7 @@ export class VersionService {
     },
     {
       version: '1.6.0',
-      date: '1.02.2026',
+      date: '01.02.2026',
       changes: [
         {
           description: 'Barcode scanner for `Add food` and `Diary`. Some improvements.',
@@ -48,7 +58,7 @@ export class VersionService {
     },
     {
       version: '1.5.0',
-      date: '1.02.2026',
+      date: '01.02.2026',
       changes: [
         {
           description: 'Activities widget. Some small adjustments.',
