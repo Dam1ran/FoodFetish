@@ -16,6 +16,8 @@ export class DiaryRecipe {
   protected readonly id = signal(v7());
   readonly recipe = input.required<Recipe>();
   readonly updateFoodWeight = output<{ foodIndex: number; newWeight: number }>();
+  readonly removeFood = output<number>();
+
   readonly removeRecipe = output();
   protected recipeStats() {
     return getMealStats(this.recipe());

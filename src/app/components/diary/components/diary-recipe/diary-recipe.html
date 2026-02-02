@@ -38,13 +38,14 @@
         <food-row
           [food]="food"
           [isOdd]="isOdd"
-          noRemove
+          [noRemove]="recipe().foods?.length === 1"
           (updateFoodWeight)="
             updateFoodWeight.emit({
               foodIndex: $index,
               newWeight: +$event,
             })
           "
+          (removeFood)="removeFood.emit($index)"
         />
       }
       <div class="bg-body">
