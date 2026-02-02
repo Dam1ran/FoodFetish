@@ -12,6 +12,17 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.7.0',
+      date: '1.02.2026',
+      changes: [
+        {
+          description:
+            'Macros widget for targeting macronutrients. Background color has some color codings as goal hint.',
+          type: VersionChangeType.Feature,
+        },
+      ],
+    },
+    {
       version: '1.6.1',
       date: '1.02.2026',
       changes: [
