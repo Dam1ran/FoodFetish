@@ -710,4 +710,20 @@ export class DiaryLogService {
 
     this.saveDiaryLog();
   }
+
+  downloadDiary() {
+    const json = JSON.stringify(this.diaryLog());
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'diary.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  setDiary(diary: DiaryLog) {
+    localStorage.setItem('diaryLog', JSON.stringify(diary));
+    this.loadDiaryLog();
+  }
 }

@@ -7,6 +7,7 @@ import { isValidFood } from '../../shared/entities/food.entity';
 import { RoutePaths } from '../../shared/routes/route-paths';
 import { isValidRecipe } from '../../shared/entities/recipe.entity';
 import { RecipesService } from '../../shared/services/recipes.service';
+import { DiaryLogService } from '../../shared/services/diary-log.service';
 
 @Component({
   selector: 'app-options',
@@ -17,6 +18,7 @@ export class Options {
   protected readonly toastsService = inject(ToastsService);
   protected readonly foodsService = inject(FoodsService);
   protected readonly recipesService = inject(RecipesService);
+  protected readonly diaryLogService = inject(DiaryLogService);
 
   protected readonly jsonUploadFoodsInput =
     viewChild<ElementRef<HTMLInputElement>>('jsonUploadFoods');
@@ -106,6 +108,52 @@ export class Options {
     };
     reader.readAsText(file);
     this.jsonUploadRecipesInput().nativeElement.value = '';
+  }
+
+  protected readonly jsonUploadDiaryInput =
+    viewChild<ElementRef<HTMLInputElement>>('jsonUploadDiary');
+  onLoadDiaryFromFile(fileEvent) {
+    const target = fileEvent.target as DataTransfer;
+    if (target.files?.length !== 1) {
+      this.jsonUploadDiaryInput().nativeElement.value = '';
+
+      return;
+    }
+    const file = target.files?.[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const contents = e.target?.result as string;
+      if (contents) {
+        const diary = JSON.parse(contents);
+        if (!Array.isArray(diary.diaryDays)) {
+          this.toastsService.showAsWarning(`Wrong diary data`, {
+            headerText: null,
+            delayMs: 5000,
+          });
+          console.warn('Wrong diary data');
+          return;
+        }
+
+        this.diaryLogService.setDiary(diary);
+        if (this.diaryLogService.diaryLog()?.diaryDays?.length === 1) {
+          this.toastsService.showAsInformation('Loaded 1 diary day', {
+            headerText: null,
+            delayMs: 5000,
+          });
+          return;
+        }
+
+        this.toastsService.showAsInformation(
+          `Loaded ${this.diaryLogService.diaryLog()?.diaryDays?.length} diary days`,
+          {
+            headerText: null,
+            delayMs: 5000,
+          },
+        );
+      }
+    };
+    reader.readAsText(file);
+    this.jsonUploadDiaryInput().nativeElement.value = '';
   }
 
   private readonly router = inject(Router);
