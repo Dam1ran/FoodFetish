@@ -48,6 +48,7 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
     NgbTimepicker,
   ],
   templateUrl: './diary.html',
+  styleUrl: './diary.scss',
 })
 export class Diary implements AfterViewInit {
   readonly diaryDate = input('');

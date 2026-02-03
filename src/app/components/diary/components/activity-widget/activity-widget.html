@@ -58,7 +58,23 @@
             data-bs-toggle="collapse"
             [attr.data-bs-target]="'#flush-activity-collapse' + $index"
           >
-            <iconify class="ms-auto me-0" [icon]="activityTypeIconMap[activity.type].icon" />
+            <div class="d-flex justify-content-around flex-grow-1 align-items-center">
+              <iconify [icon]="activityTypeIconMap[activity.type].icon" />
+              <span class="opacity-15">
+                <iconify icon="icon-park-outline:timer" size="24px" />
+              </span>
+              <input
+                class="form-control form-control-sm shadow-none text-center border border-info-subtle rounded-circle opacity-75"
+                type="number"
+                inputmode="numeric"
+                step="1"
+                min="0"
+                placeholder="m"
+                style="width: 30px; padding: 0"
+                [(ngModel)]="activity.durationMinutes"
+                (blur)="diaryLogService.saveDiaryLog()"
+              />
+            </div>
           </button>
         </h2>
         <div
@@ -69,7 +85,7 @@
         >
           <div class="p-1 d-flex gap-2 justify-content-between">
             <div class="d-flex align-items-center gap-1">
-              <span class="fst-italic opacity-15" style="margin: 0px 1px">
+              <span class="fopacity-15" style="margin: 0px 1px">
                 <iconify icon="mingcute:time-line" size="24px" />
               </span>
               <div class="" style="padding: 2px 0">
@@ -81,31 +97,15 @@
                 />
               </div>
             </div>
-            <div class="d-flex align-items-center gap-1">
-              <span class="fst-italic opacity-15">
-                <iconify icon="icon-park-outline:timer" size="24px"
-              /></span>
+            <div class="flex-grow-1" style="padding: 2px">
               <input
-                class="form-control form-control-sm shadow-none text-center border border-info-subtle rounded-circle opacity-75 mx-1"
-                type="number"
-                inputmode="numeric"
-                step="1"
-                min="0"
-                placeholder="m"
-                style="width: 30px; padding: 0"
-                [(ngModel)]="activity.durationMinutes"
+                class="form-control form-control-sm shadow-none text-center border-none opacity-75"
+                type="text"
+                placeholder="Note"
+                [(ngModel)]="activity.note"
                 (blur)="diaryLogService.saveDiaryLog()"
               />
             </div>
-          </div>
-          <div style="padding: 2px">
-            <input
-              class="form-control form-control-sm shadow-none text-center border-none rounded-top-0 opacity-75"
-              type="text"
-              placeholder="Note"
-              [(ngModel)]="activity.note"
-              (blur)="diaryLogService.saveDiaryLog()"
-            />
           </div>
         </div>
       </div>

@@ -69,13 +69,14 @@
     </div>
   </div>
   <div class="border-bottom"></div>
-  <div class="accordion accordion-flush" id="accordionFlush">
+  <div class="accordion accordion-flush position-relative" id="accordionFlush">
+    <div class="overlay"></div>
     @for (mealTemplateEntry of dayTemplateService.getDayTemplate()!.entries; track $index) {
       @let respectiveMeal = getRespectiveMeal(mealTemplateEntry.position);
       <div class="accordion-item">
         <h2 class="accordion-header d-flex align-items-center">
           <button
-            class="accordion-button p-1 text-truncate text-muted fw-bold opacity-75 shadow-none"
+            class="accordion-button p-1 text-truncate text-muted fw-semibold opacity-50 shadow-none rounded"
             [class.collapsed]="!isMealExpanded(mealTemplateEntry.position)"
             type="button"
             data-bs-toggle="collapse"
@@ -87,7 +88,7 @@
           </button>
           <div class="flex-grow-1 align-self-stretch">
             <div
-              class="row g-0 h-100 fw-light fst-italic"
+              class="row g-0 h-100 fw-light fst-italic rounded"
               [class]="{
                 'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
                 'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
