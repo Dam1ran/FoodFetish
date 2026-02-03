@@ -8,6 +8,7 @@ import { Stats } from '../../../../shared/entities/stats.class';
   selector: 'macros-widget',
   imports: [FormsModule],
   templateUrl: './macros-widget.html',
+  styleUrl: './macros-widget.scss',
 })
 export class MacrosWidget {
   readonly isoDate = input('');
@@ -86,5 +87,17 @@ export class MacrosWidget {
     } else {
       return 'rgba(220, 140, 40, 0.5)';
     }
+  }
+
+  protected darkenColor(rgbaColor: string): string {
+    const match = rgbaColor.match(/\d+/g);
+    if (!match || match.length < 3) return rgbaColor;
+
+    const r = Math.max(0, parseInt(match[0]) - 50);
+    const g = Math.max(0, parseInt(match[1]) - 50);
+    const b = Math.max(0, parseInt(match[2]) - 50);
+    const a = match[3] ? parseInt(match[3]) / 255 : 1;
+
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 }

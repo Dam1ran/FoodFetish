@@ -8,16 +8,7 @@ import { OptionsService } from '../../../../shared/services/options/options.serv
   selector: 'weight-in-widget',
   imports: [IconifyComponent],
   templateUrl: './weight-in-widget.html',
-  styles: `
-    input {
-      color: var(--bs-info-text-emphasis);
-    }
-    ::placeholder {
-      color: var(--bs-info-text-emphasis);
-      font-style: italic;
-      opacity: 0.4;
-    }
-  `,
+  styleUrl: './weight-in-widget.scss',
 })
 export class WeightInWidget {
   protected readonly Math = Math;
