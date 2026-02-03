@@ -12,6 +12,20 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.7.2',
+      date: '02.02.2026',
+      changes: [
+        {
+          description: 'Allow removal of food from diary recipe.',
+          type: VersionChangeType.Update,
+        },
+        {
+          description: 'Add calorie tracker to macros widget.',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.7.1',
       date: '02.02.2026',
       changes: [

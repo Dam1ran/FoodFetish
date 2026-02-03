@@ -18,7 +18,7 @@ export class MacrosWidget {
 
   protected getProteinScrollbarBg(grams: number, weightKg: number) {
     if (!weightKg) {
-      return 'rgba(120, 120, 120, 0.5)'
+      return 'rgba(120, 120, 120, 0.5)';
     }
     const minMidThresholdGr = weightKg * 1.5;
     const maxMidThresholdGr = weightKg * 2.5;
@@ -26,17 +26,17 @@ export class MacrosWidget {
     const maxMedThresholdGr = weightKg * 3.2;
 
     if (grams >= minMidThresholdGr && grams <= maxMidThresholdGr) {
-      return 'rgba(70, 170, 100, 0.6)';
+      return 'rgba(60, 160, 70, 0.6)';
     } else if (grams >= minMedThresholdGr && grams <= maxMedThresholdGr) {
       return 'rgba(180, 150, 50, 0.6)';
     } else {
-      return 'rgba(240, 120, 20, 0.5)';
+      return 'rgba(220, 140, 40, 0.5)';
     }
   }
 
   protected getCarbScrollbarBg(grams: number, weightKg: number) {
     if (!weightKg) {
-      return 'rgba(120, 120, 120, 0.5)'
+      return 'rgba(120, 120, 120, 0.5)';
     }
     const minMidThresholdGr = weightKg * 1.6;
     const maxMidThresholdGr = weightKg * 3.2;
@@ -44,11 +44,11 @@ export class MacrosWidget {
     const maxMedThresholdGr = weightKg * 3.7;
 
     if (grams >= minMidThresholdGr && grams <= maxMidThresholdGr) {
-      return 'rgba(70, 170, 100, 0.6)';
+      return 'rgba(60, 160, 70, 0.6)';
     } else if (grams >= minMedThresholdGr && grams <= maxMedThresholdGr) {
       return 'rgba(180, 150, 50, 0.6)';
     } else {
-      return 'rgba(240, 120, 20, 0.5)';
+      return 'rgba(220, 140, 40, 0.5)';
     }
   }
 
@@ -62,11 +62,29 @@ export class MacrosWidget {
     const maxMedThresholdGr = weightKg * 1.4;
 
     if (grams >= minMidThresholdGr && grams <= maxMidThresholdGr) {
-      return 'rgba(70, 170, 100, 0.6)';
+      return 'rgba(60, 160, 70, 0.6)';
     } else if (grams >= minMedThresholdGr && grams <= maxMedThresholdGr) {
       return 'rgba(180, 150, 50, 0.6)';
     } else {
-      return 'rgba(240, 120, 20, 0.5)';
+      return 'rgba(220, 140, 40, 0.5)';
+    }
+  }
+
+  protected getKCalScrollbarBg(calories: number, weightKg: number) {
+    if (!weightKg) {
+      return 'rgba(120, 120, 120, 0.5)';
+    }
+    const minMidThresholdCalories = weightKg * 25;
+    const maxMidThresholdCalories = weightKg * 30;
+    const minMedThresholdCalories = weightKg * 18;
+    const maxMedThresholdCalories = weightKg * 37;
+
+    if (calories >= minMidThresholdCalories && calories <= maxMidThresholdCalories) {
+      return 'rgba(60, 160, 70, 0.6)';
+    } else if (calories >= minMedThresholdCalories && calories <= maxMedThresholdCalories) {
+      return 'rgba(180, 150, 50, 0.6)';
+    } else {
+      return 'rgba(220, 140, 40, 0.5)';
     }
   }
 }
