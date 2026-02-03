@@ -1,94 +1,122 @@
 <div class="rounded overflow-hidden">
-  <div class="row align-items-center bg-body-secondary">
-    <div class="col text-center text-muted opacity-50 fst-italic" style="font-size: 12px">
-      Proteins
-    </div>
-    <div class="col text-center text-muted opacity-50 fst-italic" style="font-size: 12px">
-      Carbs
-    </div>
-    <div class="col text-center text-muted opacity-50 fst-italic" style="font-size: 12px">Fats</div>
+  <div class="row align-items-center bg-body-secondary fst-italic">
+    <div class="col text-center text-muted opacity-50" style="font-size: 12px">Proteins</div>
+    <div class="col text-center text-muted opacity-50" style="font-size: 12px">Carbs</div>
+    <div class="col text-center text-muted opacity-50" style="font-size: 12px">Fats</div>
   </div>
 
-  <div class="d-flex align-items-center gap-2 bg-body-tertiary p-2 overflow-hidden">
-    <div class="flex-grow-1 position-relative">
-      <div
-        class="text-center mx-auto rounded fw-bold position-absolute start-50 top-50 translate-middle fst-it"
-        style="
-          font-size: 14px;
-          line-height: 14px;
-          width: 40%;
-          color: rgb(80, 100, 240);
-          padding: 3px 2px;
-          background-color: rgb(30, 30, 30, 0.7);
-          border: 1px solid rgba(150, 150, 150, 0.5);
-        "
-      >
-        {{ stats().proteins?.toFixed() }}
-      </div>
-      <div
-        class="rounded-pill overflow-hidden borsder border-primarsy-subtle"
-        style="height: 14px"
-        [style.background-color]="
-          getProteinScrollbarBg(
-            stats().proteins,
-            diaryLogService.getWeightByFormula(
-              undefined,
-              optionsService.options().weightFormulaBackDays
+  <div class="p-2 d-flex flex-column gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <div class="flex-grow-1 position-relative">
+        <div
+          class="text-center mx-auto rounded fw-bold position-absolute start-50 top-50 translate-middle"
+          style="
+            font-size: 14px;
+            line-height: 14px;
+            width: 40%;
+            color: rgb(80, 100, 240);
+            padding: 3px 2px;
+            background-color: rgb(30, 30, 30, 0.7);
+            border: 1px solid rgba(150, 150, 150, 0.5);
+          "
+        >
+          {{ stats().proteins.toFixed() }}
+        </div>
+        <div
+          class="rounded-pill"
+          style="height: 14px"
+          [style.background-color]="
+            getProteinScrollbarBg(
+              stats().proteins,
+              diaryLogService.getWeightByFormula(
+                undefined,
+                optionsService.options().weightFormulaBackDays
+              )
             )
-          )
-        "
-      ></div>
-    </div>
-    <div class="flex-grow-1 position-relative">
-      <div
-        class="text-center rounded mx-auto fw-bold position-absolute start-50 top-50 translate-middle fst-it"
-        style="
-          font-size: 14px;
-          line-height: 14px;
-          width: 40%;
-          color: rgb(150, 180, 60);
-          padding: 3px 2px;
-          background-color: rgb(30, 30, 30, 0.7);
-          border: 1px solid rgba(150, 150, 150, 0.5);
-        "
-      >
-        {{ stats().carbs?.toFixed() }}
+          "
+        ></div>
       </div>
-      <div
-        class="rounded-pill overflow-hidden borsder border-primarsy-subtle"
-        style="height: 14px"
-        [style.background-color]="
-          getCarbScrollbarBg(
-            stats().carbs,
-            diaryLogService.getWeightByFormula(
-              undefined,
-              optionsService.options().weightFormulaBackDays
+      <div class="flex-grow-1 position-relative">
+        <div
+          class="text-center rounded mx-auto fw-bold position-absolute start-50 top-50 translate-middle"
+          style="
+            font-size: 14px;
+            line-height: 14px;
+            width: 40%;
+            color: rgb(220, 220, 90);
+            padding: 3px 2px;
+            background-color: rgb(30, 30, 30, 0.7);
+            border: 1px solid rgba(150, 150, 150, 0.5);
+          "
+        >
+          {{ stats().carbs.toFixed() }}
+        </div>
+        <div
+          class="rounded-pill"
+          style="height: 14px"
+          [style.background-color]="
+            getCarbScrollbarBg(
+              stats().carbs,
+              diaryLogService.getWeightByFormula(
+                undefined,
+                optionsService.options().weightFormulaBackDays
+              )
             )
-          )
-        "
-      ></div>
+          "
+        ></div>
+      </div>
+      <div class="flex-grow-1 position-relative">
+        <div
+          class="text-center rounded mx-auto fw-bold position-absolute start-50 top-50 translate-middle"
+          style="
+            font-size: 14px;
+            line-height: 14px;
+            width: 40%;
+            color: rgb(200, 160, 30);
+            padding: 3px 2px;
+            background-color: rgb(30, 30, 30, 0.7);
+            border: 1px solid rgba(150, 150, 150, 0.5);
+          "
+        >
+          {{ stats().fats.toFixed() }}
+        </div>
+        <div
+          class="rounded-pill"
+          style="height: 14px"
+          [style.background-color]="
+            getFatScrollbarBg(
+              stats().fats,
+              diaryLogService.getWeightByFormula(
+                undefined,
+                optionsService.options().weightFormulaBackDays
+              )
+            )
+          "
+        ></div>
+      </div>
     </div>
-    <div class="flex-grow-1 position-relative">
+    <div class="flex-grow-1 position-relative w-50 mx-auto">
       <div
-        class="text-center rounded mx-auto fw-bold position-absolute start-50 top-50 translate-middle fst-it"
+        class="text-center rounded mx-auto fw-bold position-absolute start-50 top-50 translate-middle fst-italic"
         style="
           font-size: 14px;
           line-height: 14px;
-          width: 40%;
-          color: rgb(200, 160, 30);
-          padding: 3px 2px;
+          letter-spacing: 1px;
+          width: fit-content;
+          color: rgb(150, 140, 180);
+          padding: 3px 12px;
           background-color: rgb(30, 30, 30, 0.7);
           border: 1px solid rgba(150, 150, 150, 0.5);
         "
       >
-        {{ stats().fats?.toFixed() }}
+        {{ stats().calories.toFixed() }}
       </div>
       <div
-        class="rounded-pill overflow-hidden borsder border-primarsy-subtle"
+        class="rounded-pill"
         style="height: 14px"
         [style.background-color]="
-          getFatScrollbarBg(
-            stats().fats,
+          getKCalScrollbarBg(
+            stats().calories,
             diaryLogService.getWeightByFormula(
               undefined,
               optionsService.options().weightFormulaBackDays
