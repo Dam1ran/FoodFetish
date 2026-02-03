@@ -50,6 +50,7 @@ export class DiaryBarcodeScanner implements OnDestroy {
 
   addFoodToDiary(food: Food) {
     this.diaryLogService.addFood(this.isoDate(), this.mealPosition(), food);
+    this.diaryLogService.updateMealTime(this.isoDate(), this.mealPosition());
     this.activeModal.close();
   }
 

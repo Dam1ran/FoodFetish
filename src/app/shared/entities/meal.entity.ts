@@ -1,3 +1,4 @@
+import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Food } from './food.entity';
 import { Stats } from './stats.class';
 
@@ -7,6 +8,7 @@ export class Meal {
     public name = '',
     public foods: Food[] = [],
     public note = '',
+    public time?: NgbTimeStruct,
   ) {}
 }
 

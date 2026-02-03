@@ -63,7 +63,8 @@ export class MyFoods {
   private readonly router = inject(Router);
   protected addFoodToDiaryOrRecipe(food: Food) {
     if (this.diaryDate() && this.mealPosition()) {
-      this.diaryLogService.addFood(this.diaryDate(), this.mealPosition(), food);
+      this.diaryLogService.addFood(this.diaryDate(), +this.mealPosition(), food);
+      this.diaryLogService.updateMealTime(this.diaryDate(), this.mealPosition());
       void this.router.navigate([RoutePaths.diary], {
         queryParams: { diaryDate: this.diaryDate() },
       });

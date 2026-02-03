@@ -138,7 +138,13 @@
                 [value]="respectiveMeal.name"
                 (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"
               />
-            </div>
+                <ngb-timepicker
+                  size="small"
+                  [spinners]="false"
+                  [(ngModel)]="respectiveMeal.time"
+                  (change)="diaryLogService.saveDiaryLog()"
+                  />
+              </div>
           }
 
           @for (
