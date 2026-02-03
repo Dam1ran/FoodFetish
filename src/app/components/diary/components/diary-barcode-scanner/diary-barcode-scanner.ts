@@ -35,13 +35,13 @@ export class DiaryBarcodeScanner implements OnDestroy {
     () => this.code() && this.foodsService.getFoodByBarcode(this.code()),
   );
 
-  private readonly foodAdded = signal(false);
+  private isFoodAdded = false;
   constructor() {
     effect(() => {
       const food = this.respectiveFood();
-      if (food && !this.foodAdded()) {
+      if (food && !this.isFoodAdded) {
         this.addFoodToDiary(food);
-        this.foodAdded.set(true);
+        this.isFoodAdded = true;
       }
     });
   }
