@@ -76,9 +76,9 @@
           <td
             class="py-1"
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
-            [class.cursor-pointer]="diaryDate()"
+            [class.text-decoration-underline]="!!diaryDate() || !!recipeId()"
             (click)="addFoodToDiaryOrRecipe(food)"
-            style="font-size: 12px;"
+            style="font-size: 12px; text-underline-offset: 2px;"
           >
             {{ food.name }}
           </td>
