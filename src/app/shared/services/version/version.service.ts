@@ -13,7 +13,7 @@ export class VersionService {
   readonly releases = [
     {
       version: '1.7.2',
-      date: '02.02.2026',
+      date: '03.02.2026',
       changes: [
         {
           description: 'Allow removal of food from diary recipe.',
