@@ -38,6 +38,31 @@ export class DiaryLogService {
       ?.diaryDays.find((day) => day.date === isoDate)
       ?.dayTemplate.entries.find((entry) => entry.position === mealPosition)?.meal;
   }
+  updateMealTime(isoDate: string, mealPosition: MealPosition) {
+    mealPosition = Number(mealPosition);
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      const respectiveDay = diaryLogCopy.diaryDays.find((day) => day.date === isoDate);
+      if (!respectiveDay) {
+        return diaryLog;
+      }
+
+      const respectiveEntry = respectiveDay.dayTemplate.entries.find(
+        (entry) => entry.position === mealPosition,
+      );
+      if (!respectiveEntry) {
+        return diaryLog;
+      }
+
+      const today = dayjs();
+      respectiveEntry.meal.time = { hour: today.hour(), minute: today.minute(), second: 0 };
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
+  }
 
   getRespectiveRecipes(isoDate: string, mealPosition: MealPosition) {
     return this.diaryLog()

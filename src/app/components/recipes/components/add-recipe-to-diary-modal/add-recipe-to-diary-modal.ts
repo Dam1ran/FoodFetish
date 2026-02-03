@@ -52,6 +52,7 @@ export class AddRecipeToDiaryModal {
 
     this.modalService.dismissAll();
     this.diaryLogService.expandMeal(isoDate, this.selectedMealPosition().value);
+    this.diaryLogService.updateMealTime(isoDate, this.selectedMealPosition().value);
     void this.router.navigate([RoutePaths.diary], {
       queryParams: { diaryDate: this.selectedDayJs().toISOString() },
     });

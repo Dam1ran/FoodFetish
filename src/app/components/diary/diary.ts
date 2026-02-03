@@ -11,7 +11,7 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
 import { FoodRow } from './components/food-row/food-row';
@@ -45,6 +45,7 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
     IconifyComponent,
     ActivityWidget,
     MacrosWidget,
+    NgbTimepicker,
   ],
   templateUrl: './diary.html',
 })
