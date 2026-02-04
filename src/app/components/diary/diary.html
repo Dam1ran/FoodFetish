@@ -76,7 +76,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header d-flex align-items-center">
           <button
-            class="accordion-button p-1 text-truncate text-muted fw-semibold opacity-50 shadow-none rounded"
+            class="accordion-button p-2 text-truncate text-muted fw-semibold opacity-50 shadow-none rounded"
             [class.collapsed]="!isMealExpanded(mealTemplateEntry.position)"
             type="button"
             data-bs-toggle="collapse"
@@ -120,12 +120,12 @@
         <div
           #collapsible
           [id]="'flush-collapse' + $index"
-          class="accordion-collapse collapse bg-body-secondary rounded"
+          class="accordion-collapse collapse rounded"
           [class.show]="isMealExpanded(mealTemplateEntry.position)"
           data-bs-parent="#accordionFlush"
         >
           @if (respectiveMeal) {
-            <div class="d-flex align-items-center p-1 gap-1 bg-body-tertiary">
+            <div class="d-flex align-items-center p-2 gap-1 bg-body-tertiary">
               <button
                 class="btn btn-outline-secondary"
                 [class.btn-outline-success]="respectiveMeal.note"
@@ -139,13 +139,13 @@
                 [value]="respectiveMeal.name"
                 (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"
               />
-                <ngb-timepicker
-                  size="small"
-                  [spinners]="false"
-                  [(ngModel)]="respectiveMeal.time"
-                  (change)="diaryLogService.saveDiaryLog()"
-                  />
-              </div>
+              <ngb-timepicker
+                size="small"
+                [spinners]="false"
+                [(ngModel)]="respectiveMeal.time"
+                (change)="diaryLogService.saveDiaryLog()"
+              />
+            </div>
           }
 
           @for (
@@ -167,22 +167,29 @@
               (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
             />
           }
-          @for (food of respectiveMeal?.foods; track $index; let isOdd = $odd; let isLast = $last) {
-            <food-row
-              [food]="food"
-              [isOdd]="isOdd"
-              (removeFood)="removeFood(mealTemplateEntry.position, $index)"
-              (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
-              [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
-            />
-          }
-          <div class="p-1 bg-body-tertiary d-flex gap-1">
+          <div class="d-flex flex-column py-1 gap-1">
+            @for (
+              food of respectiveMeal?.foods;
+              track $index;
+              let isOdd = $odd;
+              let isLast = $last
+            ) {
+              <food-row
+                [food]="food"
+                [isOdd]="isOdd"
+                (removeFood)="removeFood(mealTemplateEntry.position, $index)"
+                (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
+                [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
+              />
+            }
+          </div>
+          <div class="p-2 bg-body-tertiary d-flex gap-2 justify-content-between">
             <button
               class="btn btn-outline-primary btn-sm opacity-60 flex-grow-1"
               buttonIcon="pajamas:recipe"
               (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
               iconSize="24px"
-              [minWidthPx]="100"
+              [minWidthPx]="90"
             >
               Recipe
             </button>
@@ -191,7 +198,7 @@
               buttonIcon="si:barcode-fill"
               (click)="$event.stopPropagation(); onScanBarcodeClick(mealTemplateEntry.position)"
               iconSize="24px"
-              [minWidthPx]="100"
+              [minWidthPx]="90"
             >
               Barcode
             </button>
@@ -200,7 +207,7 @@
               buttonIcon="iconoir:lens-plus"
               (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
               iconSize="24px"
-              [minWidthPx]="100"
+              [minWidthPx]="90"
             >
               Food
             </button>

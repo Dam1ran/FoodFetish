@@ -12,7 +12,7 @@
         (click)="removeRecipe.emit()"
       ></button>
       <button
-        class="accordion-button collapsed p-1 shadow-none"
+        class="accordion-button collapsed p-2 shadow-none"
         type="button"
         data-bs-toggle="collapse"
         [attr.data-bs-target]="'#flush-collapse-' + id()"
@@ -31,23 +31,26 @@
     <div
       #collapsible
       [id]="'flush-collapse-' + id()"
-      class="accordion-collapse collapse bg-body-secondary"
+      class="accordion-collapse collapse"
       [attr.data-bs-parent]="'#accordionFlushRecipe-' + id()"
     >
-      @for (food of recipe().foods; track $index; let isOdd = $odd) {
-        <food-row
-          [food]="food"
-          [isOdd]="isOdd"
-          [noRemove]="recipe().foods?.length === 1"
-          (updateFoodWeight)="
-            updateFoodWeight.emit({
-              foodIndex: $index,
-              newWeight: +$event,
-            })
-          "
-          (removeFood)="removeFood.emit($index)"
-        />
-      }
+      <div class="d-flex flex-column py-1 gap-1">
+        @for (food of recipe().foods; track $index; let isOdd = $odd) {
+          <food-row
+            [food]="food"
+            [isOdd]="isOdd"
+            [noRemove]="recipe().foods?.length === 1"
+            (updateFoodWeight)="
+              updateFoodWeight.emit({
+                foodIndex: $index,
+                newWeight: +$event,
+              })
+            "
+            (removeFood)="removeFood.emit($index)"
+          />
+        }
+      </div>
+
       <div class="bg-body">
         <total-row [stats]="recipeStats()" [fixedDecimals]="0" />
       </div>

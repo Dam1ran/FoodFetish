@@ -4,7 +4,6 @@
 
 .gram-input {
   box-shadow: none;
-  border-radius: 2px;
   font-size: 12px;
   letter-spacing: 1px;
   max-width: 60px;
@@ -15,9 +14,11 @@ div[cdkDragHandle] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 15px;
+  width: 24px;
   cursor: grab;
   opacity: 0.6;
+  padding: 0 4px;
+  border-radius: 4px;
   div {
     height: 15px;
     border-left: 3px dotted #777777;
