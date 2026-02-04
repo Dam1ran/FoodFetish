@@ -76,8 +76,11 @@
       <div class="accordion-item">
         <h2 class="accordion-header d-flex align-items-center">
           <button
-            class="accordion-button p-2 text-truncate text-muted fw-semibold opacity-50 shadow-none rounded"
-            [class.collapsed]="!isMealExpanded(mealTemplateEntry.position)"
+            class="accordion-button p-2 text-truncate text-muted opacity-50 shadow-none rounded"
+            [class]="{
+              collapsed: !isMealExpanded(mealTemplateEntry.position),
+              'fw-semibold': mealTemplateEntry.position !== mealPosition.Snacks,
+            }"
             type="button"
             data-bs-toggle="collapse"
             [attr.data-bs-target]="'#flush-collapse' + $index"
@@ -96,22 +99,22 @@
               style="font-size: 12px; transition: background-color 0.3s"
             >
               @let positionStats = getPositionStats(mealTemplateEntry.position);
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(80, 100, 240)">
                 {{ positionStats.proteins.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(220, 220, 90)">
                 {{ positionStats.carbs.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(200, 160, 30)">
                 {{ positionStats.fats.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(100, 130, 20)">
                 {{ positionStats.fiber.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(150, 140, 180)">
                 {{ positionStats.calories.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center">
+              <div class="col col-2 align-self-center text-center" style="color: rgb(100, 100, 100)">
                 {{ positionStats.weight.toFixed() }}
               </div>
             </div>
@@ -124,7 +127,7 @@
           [class.show]="isMealExpanded(mealTemplateEntry.position)"
           data-bs-parent="#accordionFlush"
         >
-          @if (respectiveMeal) {
+          @if (respectiveMeal && mealTemplateEntry.position !== mealPosition.Snacks) {
             <div class="d-flex align-items-center p-2 gap-1 bg-body-tertiary">
               <button
                 class="btn btn-outline-secondary"
@@ -167,7 +170,7 @@
               (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
             />
           }
-          <div class="d-flex flex-column py-1 gap-1">
+          <div class="d-flex flex-column gap-1" [class.py-1]="respectiveMeal?.foods?.length">
             @for (
               food of respectiveMeal?.foods;
               track $index;
