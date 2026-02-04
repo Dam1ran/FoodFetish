@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.7.8',
+      date: '04.02.2026',
+      changes: [
+        {
+          description: 'Calorie graph line in weight in widget.',
+          type: VersionChangeType.Update,
+        },
+      ],
+    },
+    {
       version: '1.7.7',
       date: '04.02.2026',
       changes: [

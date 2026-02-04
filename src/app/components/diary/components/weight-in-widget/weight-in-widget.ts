@@ -25,11 +25,23 @@ export class WeightInWidget {
     return this.diaryLogService.getWeights(this.isoDate(), 11);
   }
 
-  weightsMax = computed(() => Math.max(...this.weights()));
-  weightsMin = computed(() => Math.min(...this.weights()));
-  weightsRange = computed(() => this.weightsMax() - this.weightsMin());
+  protected readonly weightsMax = computed(() => Math.max(...this.weights()));
+  protected readonly weightsMin = computed(() => Math.min(...this.weights()));
+  protected readonly weightsRange = computed(() => this.weightsMax() - this.weightsMin());
 
   weightInputDisabled() {
     return dayjs().utc().startOf('day').isBefore(dayjs(this.isoDate()).utc());
   }
+
+  calories() {
+    if (!this.isoDate()) {
+      return [];
+    }
+
+    return this.diaryLogService.getCalories(this.isoDate(), 11);
+  }
+
+  protected readonly caloriesMax = computed(() => Math.max(...this.calories()));
+  protected readonly caloriesMin = computed(() => Math.min(...this.calories()));
+  protected readonly caloriesRange = computed(() => this.caloriesMax() - this.caloriesMin());
 }
