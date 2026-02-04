@@ -35,8 +35,16 @@
           />
           <iconify icon="mdi:glass-outline" class="z-0 opacity-30" />
         </button>
-        <div class="text-center rounded" style="width: 40px">
-          @if (diaryLogService.getDayWater(selectedDayJs().toISOString()); as waterMl) {
+        @let waterMl = diaryLogService.getDayWater(selectedDayJs().toISOString());
+        <div
+          class="text-center rounded fw-semibold opacity-70"
+          style="width: 40px; border: 1px solid transparent; text-shadow: 0 0 6px black;"
+          [class.border-info]="waterThresholdMet(waterMl, optionsService.options().weightFormulaBackDays)"
+          [style]="{
+            'background-color': getWaterBg(waterMl, optionsService.options().weightFormulaBackDays),
+          }"
+        >
+          @if (waterMl) {
             {{ (waterMl / 1000).toFixed(1) }}L
           } @else {
             ?
@@ -111,10 +119,16 @@
               <div class="col col-2 align-self-center text-center" style="color: rgb(100, 130, 20)">
                 {{ positionStats.fiber.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center" style="color: rgb(150, 140, 180)">
+              <div
+                class="col col-2 align-self-center text-center"
+                style="color: rgb(150, 140, 180)"
+              >
                 {{ positionStats.calories.toFixed() }}
               </div>
-              <div class="col col-2 align-self-center text-center" style="color: rgb(100, 100, 100)">
+              <div
+                class="col col-2 align-self-center text-center"
+                style="color: rgb(100, 100, 100)"
+              >
                 {{ positionStats.weight.toFixed() }}
               </div>
             </div>

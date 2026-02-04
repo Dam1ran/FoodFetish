@@ -29,6 +29,7 @@ import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
 import { MealPosition, MealPositionMap } from '../../shared/entities/meal-position.enum';
 import { RoutePaths } from '../../shared/routes/route-paths';
 import { IconifyComponent } from '../../shared/components/iconify.component';
+import { OptionsService } from '../../shared/services/options/options.service';
 
 @Component({
   selector: 'diary',
@@ -214,5 +215,25 @@ export class Diary implements AfterViewInit {
 
     scanner.componentInstance.isoDate.set(this.selectedDayJs().toISOString());
     scanner.componentInstance.mealPosition.set(mealPosition);
+  }
+
+  protected readonly optionsService = inject(OptionsService);
+  getWaterBg(waterMl: number, weightFormulaBackDays: number) {
+    const currentWeight = this.diaryLogService.getWeightByFormula(undefined, weightFormulaBackDays);
+
+    if (!currentWeight) {
+      return 'rgba(0, 0, 0, 0)';
+    }
+
+    const multiplier = Math.min(waterMl / (currentWeight * 0.325), 100);
+    return `rgba(${140 - multiplier * 1.5}, ${50 + multiplier * 0.8}, ${multiplier * 2}, 0.5)`;
+  }
+  waterThresholdMet(waterMl: number, weightFormulaBackDays: number) {
+    const currentWeight = this.diaryLogService.getWeightByFormula(undefined, weightFormulaBackDays);
+    if (!currentWeight) {
+      return false;
+    }
+
+    return waterMl > currentWeight * 32.5;
   }
 }

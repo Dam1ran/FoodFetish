@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.7.7',
+      date: '04.02.2026',
+      changes: [
+        {
+          description: 'Water tracker changes bg color based on current water and current weight.',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.7.6',
       date: '04.02.2026',
       changes: [
