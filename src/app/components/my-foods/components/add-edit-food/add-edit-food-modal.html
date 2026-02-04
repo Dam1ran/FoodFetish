@@ -7,26 +7,26 @@
       #nameInput
       type="text"
       placeholder="Name"
-      class="form-control px-1 py-1 text-center bg-secondary-subtle"
+      class="form-control px-1 py-1 text-center bg-secondary-subtle m-1"
       [formField]="form.name"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="scanner">Barcode</label>
     <button class="btn btn-outline-warning opacity-50 me-auto" iconSize="24px" buttonIcon="si:barcode-fill" (click)="onScanBarcodeClick()"></button>
     <input
       type="text"
       id="scanner"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       style="width: 140px; font-size: 14px;"
       [formField]="form.barcode"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Category</label>
     <button
       type="button"
-      class="btn btn-secondary dropdown-toggle align-self-center py-0"
+      class="btn btn-secondary dropdown-toggle align-self-center py-0 m-1"
       style="height: 34px; width: 140px;"
       data-bs-toggle="dropdown"
       [style.background-color]="foodMacroCategoryMap[form.macroCategory().value()].bgColor"
@@ -35,7 +35,7 @@
     </button>
     <ul class="dropdown-menu p-0" style="min-width: 140px">
       @for (macroCategory of macroCategories; track $index) {
-        <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor">
+        <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor" [class.mt-1]="!$first">
           @let sameCategory = macroCategory.value === form.macroCategory().value();
 
           <span
@@ -56,62 +56,62 @@
       }
     </ul>
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Protein (g)</label>
     <input
       type="number"
       inputmode="numeric"
       id="prot"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       [formField]="form.protein"
       style="width: 140px"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Carbs (g)</label>
     <input
       type="number"
       inputmode="numeric"
       id="carbs"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       [formField]="form.carbs"
       style="width: 140px"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Fats (g)</label>
     <input
       type="number"
       inputmode="numeric"
       id="fats"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       [formField]="form.fats"
       style="width: 140px"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Fiber (g)</label>
     <input
       type="number"
       inputmode="numeric"
       id="fiber"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       [formField]="form.fiber"
       style="width: 140px"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="calories">Calories (KCal)</label>
     <input
       type="number"
       inputmode="numeric"
       id="calories"
-      class="form-control px-1 py-1 text-center"
+      class="form-control px-1 py-1 text-center m-1"
       [formField]="form.calories"
       style="width: 140px"
     />
   </div>
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-1">
+  <div class="d-flex justify-content-between align-items-center gap-2 m-1">
     <textarea
       rows="2"
       placeholder="Note"
