@@ -51,6 +51,7 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
   styleUrl: './diary.scss',
 })
 export class Diary implements AfterViewInit {
+  protected readonly mealPosition = MealPosition;
   readonly diaryDate = input('');
 
   readonly selectedDate = model<NgbDateStruct>(undefined);
