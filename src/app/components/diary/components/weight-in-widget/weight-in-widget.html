@@ -34,6 +34,18 @@
             </text>
           }
         }
+        @for (calorie of calories(); track $index) {
+          @if ($index < calories().length - 1) {
+            <line
+              [attr.x1]="`${(96 / (calories().length - 1)) * $index + 2}%`"
+              [attr.y1]="`${caloriesRange() === 0 ? 50 : ((caloriesMax() + caloriesRange() * 0.1 - calorie) / (caloriesRange() * 1.5)) * 100}%`"
+              [attr.x2]="`${(96 / (calories().length - 1)) * ($index + 1) + 2}%`"
+              [attr.y2]="`${caloriesRange() === 0 ? 50 : ((caloriesMax() + caloriesRange() * 0.1 - calories()[$index + 1]) / (caloriesRange() * 1.5)) * 100}%`"
+              stroke="rgb(110, 100, 140)"
+              stroke-width="1"
+            />
+          }
+        }
       </svg>
     }
     <div class="d-flex">

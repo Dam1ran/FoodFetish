@@ -643,6 +643,28 @@ export class DiaryLogService {
     return weights;
   }
 
+  getCalorie(isoDate: string) {
+    return this.getDayStats(isoDate).calories;
+  }
+  getCalories(isoDate: string, weightFormulaBackDays: number) {
+    const currentDate = dayjs.min(
+      dayjs(isoDate).utc().startOf('day'),
+      dayjs().utc().startOf('day'),
+    );
+    const calories: number[] = [];
+    let calorie = 0;
+    for (let i = 0; i < weightFormulaBackDays; i++) {
+      const checkDate = currentDate.subtract(i, 'day').toISOString();
+      calorie = this.getCalorie(checkDate);
+      if (calorie) {
+        calories.push(calorie);
+      }
+    }
+    calories.reverse();
+
+    return calories;
+  }
+
   getActivities(isoDate: string) {
     return (
       this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate.activities ?? []
