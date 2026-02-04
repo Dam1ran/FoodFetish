@@ -45,9 +45,9 @@
     ></button>
   </div>
 </div>
-<div class="content-wrapper overflow-y-auto" style="height: calc(100dvh - 137px)">
+<div class="content-wrapper overflow-y-auto" style="height: calc(100dvh - 141px)">
   <table
-    class="table table-sm table-striped-columns table-hover mb-0"
+    class="table table-sm table-striped table-hover mb-0"
     style="font-size: 10px; table-layout: fixed"
   >
     <thead class="position-sticky z-1" style="top: 0px">
@@ -64,17 +64,17 @@
     </thead>
     <tbody>
       @for (food of foods(); track $index) {
-        <tr scope="row">
+        <tr scope="row" class="">
           <td class="text-truncate text-center">
             <button
-              class="btn p-0 btn-warning opacity-50 m-auto"
+              class="btn p-0 btn-warning opacity-25 m-auto"
               iconSize="16px"
               buttonIcon="iconoir:trash"
               (click)="deleteFood(food)"
             ></button>
           </td>
           <td
-            class="py-1"
+            class="py-2"
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
             [class.text-decoration-underline]="!!diaryDate() || !!recipeId()"
             (click)="addFoodToDiaryOrRecipe(food)"
@@ -107,7 +107,7 @@
   </table>
 </div>
 <button
-  class="btn btn-outline-success p-1 rounded-top-0 w-100 d-flex justify-content-between mt-auto opacity-85"
+  class="btn btn-outline-success p-2 rounded-top-0 w-100 d-flex justify-content-between mt-auto opacity-85"
   (click)="addFood()"
 >
   <iconify icon="iconoir:lens-plus" />

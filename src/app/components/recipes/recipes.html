@@ -23,37 +23,25 @@
 >
   <div class="overflow-y-auto">
     @for (recipe of recipes(); track recipe.id) {
-      <div
-        class="accordion accordion-flush border my-1 rounded overflow-hidden"
-        id="accordionFlush"
-      >
+      <div class="accordion accordion-flush my-1 rounded overflow-hidden" id="accordionFlush">
         <div class="accordion-item">
-          <h2 class="accordion-header d-flex align-items-center gap-1">
+          <h2 class="accordion-header d-flex align-items-center gap-1 bg-body-tertiary">
             <button
               class="btn btn-outline-primary ms-1 opacity-50"
               buttonIcon="material-symbols:add-row-above-rounded"
               iconSize="24px"
               (click)="toggleAddRecipeToDiary(recipe.id)"
             ></button>
-            <button
-              class="accordion-button shadow-none"
-              [class.collapsed]="recipesService.expandedRecipeId() !== recipe.id"
-              style="width: auto; padding: 10px 0.5rem"
-              data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#flush-collapse' + $index"
-
-              (click)="recipesService.toggleExpandedRecipeId(recipe.id)"
-            ></button>
             <input
               class="form-control form-control-sm text-center bg-dark-subtle"
-              style="font-size: 14px"
+              style="font-size: 16px"
               type="text"
               [value]="recipe.name"
               (input)="recipesService.updateRecipeName(recipe.id, $event.target.value)"
             />
             <input
               class="form-control form-control-sm text-center bg-dark-subtle"
-              style="font-size: 12px; max-width: 30px; padding: 6px 2px !important"
+              style="font-size: 14px; max-width: 30px; padding: 5.5px 2px !important"
               placeholder="portions"
               type="number"
               min="1"
@@ -69,6 +57,14 @@
               iconSize="24px"
               (click)="toggleEditRecipeNoteDialog(recipe.id, recipe.note)"
             ></button>
+            <button
+              class="accordion-button shadow-none border border-start-0"
+              [class.collapsed]="recipesService.expandedRecipeId() !== recipe.id"
+              style="width: auto; padding: 10px 0.5rem"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#flush-collapse' + $index"
+              (click)="recipesService.toggleExpandedRecipeId(recipe.id)"
+            ></button>
           </h2>
           <div
             #collapsible
@@ -82,10 +78,11 @@
               (cdkDropListDropped)="
                 recipesService.changeFoodOrder(recipe.id, $event.previousIndex, $event.currentIndex)
               "
+              class="d-flex flex-column py-1 gap-1"
             >
               @for (food of recipe.foods; track $index + food.id; let isLast = $last) {
                 <div
-                  class="d-flex bg-dark-subtle overflow-hidden px-1 align-items-center gap-1"
+                  class="d-flex bg-dark-subtle overflow-hidden p-2 align-items-center gap-1 rounded"
                   style="font-size: 14px; margin-top: 2px"
                   cdkDrag
                 >
@@ -98,19 +95,18 @@
                     ></button>
                   </div>
                   <div
-                    class="bg-body text-center align-content-center align-self-stretch text-muted opacity-60"
-                    style="min-width: 16px; font-size: 12px; padding: 0 2px"
+                    class="text-center align-content-center align-self-stretch text-muted opacity-50"
+                    style="min-width: 16px; font-size: 12px; padding: 0 2px;"
                   >
                     {{ $index + 1 }}
                   </div>
-                  <div class="flex-grow-1">{{ food.name }}</div>
+                  <div class="flex-grow-1" style="font-size: 16px;">{{ food.name }}</div>
                   <input
                     type="number"
-                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body"
+                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body me-1"
+                    style="font-size: 14px;"
                     [value]="food.weight"
-                    (blur)="
-                      recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)
-                    "
+                    (blur)="recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)"
                     #weightInput
                     [attr.to-focus]="isLast && recipesService.expandedRecipeId() === recipe.id"
                   />
@@ -122,9 +118,9 @@
                 </div>
               }
             </div>
-            <div class="p-1 bg-body-tertiary">
+            <div class="p-2 bg-body-tertiary">
               <button
-                class="btn btn-outline-success btn-sm w-100 opacity-90"
+                class="btn btn-outline-success w-100 opacity-90"
                 buttonIcon="iconoir:lens-plus"
                 (click)="$event.stopPropagation(); addFood(recipe.id)"
                 iconSize="16px"
@@ -147,7 +143,6 @@
                   </div>
                   <div class="col col-2 text-center align-content-center">g</div>
                 </div>
-                <div class="bg-body-secondary" style="width: 23px"></div>
               </div>
               <div class="d-flex">
                 <div
@@ -173,7 +168,6 @@
                     {{ getMealWeight(recipe).toFixed(1) }}
                   </div>
                 </div>
-                <div class="bg-body-secondary" style="width: 23px"></div>
               </div>
             }
           </div>
@@ -185,7 +179,7 @@
   </div>
 
   <button
-    class="btn btn-outline-success p-1 rounded-top-0 rounded-bottom w-100 d-flex justify-content-between"
+    class="btn btn-outline-success p-2 rounded-top-0 rounded-bottom w-100 d-flex justify-content-between"
     (click)="addRecipe()"
   >
     <iconify icon="pajamas:recipe" />
