@@ -38,8 +38,10 @@
         @let waterMl = diaryLogService.getDayWater(selectedDayJs().toISOString());
         <div
           class="text-center rounded fw-semibold opacity-70"
-          style="width: 40px; border: 1px solid transparent;"
-          [class.border-info-subtle]="waterThresholdMet(waterMl, optionsService.options().weightFormulaBackDays)"
+          style="width: 40px; border: 1px solid transparent"
+          [class.border-info-subtle]="
+            waterThresholdMet(waterMl, optionsService.options().weightFormulaBackDays)
+          "
           [style]="{
             'background-color': getWaterBg(waterMl, optionsService.options().weightFormulaBackDays),
           }"
@@ -80,157 +82,177 @@
   <div class="accordion accordion-flush position-relative" id="accordionFlush">
     <div class="overlay"></div>
     @for (mealTemplateEntry of dayTemplateService.getDayTemplate()!.entries; track $index) {
+      @let respectiveDay = diaryLogService.getRespectiveDayTemplate(selectedDayJs().toISOString());
       @let respectiveMeal = getRespectiveMeal(mealTemplateEntry.position);
-      <div class="accordion-item">
-        <h2 class="accordion-header d-flex align-items-center">
-          <button
-            class="accordion-button p-2 text-truncate text-muted opacity-50 shadow-none rounded"
-            [class]="{
-              collapsed: !isMealExpanded(mealTemplateEntry.position),
-              'fw-semibold': mealTemplateEntry.position !== mealPosition.Snacks,
-            }"
-            type="button"
-            data-bs-toggle="collapse"
-            [attr.data-bs-target]="'#flush-collapse' + $index"
-            (click)="toggleExpandedMeal(mealTemplateEntry.position)"
-            style="width: 130px"
-          >
-            {{ mealPositionMap[mealTemplateEntry.position] }}
-          </button>
-          <div class="flex-grow-1 align-self-stretch">
-            <div
-              class="row g-0 h-100 fw-light fst-italic rounded"
+      @if (
+        $index === 0 ||
+        $index === dayTemplateService.getDayTemplate().entries.length - 1 ||
+        respectiveDay?.entries[$index - 1]?.meal?.foods?.length ||
+        respectiveDay?.entries[$index - 1]?.recipes?.length
+      ) {
+        <div class="accordion-item">
+          <h2 class="accordion-header d-flex align-items-center">
+            <button
+              class="accordion-button p-2 text-truncate text-muted opacity-50 shadow-none rounded"
               [class]="{
-                'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
-                'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
+                collapsed: !isMealExpanded(mealTemplateEntry.position),
+                'fw-semibold': mealTemplateEntry.position !== mealPosition.Snacks,
               }"
-              style="font-size: 12px; transition: background-color 0.3s"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#flush-collapse' + $index"
+              (click)="toggleExpandedMeal(mealTemplateEntry.position)"
+              style="width: 130px"
             >
-              @let positionStats = getPositionStats(mealTemplateEntry.position);
-              <div class="col col-2 align-self-center text-center" style="color: rgb(80, 100, 240)">
-                {{ positionStats.proteins.toFixed() }}
-              </div>
-              <div class="col col-2 align-self-center text-center" style="color: rgb(220, 220, 90)">
-                {{ positionStats.carbs.toFixed() }}
-              </div>
-              <div class="col col-2 align-self-center text-center" style="color: rgb(200, 160, 30)">
-                {{ positionStats.fats.toFixed() }}
-              </div>
-              <div class="col col-2 align-self-center text-center" style="color: rgb(100, 130, 20)">
-                {{ positionStats.fiber.toFixed() }}
-              </div>
+              {{ mealPositionMap[mealTemplateEntry.position] }}
+            </button>
+            <div class="flex-grow-1 align-self-stretch">
               <div
-                class="col col-2 align-self-center text-center"
-                style="color: rgb(150, 140, 180)"
+                class="row g-0 h-100 fw-light fst-italic rounded"
+                [class]="{
+                  'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
+                  'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
+                }"
+                style="font-size: 12px; transition: background-color 0.3s"
               >
-                {{ positionStats.calories.toFixed() }}
-              </div>
-              <div
-                class="col col-2 align-self-center text-center"
-                style="color: rgb(100, 100, 100)"
-              >
-                {{ positionStats.weight.toFixed() }}
+                @let positionStats = getPositionStats(mealTemplateEntry.position);
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(80, 100, 240)"
+                >
+                  {{ positionStats.proteins.toFixed() }}
+                </div>
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(220, 220, 90)"
+                >
+                  {{ positionStats.carbs.toFixed() }}
+                </div>
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(200, 160, 30)"
+                >
+                  {{ positionStats.fats.toFixed() }}
+                </div>
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(100, 130, 20)"
+                >
+                  {{ positionStats.fiber.toFixed() }}
+                </div>
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(150, 140, 180)"
+                >
+                  {{ positionStats.calories.toFixed() }}
+                </div>
+                <div
+                  class="col col-2 align-self-center text-center"
+                  style="color: rgb(100, 100, 100)"
+                >
+                  {{ positionStats.weight.toFixed() }}
+                </div>
               </div>
             </div>
-          </div>
-        </h2>
-        <div
-          #collapsible
-          [id]="'flush-collapse' + $index"
-          class="accordion-collapse collapse rounded"
-          [class.show]="isMealExpanded(mealTemplateEntry.position)"
-          data-bs-parent="#accordionFlush"
-        >
-          @if (respectiveMeal && mealTemplateEntry.position !== mealPosition.Snacks) {
-            <div class="d-flex align-items-center p-2 gap-1 bg-body-tertiary">
-              <button
-                class="btn btn-outline-secondary"
-                [class.btn-outline-success]="respectiveMeal.note"
-                buttonIcon="iconoir:notes"
-                iconSize="16px"
-                (click)="toggleEditMealNoteDialog(respectiveMeal.id, respectiveMeal.note)"
-              ></button>
-              <input
-                class="form-control form-control-sm shadow-none text-center bg-dark-subtle"
-                type="text"
-                [value]="respectiveMeal.name"
-                (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"
-              />
-              <ngb-timepicker
-                size="small"
-                [spinners]="false"
-                [(ngModel)]="respectiveMeal.time"
-                (change)="diaryLogService.saveDiaryLog()"
-              />
-            </div>
-          }
+          </h2>
+          <div
+            #collapsible
+            [id]="'flush-collapse' + $index"
+            class="accordion-collapse collapse rounded"
+            [class.show]="isMealExpanded(mealTemplateEntry.position)"
+            data-bs-parent="#accordionFlush"
+          >
+            @if (respectiveMeal && mealTemplateEntry.position !== mealPosition.Snacks) {
+              <div class="d-flex align-items-center p-2 gap-1 bg-body-tertiary">
+                <button
+                  class="btn btn-outline-secondary"
+                  [class.btn-outline-success]="respectiveMeal.note"
+                  buttonIcon="iconoir:notes"
+                  iconSize="16px"
+                  (click)="toggleEditMealNoteDialog(respectiveMeal.id, respectiveMeal.note)"
+                ></button>
+                <input
+                  class="form-control form-control-sm shadow-none text-center bg-dark-subtle"
+                  type="text"
+                  [value]="respectiveMeal.name"
+                  (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"
+                />
+                <ngb-timepicker
+                  size="small"
+                  [spinners]="false"
+                  [(ngModel)]="respectiveMeal.time"
+                  (change)="diaryLogService.saveDiaryLog()"
+                />
+              </div>
+            }
 
-          @for (
-            recipe of getRespectiveRecipes(mealTemplateEntry.position);
-            track $index;
-            let isOdd = $odd
-          ) {
-            <diary-recipe
-              [recipe]="recipe"
-              (updateFoodWeight)="
-                updateRecipeFoodWeight(
-                  mealTemplateEntry.position,
-                  $index,
-                  $event.foodIndex,
-                  $event.newWeight
-                )
-              "
-              (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
-              (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
-            />
-          }
-          <div class="d-flex flex-column gap-1" [class.py-1]="respectiveMeal?.foods?.length">
             @for (
-              food of respectiveMeal?.foods;
+              recipe of getRespectiveRecipes(mealTemplateEntry.position);
               track $index;
-              let isOdd = $odd;
-              let isLast = $last
+              let isOdd = $odd
             ) {
-              <food-row
-                [food]="food"
-                [isOdd]="isOdd"
-                (removeFood)="removeFood(mealTemplateEntry.position, $index)"
-                (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
-                [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
+              <diary-recipe
+                [recipe]="recipe"
+                (updateFoodWeight)="
+                  updateRecipeFoodWeight(
+                    mealTemplateEntry.position,
+                    $index,
+                    $event.foodIndex,
+                    $event.newWeight
+                  )
+                "
+                (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
+                (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
               />
             }
-          </div>
-          <div class="p-2 bg-body-tertiary d-flex gap-2 justify-content-between">
-            <button
-              class="btn btn-outline-primary btn-sm opacity-60 flex-grow-1"
-              buttonIcon="pajamas:recipe"
-              (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
-              iconSize="24px"
-              [minWidthPx]="90"
-            >
-              Recipe
-            </button>
-            <button
-              class="btn btn-outline-success btn-sm opacity-50 flex-grow-1"
-              buttonIcon="si:barcode-fill"
-              (click)="$event.stopPropagation(); onScanBarcodeClick(mealTemplateEntry.position)"
-              iconSize="24px"
-              [minWidthPx]="90"
-            >
-              Barcode
-            </button>
-            <button
-              class="btn btn-outline-success btn-sm opacity-80 flex-grow-1"
-              buttonIcon="iconoir:lens-plus"
-              (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
-              iconSize="24px"
-              [minWidthPx]="90"
-            >
-              Food
-            </button>
+            <div class="d-flex flex-column gap-1" [class.py-1]="respectiveMeal?.foods?.length">
+              @for (
+                food of respectiveMeal?.foods;
+                track $index;
+                let isOdd = $odd;
+                let isLast = $last
+              ) {
+                <food-row
+                  [food]="food"
+                  [isOdd]="isOdd"
+                  (removeFood)="removeFood(mealTemplateEntry.position, $index)"
+                  (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
+                  [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
+                />
+              }
+            </div>
+            <div class="p-2 bg-body-tertiary d-flex gap-2 justify-content-between">
+              <button
+                class="btn btn-outline-primary btn-sm opacity-60 flex-grow-1"
+                buttonIcon="pajamas:recipe"
+                (click)="$event.stopPropagation(); addRecipe(mealTemplateEntry.position)"
+                iconSize="24px"
+                [minWidthPx]="90"
+              >
+                Recipe
+              </button>
+              <button
+                class="btn btn-outline-success btn-sm opacity-50 flex-grow-1"
+                buttonIcon="si:barcode-fill"
+                (click)="$event.stopPropagation(); onScanBarcodeClick(mealTemplateEntry.position)"
+                iconSize="24px"
+                [minWidthPx]="90"
+              >
+                Barcode
+              </button>
+              <button
+                class="btn btn-outline-success btn-sm opacity-80 flex-grow-1"
+                buttonIcon="iconoir:lens-plus"
+                (click)="$event.stopPropagation(); addFood(mealTemplateEntry.position)"
+                iconSize="24px"
+                [minWidthPx]="90"
+              >
+                Food
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      }
     }
   </div>
   <total-row [stats]="getDayStats()" [fixedDecimals]="0" />

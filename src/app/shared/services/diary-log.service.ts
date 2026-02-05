@@ -33,10 +33,13 @@ export class DiaryLogService {
     this.diaryLog.set(JSON.parse(localStorage.getItem('diaryLog')));
   }
 
+  getRespectiveDayTemplate(isoDate: string) {
+    return this.diaryLog()?.diaryDays.find((day) => day.date === isoDate)?.dayTemplate;
+  }
   getRespectiveMeal(isoDate: string, mealPosition: MealPosition) {
-    return this.diaryLog()
-      ?.diaryDays.find((day) => day.date === isoDate)
-      ?.dayTemplate.entries.find((entry) => entry.position === mealPosition)?.meal;
+    return this.getRespectiveDayTemplate(isoDate)?.entries.find(
+      (entry) => entry.position === mealPosition,
+    )?.meal;
   }
   updateMealTime(isoDate: string, mealPosition: MealPosition) {
     mealPosition = Number(mealPosition);
