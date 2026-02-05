@@ -13,10 +13,11 @@ export class App implements OnInit {
   protected readonly routePaths = RoutePaths;
   protected readonly router = inject(Router);
   ngOnInit() {
+    console.log(location.pathname + location.search);
     const redirect = sessionStorage['redirect'];
     if (redirect && redirect !== location.pathname) {
       delete sessionStorage['redirect'];
-      void this.router.navigate([redirect]);
+      void this.router.navigateByUrl(redirect);
     }
   }
 }
