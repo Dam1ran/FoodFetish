@@ -134,13 +134,11 @@
                   class="row g-0 flex-grow-1 fw-bold text-muted fst-italic opacity-25"
                   style="font-size: 12px"
                 >
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">P</div>
-                  <div class="col col-2 text-center align-content-center">C</div>
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">Fa</div>
-                  <div class="col col-2 text-center align-content-center">Fi</div>
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">
-                    Kcal
-                  </div>
+                  <div style="color: rgb(80, 100, 240); " class="col col-2 text-center align-content-center bg-body-secondary">P</div>
+                  <div style="color: rgb(220, 220, 90); " class="col col-2 text-center align-content-center">C</div>
+                  <div style="color: rgb(200, 160, 30); " class="col col-2 text-center align-content-center bg-body-secondary">Fa</div>
+                  <div style="color: rgb(100, 130, 20); " class="col col-2 text-center align-content-center">Fi</div>
+                  <div style="color: rgb(150, 140, 180);" class="col col-2 text-center align-content-center bg-body-secondary">Kcal</div>
                   <div class="col col-2 text-center align-content-center">g</div>
                 </div>
               </div>
@@ -149,24 +147,12 @@
                   class="row g-0 flex-grow-1 fw-bold text-muted fst-italic"
                   style="font-size: 12px"
                 >
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">
-                    {{ getMealProtein(recipe).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 text-center align-content-center">
-                    {{ getMealCarbs(recipe).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">
-                    {{ getMealFats(recipe).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 text-center align-content-center">
-                    {{ getMealFiber(recipe).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 text-center align-content-center bg-body-secondary">
-                    {{ getMealCalories(recipe).toFixed(1) }}
-                  </div>
-                  <div class="col col-2 text-center align-content-center">
-                    {{ getMealWeight(recipe).toFixed(1) }}
-                  </div>
+                  <div style="color: rgb(80, 100, 240)" class="col col-2 text-center align-content-center bg-body-secondary">{{ getMealProtein(recipe).toFixed(1) }}</div>
+                  <div style="color: rgb(220, 220, 90)" class="col col-2 text-center align-content-center">{{ getMealCarbs(recipe).toFixed(1) }}</div>
+                  <div style="color: rgb(200, 160, 30)" class="col col-2 text-center align-content-center bg-body-secondary">{{ getMealFats(recipe).toFixed(1) }}</div>
+                  <div style="color: rgb(100, 130, 20)" class="col col-2 text-center align-content-center">{{ getMealFiber(recipe).toFixed(1) }}</div>
+                  <div style="color: rgb(150, 140, 180)" class="col col-2 text-center align-content-center bg-body-secondary">{{ getMealCalories(recipe).toFixed(1) }}</div>
+                  <div class="text-muted opacity-60 col col-2 text-center align-content-center">{{ getMealWeight(recipe).toFixed(1) }}</div>
                 </div>
               </div>
             }
