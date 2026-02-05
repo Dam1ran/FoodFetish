@@ -31,7 +31,7 @@ export class About {
     {
       icon: 'game-icons:meal',
       iconClass: '',
-      text: '(x6) Five meals and a snack.',
+      text: '(x6) Six meals and a snack.',
     },
     {
       icon: 'pajamas:recipe',
