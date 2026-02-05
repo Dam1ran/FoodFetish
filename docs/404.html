@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <script>
       const pathWithoutBase = location.pathname.replace('/FoodFetish/', '');
-      const redirect = pathWithoutBase + location.search;
+      const redirect = pathWithoutBase;
       sessionStorage.redirect = redirect || '/';
       window.location.href = '/FoodFetish/';
     </script>
