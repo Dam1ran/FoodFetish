@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.8.2',
+      date: '05.02.2026',
+      changes: [
+        {
+          description: 'Add preferred weight field to add food dialog.',
+          type: VersionChangeType.Update,
+        },
+      ],
+    },
+    {
       version: '1.8.1',
       date: '05.02.2026',
       changes: [
