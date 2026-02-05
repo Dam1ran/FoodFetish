@@ -3,6 +3,7 @@ export class RoutePaths {
   static readonly diary = 'diary';
   static readonly recipes = 'recipes';
   static readonly myFoods = 'my-foods';
+  static readonly about = 'about';
   static readonly options = 'options';
   static readonly releaseNotes = 'release-notes';
 
@@ -15,6 +16,7 @@ export class RoutePaths {
     RoutePaths.recipes,
     RoutePaths.myFoods,
     RoutePaths.options,
+    RoutePaths.about,
     RoutePaths.releaseNotes,
   ];
 

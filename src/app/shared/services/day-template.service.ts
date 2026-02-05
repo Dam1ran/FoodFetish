@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { DayTemplate } from '../entities/day-template.entity';
 import { Meal } from '../entities/meal.entity';
+import { MealPosition, MealPositionMap } from '../entities/meal-position.enum';
 
 @Injectable({ providedIn: 'root' })
 export class DayTemplateService {
@@ -8,46 +9,30 @@ export class DayTemplateService {
 
   constructor() {
     this.setTemplate();
-    this.loadDayTemplate();
   }
 
   private setTemplate() {
-    const dayTemplateRaw = localStorage.getItem('dayTemplate');
-    if (!dayTemplateRaw) {
-      const dayTemplate = new DayTemplate();
+    localStorage.removeItem('dayTemplate');
 
-      dayTemplate.entries.push({
-        position: 1,
-        meal: new Meal('', 'Meal I'),
-        recipes: [],
-      });
-      dayTemplate.entries.push({
-        position: 2,
-        meal: new Meal('', 'Meal II'),
-        recipes: [],
-      });
-      dayTemplate.entries.push({
-        position: 3,
-        meal: new Meal('', 'Meal III'),
-        recipes: [],
-      });
-      dayTemplate.entries.push({
-        position: 4,
-        meal: new Meal('', 'Meal IV'),
-        recipes: [],
-      });
-      dayTemplate.entries.push({
-        position: 5,
-        meal: new Meal('', 'Snacks'),
-        recipes: [],
-      });
+    const mealPositions = Object.keys(MealPosition)
+      .filter((value) => !isNaN(Number(value)))
+      .map((value) => Number(value))
+      .filter((value) => (value as unknown) !== MealPosition.None)
+      .map((value) => ({
+        label: MealPositionMap[value],
+        value: +value as MealPosition,
+      }));
 
-      localStorage.setItem('dayTemplate', JSON.stringify(dayTemplate));
-    }
-  }
+    const dayTemplate = new DayTemplate();
+    mealPositions.forEach((mp) => {
+      dayTemplate.entries.push({
+        position: mp.value,
+        meal: new Meal('', mp.label),
+        recipes: [],
+      });
+    });
 
-  private loadDayTemplate() {
-    this.dayTemplate.set(JSON.parse(localStorage.getItem('dayTemplate')));
+    this.dayTemplate.set(dayTemplate);
   }
 
   getDayTemplate() {
