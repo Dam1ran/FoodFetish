@@ -16,7 +16,7 @@ export class VersionService {
       date: '05.02.2026',
       changes: [
         {
-          description: 'Add preferred weight field to add food dialog.',
+          description: 'Add preferred weight field to add food dialog for convenience.',
           type: VersionChangeType.Update,
         },
       ],
