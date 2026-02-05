@@ -26,7 +26,7 @@ export class VersionService {
       date: '05.02.2026',
       changes: [
         {
-          description: 'Add one more meal position.',
+          description: 'Add 2 more meal positions.',
           type: VersionChangeType.Maintenance,
         },
         {
