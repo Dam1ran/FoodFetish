@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.8.1',
+      date: '05.02.2026',
+      changes: [
+        {
+          description: 'Conditionally display next non snack meal.',
+          type: VersionChangeType.Maintenance,
+        },
+      ],
+    },
+    {
       version: '1.8.0',
       date: '05.02.2026',
       changes: [
