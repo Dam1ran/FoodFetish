@@ -23,8 +23,6 @@ export class DayTemplateService {
         value: +value as MealPosition,
       }));
 
-    console.log(mealPositions);
-
     const dayTemplate = new DayTemplate();
     mealPositions.forEach((mp) => {
       dayTemplate.entries.push({
