@@ -5,7 +5,8 @@ export enum MealPosition {
   MealThree = 3,
   MealFour = 4,
   MealFive = 5,
-  Snacks = 6,
+  MealSix = 6,
+  Snacks = 7,
 }
 
 export const MealPositionMap: Record<MealPosition, string> = {
@@ -15,5 +16,6 @@ export const MealPositionMap: Record<MealPosition, string> = {
   [MealPosition.MealThree]: 'Meal III',
   [MealPosition.MealFour]: 'Meal IV',
   [MealPosition.MealFive]: 'Meal V',
+  [MealPosition.MealSix]: 'Meal VI',
   [MealPosition.Snacks]: 'Snacks',
 };
