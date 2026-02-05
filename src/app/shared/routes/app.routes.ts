@@ -27,4 +27,8 @@ export const routes: Routes = [
     path: RoutePaths.options,
     loadComponent: () => import('../../components/options/options').then((c) => c.Options),
   },
+  {
+    path: RoutePaths.about,
+    loadComponent: () => import('../../components/about/about').then((c) => c.About),
+  },
 ];
