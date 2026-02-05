@@ -12,7 +12,7 @@ export class VersionService {
 
   readonly releases = [
     {
-      version: '1.7.9',
+      version: '1.8.0',
       date: '05.02.2026',
       changes: [
         {
