@@ -111,6 +111,17 @@
       style="width: 140px"
     />
   </div>
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
+    <label class="fst-italic text-muted" style="font-size: 14px;" for="weight">Preferred weight (g)</label>
+    <input
+      type="number"
+      inputmode="numeric"
+      id="weight"
+      class="form-control px-1 py-1 text-center m-1 fst-italic"
+      [formField]="form.weight"
+      style="width: 140px"
+    />
+  </div>
   <div class="d-flex justify-content-between align-items-center gap-2 m-1">
     <textarea
       rows="2"
@@ -123,15 +134,15 @@
   </div>
 </div>
 <div
-  class="modal-footer px-2 py-0 align-items-center justify-content-center"
-  style="min-height: 40px"
+  class="d-flex justify-content-center p-1"
 >
   <button
     type="button"
-    class="btn btn-sm btn-outline-success gap-2 bmw d-flex align-items-center justify-content-between"
+    class="btn btn-outline-success gap-2 bmw d-flex align-items-center justify-content-between"
     (click)="addEditFood()"
   >
     Save
     <iconify icon="heroicons-outline:save" size="18px" />
   </button>
 </div>
+
