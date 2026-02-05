@@ -17,7 +17,6 @@ export class App implements OnInit {
     if (redirect && redirect !== location.pathname) {
       delete sessionStorage['redirect'];
       void this.router.navigate([redirect]);
-      console.log('kek');
     }
   }
 }
