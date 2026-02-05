@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <script>
-    sessionStorage.redirect = location.pathname + location.search;
-    window.location.href = '/FoodFetish/';
-  </script>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      const pathWithoutBase = location.pathname.replace('/FoodFetish/', '');
+      const redirect = pathWithoutBase + location.search;
+      sessionStorage.redirect = redirect || '/';
+      window.location.href = '/FoodFetish/';
+    </script>
+  </head>
+  <body></body>
 </html>
