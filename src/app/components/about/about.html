@@ -11,65 +11,18 @@
   <div
     class="bg-dark-subtle m-1 rounded border border-dark-subtle text-muted d-flex flex-column gap-1 p-1"
   >
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 text-info-emphasis opacity-75">
-        <iconify icon="iconoir:weight" />
+    @for (aboutNote of aboutNotes; track $index) {
+      <div
+        class="d-flex align-items-center py-1 rounded"
+        [class]="{
+          'bg-body-tertiary': $even,
+          'bg-body-secondary': $odd,
+        }"
+      >
+        <div class="mx-2 opacity-75">
+          <iconify [icon]="aboutNote.icon" [class]="aboutNote.iconClass" />
+        </div>
+        <div>{{ aboutNote.text }}</div>
       </div>
-      <div>Features improved averaged weight formula!</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-secondary">
-      <div class="mx-2 text-secondary-emphasis opacity-75">
-        <iconify icon="ph:tilde-fill" />
-      </div>
-      <div>Graphs for daily calories and weight for easy conclusions.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 text-info-emphasis">
-        <iconify icon="circum:glass" />
-      </div>
-      <div>Water tracker background color reaction upon quantity based on provided weight.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-secondary">
-      <div class="mx-2 text-success">
-        <iconify icon="material-symbols-light:circle" />
-      </div>
-      <div>Day indicator if water/meals/activity/weight are filled in for that day.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 opacity-75">
-        <iconify icon="game-icons:meal" />
-      </div>
-      <div>(x6) Five meals and a snack.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-secondary">
-      <div class="mx-2 text-primary opacity-75">
-        <iconify icon="pajamas:recipe" />
-      </div>
-      <div>Recipes for food grouping.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 text-primary-emphasis opacity-75">
-        <iconify icon="si:barcode-fill" />
-      </div>
-      <div>Barcode scanner to set/get foods.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-secondary">
-      <div class="mx-2 text-success opacity-75">
-        <iconify icon="medical-icon:i-nutrition" />
-      </div>
-      <div>Macros tracker with background color changes.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 text-warning opacity-75">
-        <iconify icon="lucide:activity" />
-      </div>
-      <div>Add your activities.</div>
-    </div>
-    <div class="d-flex align-items-center py-1 rounded bg-body-tertiary">
-      <div class="mx-2 text-danger-emphasis opacity-75">
-        <iconify icon="bi:collection" />
-      </div>
-      <div>And many more.</div>
-    </div>
-  </div>
+    }
 </div>
