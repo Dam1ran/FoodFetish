@@ -121,6 +121,10 @@ export class GoogleDriveService {
     localStorage.removeItem('google_token_data');
   }
 
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   private loadGisScript(): Promise<void> {
     if (this.gisLoaded) {
       return Promise.resolve();
@@ -265,8 +269,11 @@ export class GoogleDriveService {
     try {
       let driveVersion = 0;
       const fileId = await this.findDataFile();
+      await this.delay(1000);
+
       if (fileId) {
         const data = await this.downloadFile(fileId);
+        await this.delay(1000);
         driveVersion = data.metadata?.version ?? 0;
       }
       let version = this.getLocalVersion();
@@ -275,13 +282,16 @@ export class GoogleDriveService {
       }
 
       const appData = await this.gatherData();
+      await this.delay(1000);
       version++;
       appData.metadata = { version };
 
       if (fileId) {
         await this.updateFile(fileId, appData);
+        await this.delay(1000);
       } else {
         await this.createFile(appData);
+        await this.delay(1000);
       }
       this.setLocalVersion(version);
     } catch (error) {
@@ -309,13 +319,16 @@ export class GoogleDriveService {
 
     try {
       const fileId = await this.findDataFile();
+      await this.delay(1000);
       if (!fileId) {
         return;
       }
 
       const data = await this.downloadFile(fileId);
+      await this.delay(1000);
 
       await this.restoreData(data);
+      await this.delay(1000);
       if (data.metadata?.version) {
         this.setLocalVersion(data.metadata.version);
       }
