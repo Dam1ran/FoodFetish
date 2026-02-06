@@ -60,7 +60,9 @@
   <div class="border rounded m-1 mb-0">
     <div class="mx-1 d-flex justify-content-between align-items-center">
       <div>Main diary</div>
-      <span class="text-muted fst-italic opacity-75" style="font-size: 10px;">*Images will be skipped</span>
+      <span class="text-muted fst-italic opacity-75" style="font-size: 10px"
+        >*Images will be skipped</span
+      >
     </div>
     <div class="d-flex justify-content-between p-1 bg-body-tertiary">
       <button
@@ -87,6 +89,48 @@
       >
         Load
       </button>
+    </div>
+  </div>
+  <div class="border rounded m-1 mb-0">
+    <div class="mx-1">Google Drive sync</div>
+    <div class="d-flex flex-column gap-1 p-1 bg-body-tertiary">
+      @if (!googleDriveService.isSignedIn()) {
+        <button
+          class="btn btn-outline-secondary p-0 px-1 rounded-0"
+          iconSize="24px"
+          buttonIcon="iconoir:google"
+          (click)="googleDriveService.signIn()"
+        >
+          Sign in with Google
+        </button>
+      } @else {
+        <button
+          class="btn btn-outline-secondary p-0 px-1 rounded-0"
+          iconSize="24px"
+          buttonIcon="iconoir:cloud-upload"
+          [disabled]="googleDriveService.isSyncing()"
+          (click)="googleDriveService.uploadToDrive()"
+        >
+          Upload to Drive
+        </button>
+        <button
+          class="btn btn-outline-secondary p-0 px-1 rounded-0"
+          iconSize="24px"
+          buttonIcon="iconoir:cloud-download"
+          [disabled]="googleDriveService.isSyncing()"
+          (click)="googleDriveService.downloadFromDrive()"
+        >
+          Download from Drive
+        </button>
+        <button
+          class="btn btn-outline-secondary p-0 px-1 rounded-0"
+          iconSize="24px"
+          buttonIcon="iconoir:log-out"
+          (click)="googleDriveService.signOut()"
+        >
+          Sign out
+        </button>
+      }
     </div>
   </div>
   <div class="border rounded m-1 mb-0 bg-warning-subtle">

@@ -9,6 +9,7 @@ import { isValidRecipe } from '../../shared/entities/recipe.entity';
 import { RecipesService } from '../../shared/services/recipes.service';
 import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { ImageStoreService } from '../../shared/services/image-store.service';
+import { GoogleDriveService } from '../../shared/services/google-drive.service';
 
 @Component({
   selector: 'app-options',
@@ -21,6 +22,7 @@ export class Options {
   protected readonly recipesService = inject(RecipesService);
   protected readonly diaryLogService = inject(DiaryLogService);
   private readonly imageStoreService = inject(ImageStoreService);
+  protected readonly googleDriveService = inject(GoogleDriveService);
 
   protected readonly jsonUploadFoodsInput =
     viewChild<ElementRef<HTMLInputElement>>('jsonUploadFoods');
