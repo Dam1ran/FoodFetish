@@ -217,12 +217,24 @@ export class GoogleDriveService {
       const data = await this.gatherData();
       const existingFileId = await this.findDataFile();
 
+      let driveVersion = 0;
       if (existingFileId) {
         await this.updateFile(existingFileId, data);
+        driveVersion = data.metadata?.version ?? 0;
       } else {
         await this.createFile(data);
       }
-
+      const version = this.getLocalVersion();
+      if (driveVersion > version) {
+        this.toastsService.showAsError('Data on Google Drive is newer than local version.', {
+          headerText: null,
+          delayMs: 5000,
+        });
+        return;
+      }
+      if (data.metadata?.version) {
+        this.setLocalVersion(data.metadata.version);
+      }
       this.toastsService.showAsSuccess('Data uploaded to Google Drive', {
         headerText: null,
         delayMs: 3000,
@@ -345,6 +357,9 @@ export class GoogleDriveService {
 
       const data = await this.downloadFile(fileId);
       await this.restoreData(data);
+      if (data.metadata?.version) {
+        this.setLocalVersion(data.metadata.version);
+      }
 
       this.toastsService.showAsSuccess('Data downloaded from Google Drive', {
         headerText: null,
@@ -389,8 +404,9 @@ export class GoogleDriveService {
 
     const images: AppData['images'] = [];
     for (const imageId of imageIds) {
-      const base64 = await this.imageStoreService.get(imageId);
+      let base64 = await this.imageStoreService.get(imageId);
       if (base64) {
+        base64 = base64.replace(/^data:image\/\w+;base64,/, '');
         images.push({ imageId, base64 });
       }
     }
@@ -399,6 +415,18 @@ export class GoogleDriveService {
   }
 
   private async restoreData(data: AppData): Promise<void> {
+    await this.imageStoreService.deleteDatabase().then(async () => {
+      if (data.images) {
+        for (const img of data.images) {
+          await this.imageStoreService.put(img.imageId, img.base64);
+        }
+      }
+    });
+
+    this.foodsService.setFoods([]);
+    this.recipesService.setRecipes([]);
+    this.diaryLogService.setDiary({ diaryDays: [] });
+
     if (data.foods) {
       this.foodsService.setFoods(data.foods as Parameters<FoodsService['setFoods']>[0]);
     }
@@ -411,14 +439,6 @@ export class GoogleDriveService {
     if (data.options) {
       this.optionsService.setOptions(data.options as Parameters<OptionsService['setOptions']>[0]);
     }
-
-    await this.imageStoreService.deleteDatabase().then(async () => {
-      if (data.images) {
-        for (const img of data.images) {
-          await this.imageStoreService.put(img.imageId, img.base64);
-        }
-      }
-    });
   }
 
   private async findDataFile(): Promise<string | null> {
