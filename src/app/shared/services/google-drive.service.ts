@@ -16,7 +16,7 @@ declare const google: {
           access_token?: string;
           expires_in?: number;
           error?: string;
-        }) => void;
+        }) => void | Promise<void>;
       }): { requestAccessToken(): void };
     };
   };
@@ -56,7 +56,8 @@ async function throwIfNotOk(response: Response): Promise<void> {
 }
 
 const CLIENT_ID = '875660427890-lqom4d5625fslef32gvcrlc972qefi13.apps.googleusercontent.com';
-const SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
+const SCOPES =
+  'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/userinfo.email';
 const DATA_FILE_NAME = 'food-fetish-data.json';
 
 @Injectable({ providedIn: 'root' })
@@ -73,6 +74,7 @@ export class GoogleDriveService {
 
   readonly isSignedIn = signal(false);
   readonly isSyncing = signal(false);
+  readonly userEmail = signal<string | null>(null);
 
   private gisLoaded = false;
 
@@ -83,9 +85,10 @@ export class GoogleDriveService {
   private restoreToken(): void {
     const saved = localStorage.getItem('google_token_data');
     if (saved) {
-      const data = JSON.parse(saved) as { token: string; expiry?: number };
+      const data = JSON.parse(saved) as { token: string; expiry?: number; email?: string };
       if (!this.isTokenExpired(data.expiry)) {
         this.accessToken = data.token;
+        this.userEmail.set(data.email ?? null);
         this.isSignedIn.set(true);
       } else {
         this.clearToken();
@@ -93,10 +96,13 @@ export class GoogleDriveService {
     }
   }
 
-  private saveToken(token: string, expiresIn?: number): void {
-    const data: { token: string; expiry?: number } = { token };
+  private saveToken(token: string, expiresIn?: number, email?: string): void {
+    const data: { token: string; expiry?: number; email?: string } = { token };
     if (expiresIn) {
       data.expiry = Date.now() + expiresIn * 1000;
+    }
+    if (email) {
+      data.email = email;
     }
     localStorage.setItem('google_token_data', JSON.stringify(data));
   }
@@ -150,7 +156,7 @@ export class GoogleDriveService {
       this.tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
-        callback: (response) => {
+        callback: async (response) => {
           if (response.error) {
             this.toastsService.showAsError('Google sign-in failed', {
               headerText: null,
@@ -162,7 +168,9 @@ export class GoogleDriveService {
 
           this.accessToken = response.access_token ?? null;
           if (this.accessToken) {
-            this.saveToken(this.accessToken, response.expires_in);
+            const email = await this.getUserEmail(this.accessToken);
+            this.userEmail.set(email ?? null);
+            this.saveToken(this.accessToken, response.expires_in, email);
           }
           this.isSignedIn.set(true);
           this.toastsService.showAsSuccess('Signed in to Google Drive', {
@@ -179,6 +187,7 @@ export class GoogleDriveService {
 
   signOut() {
     this.accessToken = null;
+    this.userEmail.set(null);
     this.clearToken();
     this.isSignedIn.set(false);
     this.toastsService.showAsInformation('Signed out from Google Drive', {
@@ -394,11 +403,25 @@ export class GoogleDriveService {
 
   private handleAuthError() {
     this.accessToken = null;
+    this.userEmail.set(null);
     this.clearToken();
     this.isSignedIn.set(false);
     this.toastsService.showAsWarning('Google session expired. Please sign in again.', {
       headerText: null,
       delayMs: 5000,
     });
+  }
+
+  private async getUserEmail(token: string): Promise<string | undefined> {
+    try {
+      const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) return undefined;
+      const data = (await response.json()) as { email?: string };
+      return data.email;
+    } catch {
+      return undefined;
+    }
   }
 }

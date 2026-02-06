@@ -130,8 +130,9 @@
         >
           Download from Drive
         </button>
+        <div class="mt-4 text-muted text-truncate fst-italic opacity-40" style="font-size: 14px; line-height: 16px;">{{ googleDriveService.userEmail() }}</div>
         <button
-          class="btn btn-secondary p-0 px-1 rounded opacity-75 mt-4"
+          class="btn btn-secondary p-0 px-1 rounded opacity-75"
           iconSize="24px"
           buttonIcon="iconoir:log-out"
           (click)="googleDriveService.signOut()"
