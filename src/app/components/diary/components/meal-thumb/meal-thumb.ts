@@ -1,4 +1,13 @@
-import { ChangeDetectorRef, Component, effect, inject, input, output, signal } from '@angular/core';
+import {
+  booleanAttribute,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { ImageStoreService } from '../../../../shared/services/image-store.service';
 import { IconifyComponent } from '../../../../shared/components/iconify.component';
 import { DiaryLogService } from '../../../../shared/services/diary-log.service';
@@ -9,11 +18,15 @@ import { DiaryLogService } from '../../../../shared/services/diary-log.service';
   template: `
     @if (imageDataUrl()) {
       <img
-        width="160"
-        height="160"
+        [width]="stretched() ? 320 : 160"
+        [height]="stretched() ? 160 : 160"
         [src]="imageDataUrl()"
         alt="meal thumb"
         style="object-fit: cover"
+        [style]="{
+          filter: stretched() ? 'blur(4px) grayscale(25%)' : 'unset',
+          opacity: stretched() ? 0.2 : 1,
+        }"
       />
     } @else {
       <div
@@ -27,6 +40,7 @@ import { DiaryLogService } from '../../../../shared/services/diary-log.service';
 })
 export class MealThumb {
   readonly imageId = input.required<string>();
+  readonly stretched = input(false, { transform: booleanAttribute });
 
   private readonly imageStoreService = inject(ImageStoreService);
   protected readonly imageDataUrl = signal<string | null>(null);

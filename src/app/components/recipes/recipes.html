@@ -120,35 +120,28 @@
             </div>
             <div class="mx-auto d-flex justify-content-center align-items-center">
               @if (recipe?.imageId) {
-                <div class="d-flex justify-content-evenly align-items-center w-100">
-                  <iconify
-                    class="text-primary opacity-25 user-select-none"
-                    icon="icon-park-solid:fork-spoon"
-                    size="72px"
-                  />
+                <div
+                  class="d-flex justify-content-evenly align-items-center w-100 position-relative overflow-hidden"
+                >
                   <div
                     class="overflow-hidden d-flex justify-content-center align-items-center position-relative border border-primary-subtle"
-                    style="
-                      box-shadow: 0 0 2px 3px rgba(30, 30, 30, 0.5);
-                      border-top-left-radius: 40px;
-                      border-bottom-right-radius: 40px;
-                      border-bottom-left-radius: 40px;
-                      border-top-right-radius: 6px;
-                    "
+                    style="box-shadow: 0 0 2px 3px rgba(30, 30, 30, 0.5); border-radius: 6px"
                   >
                     <button
-                      class="btn btn-danger border p-0 position-absolute end-0 top-0 me-1 mt-1 z-1 opacity-60"
+                      class="btn btn-secondary border p-0 position-absolute end-0 top-0 me-1 mt-1 z-2 opacity-75"
                       buttonIcon="mdi:close"
                       [iconSize]="'16px'"
                       (click)="deleteImage(recipe.imageId)"
                     ></button>
-                    <meal-thumb [imageId]="recipe.imageId" (deleteChange)="deleteImage($event)" />
+                    <meal-thumb
+                      class="z-1"
+                      [imageId]="recipe.imageId"
+                      (deleteChange)="deleteImage($event)"
+                    />
                   </div>
-                  <iconify
-                    class="text-primary opacity-25 user-select-none"
-                    icon="icon-park-solid:knife-fork"
-                    size="72px"
-                  />
+                  <div class="position-absolute z-0 w-100">
+                    <meal-thumb stretched [imageId]="recipe.imageId" />
+                  </div>
                 </div>
               } @else {
                 <input
