@@ -8,6 +8,7 @@ import { RoutePaths } from '../../shared/routes/route-paths';
 import { isValidRecipe } from '../../shared/entities/recipe.entity';
 import { RecipesService } from '../../shared/services/recipes.service';
 import { DiaryLogService } from '../../shared/services/diary-log.service';
+import { ImageStoreService } from '../../shared/services/image-store.service';
 
 @Component({
   selector: 'app-options',
@@ -19,6 +20,7 @@ export class Options {
   protected readonly foodsService = inject(FoodsService);
   protected readonly recipesService = inject(RecipesService);
   protected readonly diaryLogService = inject(DiaryLogService);
+  private readonly imageStoreService = inject(ImageStoreService);
 
   protected readonly jsonUploadFoodsInput =
     viewChild<ElementRef<HTMLInputElement>>('jsonUploadFoods');
@@ -159,6 +161,7 @@ export class Options {
   private readonly router = inject(Router);
   clearAllMemory() {
     localStorage.clear();
+    void this.imageStoreService.deleteDatabase();
     void this.router.navigate([RoutePaths.home]);
     setTimeout(() => {
       window.location.reload();

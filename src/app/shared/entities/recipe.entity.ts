@@ -8,8 +8,9 @@ export class Recipe extends Meal {
     foods: Food[] = [],
     public portions = 1,
     note = '',
+    imageId = '',
   ) {
-    super(id, name, foods, note);
+    super(id, name, foods, note, undefined, imageId);
   }
 }
 

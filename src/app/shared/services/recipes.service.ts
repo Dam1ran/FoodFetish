@@ -173,4 +173,23 @@ export class RecipesService {
     }
     localStorage.setItem('expandedRecipeId', JSON.stringify(this.expandedRecipeId()));
   }
+
+  setImage(recipeId: string, imageId: string) {
+    this.recipes.update((recipes) =>
+      recipes.map((recipe) => (recipe.id === recipeId ? { ...recipe, imageId } : recipe)),
+    );
+    this.saveRecipes();
+  }
+
+  deleteImage(imageId: string) {
+    this.recipes.update((recipes) =>
+      recipes.map((recipe) => (recipe.imageId === imageId ? { ...recipe, imageId: '' } : recipe)),
+    );
+
+    this.saveRecipes();
+  }
+
+  anyImage(imageId: string) {
+    return this.recipes().some((recipe) => recipe.imageId === imageId);
+  }
 }

@@ -9,6 +9,7 @@ export class Meal {
     public foods: Food[] = [],
     public note = '',
     public time?: NgbTimeStruct,
+    public imageId = '',
   ) {}
 }
 

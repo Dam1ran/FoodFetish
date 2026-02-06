@@ -527,12 +527,13 @@ export class DiaryLogService {
       if (!respectiveEntry) {
         respectiveEntry = new DayTemplateEntry(
           mealPosition,
-          new Meal(v7(), MealPositionMap[mealPosition], []),
+          new Meal(v7(), MealPositionMap[mealPosition], [], undefined, undefined, recipe.imageId),
           [recipeCopy],
         );
         respectiveDay.dayTemplate.entries.push(respectiveEntry);
       } else {
         respectiveEntry.recipes.push(recipeCopy);
+        respectiveEntry.meal.imageId = recipe.imageId;
       }
 
       return diaryLogCopy;
@@ -750,5 +751,23 @@ export class DiaryLogService {
   setDiary(diary: DiaryLog) {
     localStorage.setItem('diaryLog', JSON.stringify(diary));
     this.loadDiaryLog();
+  }
+
+  deleteMealImage(imageId: string) {
+    this.diaryLog.update((diaryLog) => {
+      const diaryLogCopy = { ...diaryLog };
+
+      for (const day of diaryLogCopy.diaryDays) {
+        for (const entry of day.dayTemplate.entries) {
+          if (entry.meal.imageId === imageId) {
+            delete entry.meal.imageId;
+          }
+        }
+      }
+
+      return diaryLogCopy;
+    });
+
+    this.saveDiaryLog();
   }
 }

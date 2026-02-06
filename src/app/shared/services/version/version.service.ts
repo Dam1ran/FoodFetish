@@ -12,11 +12,21 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.9.0',
+      date: '06.02.2026',
+      changes: [
+        {
+          description: 'Addon of meal/recipe pictures feature.',
+          type: VersionChangeType.Feature,
+        },
+      ],
+    },
+    {
       version: '1.8.3',
       date: '05.02.2026',
       changes: [
         {
-          description: '`My foods` UX improvements, some cosmetics',
+          description: '`My foods` UX improvements, some cosmetics.',
           type: VersionChangeType.Maintenance,
         },
       ],

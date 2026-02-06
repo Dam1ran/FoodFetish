@@ -9,11 +9,13 @@ import {
   AfterViewInit,
   effect,
   TemplateRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDateStruct, NgbModal, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe, Location } from '@angular/common';
+import { v7 } from 'uuid';
 import { FoodRow } from './components/food-row/food-row';
 import { DiaryRecipe } from './components/diary-recipe/diary-recipe';
 import { TotalRow } from './components/total-row/total-row';
@@ -22,14 +24,19 @@ import { WeightInWidget } from './components/weight-in-widget/weight-in-widget';
 import { ActivityWidget } from './components/activity-widget/activity-widget';
 import { DiaryBarcodeScanner } from './components/diary-barcode-scanner/diary-barcode-scanner';
 import { MacrosWidget } from './components/macros-widget/macros-widget';
+import { MealThumb } from './components/meal-thumb/meal-thumb';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
 import { DayTemplateService } from '../../shared/services/day-template.service';
 import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
+import { Meal } from '../../shared/entities/meal.entity';
 import { MealPosition, MealPositionMap } from '../../shared/entities/meal-position.enum';
 import { RoutePaths } from '../../shared/routes/route-paths';
 import { IconifyComponent } from '../../shared/components/iconify.component';
 import { OptionsService } from '../../shared/services/options/options.service';
+import { processImageToThumb } from '../../shared/helpers/image-helper';
+import { ImageStoreService } from '../../shared/services/image-store.service';
+import { RecipesService } from '../../shared/services/recipes.service';
 
 @Component({
   selector: 'diary',
@@ -46,6 +53,7 @@ import { OptionsService } from '../../shared/services/options/options.service';
     IconifyComponent,
     ActivityWidget,
     MacrosWidget,
+    MealThumb,
     NgbTimepicker,
   ],
   templateUrl: './diary.html',
@@ -235,5 +243,30 @@ export class Diary implements AfterViewInit {
     }
 
     return waterMl > currentWeight * 32.5;
+  }
+
+  protected readonly imageStoreService = inject(ImageStoreService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  async onImageSelected(event: Event, respectiveMeal: Meal) {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+    if (!file) {
+      return;
+    }
+    const base64 = await processImageToThumb(file);
+    const imageId = v7();
+    void this.imageStoreService.put(imageId, base64).then(() => {
+      respectiveMeal.imageId = imageId;
+      this.diaryLogService.saveDiaryLog();
+      this.cdr.detectChanges();
+    });
+  }
+
+  protected readonly recipesService = inject(RecipesService);
+  async deleteImage(imageId: string) {
+    this.diaryLogService.deleteMealImage(imageId);
+    if (!this.recipesService.anyImage(imageId)) {
+      await this.imageStoreService.delete(imageId);
+    }
   }
 }

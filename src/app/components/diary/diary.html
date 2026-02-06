@@ -221,6 +221,59 @@
                 />
               }
             </div>
+            <div class="mx-auto d-flex justify-content-center align-items-center">
+              @if (respectiveMeal?.imageId) {
+                <div class="d-flex justify-content-evenly align-items-center w-100">
+                  <iconify
+                    class="text-primary opacity-25 user-select-none"
+                    icon="icon-park-solid:fork-spoon"
+                    size="72px"
+                  />
+                  <div
+                    class="overflow-hidden d-flex justify-content-center align-items-center position-relative border border-primary-subtle"
+                    style="
+                      box-shadow: 0 0 2px 3px rgba(30, 30, 30, 0.5);
+                      border-top-left-radius: 40px;
+                      border-bottom-right-radius: 40px;
+                      border-bottom-left-radius: 40px;
+                      border-top-right-radius: 6px;
+                    "
+                  >
+                    <button
+                      class="btn btn-danger border p-0 position-absolute end-0 top-0 me-1 mt-1 z-1 opacity-60"
+                      buttonIcon="mdi:close"
+                      [iconSize]="'16px'"
+                      (click)="deleteImage(respectiveMeal.imageId)"
+                    ></button>
+                    <meal-thumb [imageId]="respectiveMeal.imageId" (deleteChange)="deleteImage($event)" />
+                  </div>
+                  <iconify
+                    class="text-primary opacity-25 user-select-none"
+                    icon="icon-park-solid:knife-fork"
+                    size="72px"
+                  />
+                </div>
+              } @else if (
+                respectiveMeal?.foods?.length ||
+                getRespectiveRecipes(mealTemplateEntry.position)?.length
+              ) {
+                <input
+                  #imgInput
+                  type="file"
+                  accept="image/*"
+                  class="d-none"
+                  autofocus="false"
+                  tabindex="-1"
+                  (change)="onImageSelected($event, respectiveMeal)"
+                />
+                <button
+                  class="btn opacity-70"
+                  buttonIcon="streamline-logos:food-spotting-logo-2-block"
+                  iconSize="48px"
+                  (click)="imgInput.click()"
+                ></button>
+              }
+            </div>
             <div class="p-2 bg-body-tertiary d-flex gap-2 justify-content-between">
               <button
                 class="btn btn-outline-primary btn-sm opacity-60 flex-grow-1"
