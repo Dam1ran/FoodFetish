@@ -6,6 +6,7 @@ export class RoutePaths {
   static readonly about = 'about';
   static readonly options = 'options';
   static readonly releaseNotes = 'release-notes';
+  static readonly privacyPolicy = 'privacy-policy';
 
   static readonly loginFailed = '';
   static readonly protectedResource = '';
@@ -18,6 +19,7 @@ export class RoutePaths {
     RoutePaths.options,
     RoutePaths.about,
     RoutePaths.releaseNotes,
+    RoutePaths.privacyPolicy,
   ];
 
   static readonly excludedFromHistory = [RoutePaths.loginFailed, RoutePaths.protectedResource];

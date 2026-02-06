@@ -31,4 +31,9 @@ export const routes: Routes = [
     path: RoutePaths.about,
     loadComponent: () => import('../../components/about/about').then((c) => c.About),
   },
+  {
+    path: RoutePaths.privacyPolicy,
+    loadComponent: () =>
+      import('../../components/privacy-policy/privacy-policy').then((c) => c.PrivacyPolicy),
+  },
 ];
