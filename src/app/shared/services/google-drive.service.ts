@@ -302,7 +302,7 @@ export class GoogleDriveService {
       }
 
       const data = await this.downloadFile(fileId);
-      void this.imageStoreService.deleteDatabase();
+
       await this.restoreData(data);
       if (data.metadata?.version) {
         this.setLocalVersion(data.metadata.version);
@@ -412,12 +412,14 @@ export class GoogleDriveService {
       this.optionsService.setOptions(data.options as Parameters<OptionsService['setOptions']>[0]);
     }
 
-    if (data.images) {
-      for (const img of data.images) {
-        const raw = img.base64.replace(/^data:image\/[^;]+;base64,/, '');
-        await this.imageStoreService.put(img.imageId, raw);
+    await this.imageStoreService.deleteDatabase().then(async () => {
+      if (data.images) {
+        for (const img of data.images) {
+          const raw = img.base64.replace(/^data:image\/[^;]+;base64,/, '');
+          await this.imageStoreService.put(img.imageId, raw);
+        }
       }
-    }
+    });
   }
 
   private async findDataFile(): Promise<string | null> {
