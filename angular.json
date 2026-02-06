@@ -23,7 +23,7 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/assets", "src/404.html"],
+            "assets": ["src/assets", "src/404.html", "src/privacy-policy.html"],
             "styles": ["src/styles.scss"],
             "polyfills": ["@angular/localize/init"],
             "outputPath": {
