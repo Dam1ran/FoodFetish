@@ -302,8 +302,8 @@ export class GoogleDriveService {
       }
 
       const data = await this.downloadFile(fileId);
-      await this.restoreData(data);
       void this.imageStoreService.deleteDatabase();
+      await this.restoreData(data);
       if (data.metadata?.version) {
         this.setLocalVersion(data.metadata.version);
       }
