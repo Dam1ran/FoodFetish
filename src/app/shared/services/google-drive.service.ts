@@ -415,8 +415,7 @@ export class GoogleDriveService {
     await this.imageStoreService.deleteDatabase().then(async () => {
       if (data.images) {
         for (const img of data.images) {
-          const raw = img.base64.replace(/^data:image\/[^;]+;base64,/, '');
-          await this.imageStoreService.put(img.imageId, raw);
+          await this.imageStoreService.put(img.imageId, img.base64);
         }
       }
     });
