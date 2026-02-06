@@ -24,6 +24,6 @@ export class App implements OnInit {
   }
 
   trySync() {
-    void this.googleDriveService.saveToDrive().then(() => this.googleDriveService.loadFromDrive());
+    void this.googleDriveService.sync();
   }
 }

@@ -186,7 +186,7 @@ export class GoogleDriveService {
             headerText: null,
             delayMs: 3000,
           });
-          await this.loadFromDrive();
+          await this.sync();
           resolve();
         },
       });
@@ -258,95 +258,6 @@ export class GoogleDriveService {
     }
   }
 
-  async saveToDrive(): Promise<void> {
-    this.syncFailed.set(false);
-    if (!this.accessToken || this.isSyncing()) {
-      return;
-    }
-
-    this.isSyncing.set(true);
-
-    try {
-      let driveVersion = 0;
-      const fileId = await this.findDataFile();
-      await this.delay(1000);
-
-      if (fileId) {
-        const data = await this.downloadFile(fileId);
-        await this.delay(1000);
-        driveVersion = data.metadata?.version ?? 0;
-      }
-      let version = this.getLocalVersion();
-      if (driveVersion > version) {
-        return;
-      }
-
-      const appData = await this.gatherData();
-      await this.delay(1000);
-      version++;
-      appData.metadata = { version };
-
-      if (fileId) {
-        await this.updateFile(fileId, appData);
-        await this.delay(1000);
-      } else {
-        await this.createFile(appData);
-        await this.delay(1000);
-      }
-      this.setLocalVersion(version);
-    } catch (error) {
-      console.error('Upload failed:', error);
-      if (this.isAuthError(error)) {
-        this.handleAuthError();
-      } else {
-        this.toastsService.showAsError('Failed to upload to Google Drive', {
-          headerText: null,
-          delayMs: 5000,
-        });
-      }
-      this.syncFailed.set(true);
-    } finally {
-      this.isSyncing.set(false);
-    }
-  }
-
-  async loadFromDrive(): Promise<void> {
-    if (!this.accessToken || this.isSyncing()) {
-      return;
-    }
-
-    this.isSyncing.set(true);
-
-    try {
-      const fileId = await this.findDataFile();
-      await this.delay(1000);
-      if (!fileId) {
-        return;
-      }
-
-      const data = await this.downloadFile(fileId);
-      await this.delay(1000);
-
-      await this.restoreData(data);
-      await this.delay(1000);
-      if (data.metadata?.version) {
-        this.setLocalVersion(data.metadata.version);
-      }
-    } catch (error) {
-      console.error('Download failed:', error);
-      if (this.isAuthError(error)) {
-        this.handleAuthError();
-      } else {
-        this.toastsService.showAsError('Failed to download from Google Drive', {
-          headerText: null,
-          delayMs: 5000,
-        });
-      }
-      this.syncFailed.set(true);
-    } finally {
-      this.isSyncing.set(false);
-    }
-  }
   async downloadFromDrive(): Promise<void> {
     if (!this.accessToken) {
       this.toastsService.showAsWarning('Not signed in to Google Drive', {
@@ -388,6 +299,57 @@ export class GoogleDriveService {
           delayMs: 5000,
         });
       }
+    } finally {
+      this.isSyncing.set(false);
+    }
+  }
+
+  async sync() {
+    this.syncFailed.set(false);
+    if (!this.accessToken || this.isSyncing()) {
+      return;
+    }
+    this.isSyncing.set(true);
+
+    try {
+      const fileId = await this.findDataFile();
+      await this.delay(1000);
+
+      let version = this.getLocalVersion();
+      let appData: AppData | null = null;
+      if (fileId) {
+        appData = await this.downloadFile(fileId);
+        await this.delay(1000);
+      } else {
+        const appData = await this.gatherData();
+        version++;
+        appData.metadata = { version };
+        await this.createFile(appData);
+        this.setLocalVersion(version);
+        return;
+      }
+
+      if ((appData.metadata?.version ?? 0) > version) {
+        await this.restoreData(appData);
+        this.setLocalVersion(appData.metadata.version);
+        return;
+      } else {
+        version++;
+        this.setLocalVersion(version);
+        await this.updateFile(fileId, { ...(await this.gatherData()), metadata: { version } });
+        return;
+      }
+    } catch (error) {
+      if (this.isAuthError(error)) {
+        this.handleAuthError();
+      } else {
+        console.warn('GD sync failed');
+        this.toastsService.showAsError('Failed to sync with Google Drive', {
+          headerText: null,
+          delayMs: 5000,
+        });
+      }
+      this.syncFailed.set(true);
     } finally {
       this.isSyncing.set(false);
     }

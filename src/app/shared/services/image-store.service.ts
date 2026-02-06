@@ -60,12 +60,13 @@ export class ImageStoreService {
     });
   }
 
-  deleteDatabase(): Promise<void> {
+  async deleteDatabase(): Promise<void> {
     this.cache.clear();
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.deleteDatabase(this.dbName);
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
+    const db = await this.openDb();
+    const tx = db.transaction(this.storeName, 'readwrite');
+    tx.objectStore(this.storeName).clear();
+    await new Promise((resolve) => {
+      tx.oncomplete = () => resolve(void 0);
     });
   }
 
