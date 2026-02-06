@@ -17,17 +17,19 @@ import { DiaryLogService } from '../../../../shared/services/diary-log.service';
   imports: [IconifyComponent],
   template: `
     @if (imageDataUrl()) {
-      <img
-        [width]="stretched() ? 320 : 160"
-        [height]="stretched() ? 160 : 160"
-        [src]="imageDataUrl()"
-        alt="meal thumb"
-        style="object-fit: cover"
-        [style]="{
-          filter: stretched() ? 'blur(4px) grayscale(25%)' : 'unset',
-          opacity: stretched() ? 0.2 : 1,
-        }"
-      />
+      <div class="d-flex justify-content-center">
+        <img
+          [width]="stretched() ? 320 : 160"
+          [height]="stretched() ? 160 : 160"
+          [src]="imageDataUrl()"
+          alt="meal thumb"
+          style="object-fit: cover;"
+          [style]="{
+            filter: stretched() ? 'blur(4px) grayscale(25%)' : 'unset',
+            opacity: stretched() ? 0.2 : 1,
+          }"
+        />
+      </div>
     } @else {
       <div
         class="d-flex justify-content-center align-items-center"
