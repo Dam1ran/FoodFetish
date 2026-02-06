@@ -12,7 +12,11 @@ declare const google: {
       initTokenClient(config: {
         client_id: string;
         scope: string;
-        callback: (response: { access_token?: string; error?: string }) => void;
+        callback: (response: {
+          access_token?: string;
+          expires_in?: number;
+          error?: string;
+        }) => void;
       }): { requestAccessToken(): void };
     };
   };
@@ -72,6 +76,40 @@ export class GoogleDriveService {
 
   private gisLoaded = false;
 
+  constructor() {
+    this.restoreToken();
+  }
+
+  private restoreToken(): void {
+    const saved = localStorage.getItem('google_token_data');
+    if (saved) {
+      const data = JSON.parse(saved) as { token: string; expiry?: number };
+      if (!this.isTokenExpired(data.expiry)) {
+        this.accessToken = data.token;
+        this.isSignedIn.set(true);
+      } else {
+        this.clearToken();
+      }
+    }
+  }
+
+  private saveToken(token: string, expiresIn?: number): void {
+    const data: { token: string; expiry?: number } = { token };
+    if (expiresIn) {
+      data.expiry = Date.now() + expiresIn * 1000;
+    }
+    localStorage.setItem('google_token_data', JSON.stringify(data));
+  }
+
+  private isTokenExpired(expiry?: number): boolean {
+    if (!expiry) return false;
+    return Date.now() > expiry;
+  }
+
+  private clearToken(): void {
+    localStorage.removeItem('google_token_data');
+  }
+
   private loadGisScript(): Promise<void> {
     if (this.gisLoaded) {
       return Promise.resolve();
@@ -123,6 +161,9 @@ export class GoogleDriveService {
           }
 
           this.accessToken = response.access_token ?? null;
+          if (this.accessToken) {
+            this.saveToken(this.accessToken, response.expires_in);
+          }
           this.isSignedIn.set(true);
           this.toastsService.showAsSuccess('Signed in to Google Drive', {
             headerText: null,
@@ -138,6 +179,7 @@ export class GoogleDriveService {
 
   signOut() {
     this.accessToken = null;
+    this.clearToken();
     this.isSignedIn.set(false);
     this.toastsService.showAsInformation('Signed out from Google Drive', {
       headerText: null,
@@ -352,6 +394,7 @@ export class GoogleDriveService {
 
   private handleAuthError() {
     this.accessToken = null;
+    this.clearToken();
     this.isSignedIn.set(false);
     this.toastsService.showAsWarning('Google session expired. Please sign in again.', {
       headerText: null,
