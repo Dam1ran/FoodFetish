@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.10.0',
+      date: '06.02.2026',
+      changes: [
+        {
+          description: 'Optional Google Drive sync.',
+          type: VersionChangeType.Feature,
+        },
+      ],
+    },
+    {
       version: '1.9.0',
       date: '06.02.2026',
       changes: [
