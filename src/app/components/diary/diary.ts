@@ -37,7 +37,6 @@ import { OptionsService } from '../../shared/services/options/options.service';
 import { processImageToThumb } from '../../shared/helpers/image-helper';
 import { ImageStoreService } from '../../shared/services/image-store.service';
 import { RecipesService } from '../../shared/services/recipes.service';
-import { GoogleDriveService } from '../../shared/services/google-drive.service';
 
 @Component({
   selector: 'diary',
