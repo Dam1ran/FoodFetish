@@ -47,6 +47,7 @@ export class Recipes implements AfterViewInit {
   protected readonly recipesService = inject(RecipesService);
   protected readonly diaryLogService = inject(DiaryLogService);
   protected readonly modalService = inject(NgbModal);
+
   protected recipes = computed(() => {
     return this.recipesService
       .recipes()
@@ -118,6 +119,7 @@ export class Recipes implements AfterViewInit {
       this.cdr.detectChanges();
     });
   }
+
   async deleteImage(imageId: string) {
     await this.imageStoreService.delete(imageId);
     this.recipesService.deleteImage(imageId);

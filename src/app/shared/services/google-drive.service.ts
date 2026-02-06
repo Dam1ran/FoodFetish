@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { inject, Injectable, signal } from '@angular/core';
 import { FoodsService } from './my-foods.service';
 import { RecipesService } from './recipes.service';
@@ -37,6 +38,9 @@ interface AppData {
   diaryLog: unknown;
   options: unknown;
   images: { imageId: string; base64: string }[];
+  metadata?: {
+    version: number;
+  };
 }
 
 class DriveApiError extends Error {
@@ -74,6 +78,7 @@ export class GoogleDriveService {
 
   readonly isSignedIn = signal(false);
   readonly isSyncing = signal(false);
+  readonly syncFailed = signal(false);
   readonly userEmail = signal<string | null>(null);
 
   private gisLoaded = false;
@@ -177,6 +182,7 @@ export class GoogleDriveService {
             headerText: null,
             delayMs: 3000,
           });
+          await this.loadFromDrive();
           resolve();
         },
       });
@@ -236,6 +242,86 @@ export class GoogleDriveService {
     }
   }
 
+  async saveToDrive(): Promise<void> {
+    this.syncFailed.set(false);
+    if (!this.accessToken || this.isSyncing()) {
+      return;
+    }
+
+    this.isSyncing.set(true);
+
+    try {
+      let driveVersion = 0;
+      const fileId = await this.findDataFile();
+      if (fileId) {
+        const data = await this.downloadFile(fileId);
+        driveVersion = data.metadata?.version ?? 0;
+      }
+      let version = this.getLocalVersion();
+      if (driveVersion > version) {
+        return;
+      }
+
+      const appData = await this.gatherData();
+      version++;
+      appData.metadata = { version };
+
+      if (fileId) {
+        await this.updateFile(fileId, appData);
+      } else {
+        await this.createFile(appData);
+      }
+      this.setLocalVersion(version);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      if (this.isAuthError(error)) {
+        this.handleAuthError();
+      } else {
+        this.toastsService.showAsError('Failed to upload to Google Drive', {
+          headerText: null,
+          delayMs: 5000,
+        });
+      }
+      this.syncFailed.set(true);
+    } finally {
+      this.isSyncing.set(false);
+    }
+  }
+
+  async loadFromDrive(): Promise<void> {
+    if (!this.accessToken || this.isSyncing()) {
+      return;
+    }
+
+    this.isSyncing.set(true);
+
+    try {
+      const fileId = await this.findDataFile();
+      if (!fileId) {
+        return;
+      }
+
+      const data = await this.downloadFile(fileId);
+      await this.restoreData(data);
+      void this.imageStoreService.deleteDatabase();
+      if (data.metadata?.version) {
+        this.setLocalVersion(data.metadata.version);
+      }
+    } catch (error) {
+      console.error('Download failed:', error);
+      if (this.isAuthError(error)) {
+        this.handleAuthError();
+      } else {
+        this.toastsService.showAsError('Failed to download from Google Drive', {
+          headerText: null,
+          delayMs: 5000,
+        });
+      }
+      this.syncFailed.set(true);
+    } finally {
+      this.isSyncing.set(false);
+    }
+  }
   async downloadFromDrive(): Promise<void> {
     if (!this.accessToken) {
       this.toastsService.showAsWarning('Not signed in to Google Drive', {
@@ -423,5 +509,14 @@ export class GoogleDriveService {
     } catch {
       return undefined;
     }
+  }
+
+  private getLocalVersion() {
+    const version = localStorage.getItem('google_data_version');
+    return version ? parseInt(version) : 0;
+  }
+
+  private setLocalVersion(version: number) {
+    localStorage.setItem('google_data_version', version.toString());
   }
 }

@@ -13,12 +13,17 @@
   </div>
   <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
     <label for="scanner">Barcode</label>
-    <button class="btn btn-outline-warning opacity-50 me-auto" iconSize="24px" buttonIcon="si:barcode-fill" (click)="onScanBarcodeClick()"></button>
+    <button
+      class="btn btn-outline-warning opacity-50 me-auto"
+      iconSize="24px"
+      buttonIcon="si:barcode-fill"
+      (click)="onScanBarcodeClick()"
+    ></button>
     <input
       type="text"
       id="scanner"
       class="form-control px-1 py-1 text-center m-1"
-      style="width: 140px; font-size: 14px;"
+      style="width: 140px; font-size: 14px"
       [formField]="form.barcode"
     />
   </div>
@@ -27,7 +32,7 @@
     <button
       type="button"
       class="btn btn-secondary dropdown-toggle align-self-center py-0 m-1"
-      style="height: 34px; width: 140px;"
+      style="height: 34px; width: 140px"
       data-bs-toggle="dropdown"
       [style.background-color]="foodMacroCategoryMap[form.macroCategory().value()].bgColor"
     >
@@ -35,7 +40,10 @@
     </button>
     <ul class="dropdown-menu p-0" style="min-width: 140px">
       @for (macroCategory of macroCategories; track $index) {
-        <li [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor" [class.mt-1]="!$first">
+        <li
+          [style.background-color]="foodMacroCategoryMap[macroCategory.value].bgColor"
+          [class.mt-1]="!$first"
+        >
           @let sameCategory = macroCategory.value === form.macroCategory().value();
 
           <span
@@ -112,7 +120,9 @@
     />
   </div>
   <div class="d-flex justify-content-between align-items-center gap-2 mb-1 ms-1">
-    <label class="fst-italic text-muted" style="font-size: 14px;" for="weight">Preferred weight (g)</label>
+    <label class="fst-italic text-muted" style="font-size: 14px" for="weight"
+      >Preferred weight (g)</label
+    >
     <input
       type="number"
       inputmode="numeric"
@@ -133,16 +143,12 @@
     </textarea>
   </div>
 </div>
-<div
-  class="d-flex justify-content-center p-1"
->
+<div class="d-flex justify-content-center p-1">
   <button
-    type="button"
-    class="btn btn-outline-success gap-2 bmw d-flex align-items-center justify-content-between"
+    buttonIcon="heroicons-outline:save"
+    class="btn btn-outline-success"
     (click)="addEditFood()"
   >
     Save
-    <iconify icon="heroicons-outline:save" size="18px" />
   </button>
 </div>
-

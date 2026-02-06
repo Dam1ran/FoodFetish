@@ -1,10 +1,23 @@
 <nav class="navbar navbar-dark navbar-expand-md nav-gradient w-100 px-2">
   <div class="d-flex align-items-center gap-1 w-100">
-    <img src="assets/eat_64x64.png" alt="logo" width="40" />
-    <a class="navbar-brand" href="">FoodFetish</a>
+    <img
+      src="assets/eat_64x64.png"
+      alt="logo"
+      width="40"
+      class="rounded-circle logo"
+      style="border: 3px solid transparent"
+      [style.border-color]="googleDriveService.isSignedIn() ? 'rgba(160, 90, 140, 0.75)' : 'transparent'"
+      [class]="{
+        'border-success': googleDriveService.isSyncing(),
+        'border-danger-subtle': googleDriveService.syncFailed(),
+        'cursor-pointer': googleDriveService.isSignedIn() && !googleDriveService.isSyncing()
+      }"
+      (click)="trySync()"
+    />
+    <a class="navbar-brand fw-semibold opacity-70" href="">FoodFetish</a>
     <button
       class="navbar-toggler ms-auto shadow-none"
-      style="border: none;"
+      style="border: none"
       type="button"
       data-bs-toggle="offcanvas"
       data-bs-target="#offcanvasNavbar"
@@ -75,6 +88,11 @@
   </div>
 </nav>
 
-<router-outlet />
+<div class="position-relative">
+  <router-outlet />
+  <!-- @if (googleDriveService.isSyncing()) {
+    <div class="overlay position-absolute z-3" style="inset: 0"></div>
+  } -->
+</div>
 
 <toasts />

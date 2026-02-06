@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { RoutePaths } from './shared/routes/route-paths';
 import { ToastsComponent } from './shared/components/toasts.component';
+import { GoogleDriveService } from './shared/services/google-drive.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,19 @@ import { ToastsComponent } from './shared/components/toasts.component';
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
+  protected readonly googleDriveService = inject(GoogleDriveService);
   protected readonly routePaths = RoutePaths;
   protected readonly router = inject(Router);
+
   ngOnInit() {
     const redirect = sessionStorage['redirect'];
     if (redirect) {
       delete sessionStorage['redirect'];
       void this.router.navigateByUrl(redirect);
     }
+  }
+
+  trySync() {
+    void this.googleDriveService.saveToDrive().then(() => this.googleDriveService.loadFromDrive());
   }
 }

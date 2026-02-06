@@ -1,3 +1,19 @@
+.logo {
+  transition: border-color 0.3s;
+}
+
 .nav-gradient {
   background: linear-gradient(to right, oklch(30% 0.05 260), oklch(15% 0.05 0));
+}
+
+.overlay {
+  background-color: rgba(100, 80, 90, 0.1);
+  backdrop-filter: blur(1px);
+  transition:
+    backdrop-filter 0.3s,
+    background-color 0.3s;
+
+  @starting-style {
+    backdrop-filter: blur(0);
+  }
 }

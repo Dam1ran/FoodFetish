@@ -30,7 +30,7 @@ import { DiaryLogService } from '../../../../shared/services/diary-log.service';
           }"
         />
       </div>
-    } @else {
+    } @else if (!stretched()) {
       <div
         class="d-flex justify-content-center align-items-center"
         style="width: 160px; height: 160px;"

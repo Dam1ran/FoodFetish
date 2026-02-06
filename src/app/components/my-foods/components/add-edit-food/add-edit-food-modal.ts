@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { form, FormField } from '@angular/forms/signals';
-import { IconifyComponent } from '../../../../shared/components/iconify.component';
 import { FoodsService } from '../../../../shared/services/my-foods.service';
 import {
   FoodMacroCategory,
@@ -21,7 +20,7 @@ import { ButtonIconDirective } from '../../../../shared/directives/button-icon.d
 
 @Component({
   selector: 'add-edit-food-modal',
-  imports: [IconifyComponent, FormField, ButtonIconDirective],
+  imports: [FormField, ButtonIconDirective],
   templateUrl: './add-edit-food-modal.html',
 })
 export class AddEditFood implements AfterViewInit {
