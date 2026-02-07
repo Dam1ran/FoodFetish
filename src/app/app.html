@@ -6,11 +6,13 @@
       width="40"
       class="rounded-circle logo"
       style="border: 3px solid transparent"
-      [style.border-color]="googleDriveService.isSignedIn() ? 'rgba(160, 90, 140, 0.75)' : 'transparent'"
+      [style.border-color]="
+        googleDriveService.isSignedIn() ? 'rgba(160, 90, 140, 0.75)' : 'transparent'
+      "
       [class]="{
         'border-success': googleDriveService.isSyncing(),
         'border-danger-subtle': googleDriveService.syncFailed(),
-        'cursor-pointer': googleDriveService.isSignedIn() && !googleDriveService.isSyncing()
+        'cursor-pointer': googleDriveService.isSignedIn() && !googleDriveService.isSyncing(),
       }"
       (click)="trySync()"
     />
@@ -35,51 +37,59 @@
       </div>
       <div class="offcanvas-body">
         <ul
-          class="navbar-nav align-items-start align-items-md-center justify-content-end flex-grow-1 gap-2"
+          class="navbar-nav align-items-stretch align-items-md-center justify-content-end flex-grow-1 gap-2"
         >
-          <li class="nav-item">
+          <li class="nav-item bg-body-tertiary rounded opacity-75">
             <a
-              class="nav-link px-4 fw-bold text-center"
+              class="nav-link fw-bold text-center d-flex align-items-center justify-content-between px-1 text-info opacity-65"
               style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
               [routerLink]="routePaths.home"
               [routerLinkActiveOptions]="{ exact: true }"
               routerLinkActive="rounded border-success"
               data-bs-dismiss="offcanvas"
             >
-              Home
+              <iconify icon="bx:home" size="32px" />
+              <div class="fs-5" style="min-width: 120px">Home</div>
+              <iconify icon="bx:home" size="32px" />
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item bg-body-tertiary rounded opacity-75">
             <a
-              class="nav-link px-4 fw-bold text-center"
+              class="nav-link fw-bold text-center d-flex align-items-center justify-content-between px-1 text-success-emphasis"
               style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
               [routerLink]="routePaths.diary"
               routerLinkActive="rounded border-success"
               data-bs-dismiss="offcanvas"
             >
-              Diary
+              <iconify icon="mdi:book-edit-outline" size="32px" />
+              <div class="fs-5" style="min-width: 120px">Diary</div>
+              <iconify icon="mdi:book-edit-outline" size="32px" />
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item bg-body-tertiary rounded opacity-75">
             <a
-              class="nav-link px-4 fw-bold text-center"
+              class="nav-link fw-bold text-center d-flex align-items-center justify-content-between px-1 text-primary opacity-75"
               style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
               [routerLink]="routePaths.recipes"
               routerLinkActive="rounded border-success"
               data-bs-dismiss="offcanvas"
             >
-              Recipes
+              <iconify icon="pajamas:recipe" size="32px" />
+              <div class="fs-5" style="min-width: 120px">Recipes</div>
+              <iconify icon="pajamas:recipe" size="32px" />
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item bg-body-tertiary rounded opacity-75">
             <a
-              class="nav-link px-4 fw-bold text-center"
+              class="nav-link fw-bold text-center d-flex align-items-center justify-content-between px-1 text-danger-emphasis"
               style="border-bottom: 2px solid rgb(75, 75, 75); min-width: 8rem; height: 40px"
               [routerLink]="routePaths.myFoods"
               routerLinkActive="rounded border-success"
               data-bs-dismiss="offcanvas"
             >
-              My foods
+              <iconify icon="fluent:food-apple-24-regular" size="32px" />
+              <div class="fs-5" style="min-width: 120px">My foods</div>
+              <iconify icon="fluent:food-apple-24-regular" size="32px" />
             </a>
           </li>
         </ul>

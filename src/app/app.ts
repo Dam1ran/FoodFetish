@@ -3,10 +3,11 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { RoutePaths } from './shared/routes/route-paths';
 import { ToastsComponent } from './shared/components/toasts.component';
 import { GoogleDriveService } from './shared/services/google-drive.service';
+import { IconifyComponent } from './shared/components/iconify.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, ToastsComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ToastsComponent, IconifyComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
