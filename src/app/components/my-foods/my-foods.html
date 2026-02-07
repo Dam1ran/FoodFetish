@@ -47,7 +47,7 @@
 </div>
 <div class="content-wrapper overflow-y-auto" style="height: calc(100dvh - 141px)">
   <table
-    class="table table-sm table-striped table-hover mb-0"
+    class="table table-sm table-borderless mb-0"
     style="font-size: 12px; table-layout: fixed"
   >
     <thead class="position-sticky z-1" style="top: 0px">
@@ -94,9 +94,12 @@
     <tbody>
       @for (food of foods(); track $index) {
         <tr scope="row" class="opacity-90">
-          <td rowspan="2">
+          <td colspan="7" class="bg-dark" style="padding: 1px 0;"></td>
+        </tr>
+        <tr scope="row" class="opacity-90">
+          <td rowspan="2" class="bg-dark-subtle">
             <button
-              class="btn p-0 btn-warning opacity-25 m-auto"
+              class="btn btn-outline-warning border-0 p-0 opacity-30 m-auto"
               iconSize="16px"
               buttonIcon="iconoir:trash"
               (click)="deleteFood(food)"
@@ -104,22 +107,22 @@
           </td>
           <td
             colspan="5"
-            class="py-1 text-center rounded-top"
+            class="py-1 text-center opacity-90"
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
             [class.text-decoration-underline]="!!diaryDate() || !!recipeId()"
             (click)="addFoodToDiaryOrRecipe(food)"
-            style="font-size: 16px; text-underline-offset: 2px"
+            style="font-size: 16px; text-underline-offset: 2px; text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);"
           >
             <div class="d-flex justify-content-center align-items-center">
               <div>{{ food.name }}</div>
               @if (food.barcode) {
-                <iconify class="ms-1 opacity-25" icon="si:barcode-fill" />
+                <iconify class="ms-1 opacity-50" icon="si:barcode-fill" />
               }
             </div>
           </td>
-          <td rowspan="2">
+          <td rowspan="2" class="bg-dark-subtle">
             <button
-              class="btn p-0 rounded btn-secondary m-auto opacity-65"
+              class="btn p-0 rounded m-auto opacity-30"
               iconSize="24px"
               buttonIcon="iconoir:edit"
               (click)="editFood(food)"
@@ -134,7 +137,6 @@
               font-size: 12px;
               text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
               color: rgb(80, 100, 240);
-              border-bottom-left-radius: 4px;
             "
           >
             {{ food.protein }}
@@ -179,7 +181,6 @@
               font-size: 12px;
               text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
               color: rgb(150, 140, 180);
-              border-bottom-right-radius: 4px;
             "
           >
             {{ food.calories }}
