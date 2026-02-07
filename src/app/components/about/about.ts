@@ -49,6 +49,11 @@ export class About {
       text: 'Macros tracker with background color changes.',
     },
     {
+      icon: 'ic:round-sync',
+      iconClass: 'text-primary-emphasis',
+      text: 'Google Drive sync.',
+    },
+    {
       icon: 'lucide:activity',
       iconClass: 'text-warning',
       text: 'Add your activities.',
