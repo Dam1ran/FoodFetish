@@ -103,7 +103,7 @@
                   <div class="flex-grow-1" style="font-size: 16px">{{ food.name }}</div>
                   <input
                     type="number"
-                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body me-1"
+                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body me-1 opacity-75"
                     style="font-size: 14px"
                     [value]="food.weight"
                     (blur)="recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)"

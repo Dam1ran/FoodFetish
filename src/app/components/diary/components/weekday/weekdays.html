@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between">
     @for (weekday of weekdays; track $index) {
       <div
-        class="weekday bg-body cursor-pointer"
+        class="weekday bg-body cursor-pointer opacity-85"
         [class]="{
           'border-warning': isDaySelected(weekday),
           'text-primary': isTodayLbl(weekday),

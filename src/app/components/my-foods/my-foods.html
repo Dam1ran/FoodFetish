@@ -93,7 +93,7 @@
     </thead>
     <tbody>
       @for (food of foods(); track $index) {
-        <tr scope="row">
+        <tr scope="row" class="opacity-90">
           <td rowspan="2">
             <button
               class="btn p-0 btn-warning opacity-25 m-auto"
@@ -119,7 +119,7 @@
           </td>
           <td rowspan="2">
             <button
-              class="btn p-0 rounded btn-secondary m-auto opacity-75"
+              class="btn p-0 rounded btn-secondary m-auto opacity-65"
               iconSize="24px"
               buttonIcon="iconoir:edit"
               (click)="editFood(food)"
@@ -141,7 +141,7 @@
           </td>
           <td
             class="text-truncate text-center p-0"
-            [style.background-color]="`rgb(from ${foodMacroCategoryMap[food.macroCategory].bgColor} r g b / 0.25)`"
+            [style.background-color]="`rgb(from ${foodMacroCategoryMap[food.macroCategory].bgColor} r g b / 0.2)`"
             style="
               font-size: 12px;
               text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
