@@ -27,20 +27,20 @@
         <div class="accordion-item">
           <h2 class="accordion-header d-flex align-items-center gap-1 bg-body-tertiary">
             <button
-              class="btn btn-outline-primary ms-1 opacity-50"
+              class="btn btn-outline-primary ms-1 opacity-50 border-0"
               buttonIcon="material-symbols:add-row-above-rounded"
               iconSize="24px"
               (click)="toggleAddRecipeToDiary(recipe.id)"
             ></button>
             <input
-              class="form-control form-control-sm text-center bg-dark-subtle"
+              class="form-control form-control-sm text-center bg-dark-subtle border-light-subtle opacity-80"
               style="font-size: 16px"
               type="text"
               [value]="recipe.name"
               (input)="recipesService.updateRecipeName(recipe.id, $event.target.value)"
             />
             <input
-              class="form-control form-control-sm text-center bg-dark-subtle"
+              class="form-control form-control-sm text-center bg-dark-subtle border-light-subtle opacity-80"
               style="font-size: 14px; max-width: 30px; padding: 5.5px 2px !important"
               placeholder="portions"
               type="number"
@@ -51,7 +51,7 @@
               (input)="recipesService.updateRecipePortions(recipe.id, $event.target.value)"
             />
             <button
-              class="btn btn-outline-secondary me-1 opacity-65"
+              class="btn btn-outline-secondary me-1 opacity-65 border-0"
               [class.btn-outline-success]="recipe.note"
               buttonIcon="iconoir:notes"
               iconSize="24px"
@@ -87,7 +87,7 @@
                   cdkDrag
                 >
                   <div
-                    class="bg-warning-subtle opacity-25 d-flex align-content-center rounded border border-warning-subtle"
+                    class="opacity-50 d-flex align-content-center rounded"
                   >
                     <button
                       class="btn-close p-0"
@@ -103,8 +103,8 @@
                   <div class="flex-grow-1" style="font-size: 16px">{{ food.name }}</div>
                   <input
                     type="number"
-                    class="form-control form-control-sm text-center p-0 border border-success-subtle gram-input bg-body me-1 opacity-75"
-                    style="font-size: 14px"
+                    class="form-control form-control-sm text-center p-0 border gram-input me-1 opacity-70"
+                    style="font-size: 14px; border-color: rgba(90, 70, 100, 0.7) !important; box-shadow: inset 0 0 8px 4px rgba(160, 160, 160, 0.065);"
                     [value]="food.weight"
                     (blur)="recipesService.updateFoodWeight(recipe.id, $index, $event.target.value)"
                     #weightInput

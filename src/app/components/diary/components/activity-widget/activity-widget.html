@@ -85,10 +85,10 @@
         >
           <div class="p-1 d-flex gap-2 justify-content-between">
             <div class="d-flex align-items-center gap-1">
-              <span class="fopacity-15" style="margin: 0px 1px">
+              <span class="opacity-15" style="margin: 0px 1px">
                 <iconify icon="mingcute:time-line" size="24px" />
               </span>
-              <div style="padding: 2px 0">
+              <div class="opacity-85" style="padding: 2px 0">
                 <ngb-timepicker
                   size="small"
                   [spinners]="false"
@@ -99,7 +99,7 @@
             </div>
             <div class="flex-grow-1" style="padding: 2px">
               <input
-                class="form-control form-control-sm shadow-none text-center border-none opacity-75"
+                class="form-control form-control-sm shadow-none text-center border-none opacity-70 bg-dark-subtle"
                 type="text"
                 placeholder="Note"
                 [(ngModel)]="activity.note"

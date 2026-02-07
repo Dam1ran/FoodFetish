@@ -24,7 +24,7 @@
       </button>
       <div class="d-flex align-items-center">
         <button
-          class="btn p-0 d-flex justify-content-between position-relative"
+          class="btn p-0 d-flex justify-content-between position-relative opacity-70"
           style="width: fit-content"
           (click)="diaryLogService.subtractDayWater(selectedDayJs().toISOString(), 100)"
         >
@@ -53,7 +53,7 @@
           }
         </div>
         <button
-          class="btn p-0 d-flex justify-content-between position-relative"
+          class="btn p-0 d-flex justify-content-between position-relative opacity-70"
           style="width: fit-content"
           (click)="diaryLogService.addDayWater(selectedDayJs().toISOString(), 100)"
         >
@@ -93,7 +93,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header d-flex align-items-center">
             <button
-              class="accordion-button p-2 text-truncate text-muted shadow-none rounded bg-dark-subtsle"
+              class="accordion-button p-2 text-truncate text-muted shadow-none bg-dark-subtsle"
               [class]="{
                 collapsed: !isMealExpanded(mealTemplateEntry.position),
                 'fw-semibold': mealTemplateEntry.position !== mealPosition.Snacks,
@@ -111,7 +111,7 @@
             </button>
             <div class="flex-grow-1 align-self-stretch">
               <div
-                class="row g-0 h-100 fw-light fst-italic rounded"
+                class="row g-0 h-100 fw-light fst-italic"
                 [class]="{
                   'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
                   'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
@@ -168,14 +168,14 @@
             @if (respectiveMeal && mealTemplateEntry.position !== mealPosition.Snacks) {
               <div class="d-flex align-items-center p-2 gap-1 bg-body-tertiary">
                 <button
-                  class="btn btn-outline-secondary"
+                  class="btn btn-outline-secondary border-0"
                   [class.btn-outline-success]="respectiveMeal.note"
                   buttonIcon="iconoir:notes"
-                  iconSize="16px"
+                  iconSize="24px"
                   (click)="toggleEditMealNoteDialog(respectiveMeal.id, respectiveMeal.note)"
                 ></button>
                 <input
-                  class="form-control form-control-sm shadow-none text-center bg-dark-subtle"
+                  class="form-control form-control-sm shadow-none text-center bg-dark"
                   type="text"
                   [value]="respectiveMeal.name"
                   (input)="updateMealName(mealTemplateEntry.position, $event.target.value)"

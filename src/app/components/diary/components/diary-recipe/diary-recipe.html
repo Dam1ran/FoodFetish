@@ -6,7 +6,7 @@
   <div class="accordion-item">
     <h2 class="accordion-header d-flex align-items-center">
       <button
-        class="btn btn-outline-warning btn-sm opacity-25 mx-1"
+        class="btn btn-outline-warning btn-sm opacity-25 mx-1 border-0"
         buttonIcon="iconoir:trash"
         iconSize="16px"
         (click)="removeRecipe.emit()"
@@ -23,9 +23,9 @@
           </div>
         </div>
       </button>
-      <div class="d-flex align-items-center gap-1 justify-content-center" style="width: 34px">
-        <iconify icon="icon-park-outline:chart-proportion" class="text-success" size="16px" />
-        <div class="text-muted" style="font-size: 10px">{{ recipe().portions }}</div>
+      <div class="d-flex align-items-center gap-1 justify-content-center opacity-50" style="width: 34px">
+        <iconify icon="icon-park-outline:chart-proportion" class="text-success-emphasis" size="16px" />
+        <div class="text-muted fst-italic" style="font-size: 10px; margin-left: -2px;">{{ recipe().portions }}</div>
       </div>
     </h2>
     <div
