@@ -11,7 +11,7 @@ export class About {
     {
       icon: 'game-icons:measure-tape',
       iconClass: 'text-warning-emphasis',
-      text: 'Anthropometrics calculator with 2 formulas, which allow user to calorie targets based on 7days data!',
+      text: 'Anthropometrics calculator with 2 formulas, which allow user to calorie targets based on 7 days data!',
     },
     {
       icon: 'iconoir:weight',
