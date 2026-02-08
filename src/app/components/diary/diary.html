@@ -38,7 +38,7 @@
         @let waterMl = diaryLogService.getDayWater(selectedDayJs().toISOString());
         <div
           class="text-center rounded fw-semibold opacity-70"
-          style="width: 40px; border: 1px solid transparent"
+          style="width: 43px; border: 1px solid transparent;font-size: 14px;"
           [class.border-info-subtle]="
             waterThresholdMet(waterMl, optionsService.options().weightFormulaBackDays)
           "
