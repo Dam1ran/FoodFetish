@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { Injectable } from '@angular/core';
 import { VersionChangeType } from './version-change-type.enum';
 import { versionChangeTypeColorMap } from './version-change-type.enum';
@@ -11,6 +12,16 @@ export class VersionService {
   }
 
   readonly releases = [
+    {
+      version: '1.11.2',
+      date: '08.02.2026',
+      changes: [
+        {
+          description: 'Fix calculation when no weight was provided.',
+          type: VersionChangeType.Fix,
+        },
+      ],
+    },
     {
       version: '1.11.1',
       date: '08.02.2026',

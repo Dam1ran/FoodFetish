@@ -32,6 +32,8 @@ export class Options {
   protected readonly googleDriveService = inject(GoogleDriveService);
   protected readonly optionsService = inject(OptionsService);
 
+  protected readonly today = computed(() => DayJsHelper.getStartOfToday());
+
   protected readonly jsonUploadFoodsInput =
     viewChild<ElementRef<HTMLInputElement>>('jsonUploadFoods');
   onLoadFoodsFromFile(fileEvent) {

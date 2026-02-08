@@ -98,6 +98,7 @@ export class OptionsService {
       : 0;
     const isMale = !!this.options().isMale;
     const activityLevel = this.options().activityLevel ?? ActivityLevel.None;
+
     if (weight <= 0 || heightCm <= 0 || activityLevel === ActivityLevel.None) {
       return 0;
     }
@@ -113,7 +114,7 @@ export class OptionsService {
   getCaloriesForWeightGoal(weight: number) {
     const weightGoal = this.options().weightGoal ?? WeightGoal.None;
     const calories = this.getCaloriesForActivityLevel(weight);
-    if (weightGoal === WeightGoal.None) {
+    if (weightGoal === WeightGoal.None || !calories) {
       return calories;
     }
 

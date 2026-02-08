@@ -96,26 +96,53 @@
           </div>
         </div>
       </div>
-      <div class="d-flex justify-content-center my-1">
-        <div
-          class="rounded align-content-center text-center bg-body-secondary opacity-80"
-          style="min-width: 120px"
-        >
-          @if (selectedDayJs(); as date) {
-            <span class="text-info-emphasis" style="font-size: 14px">
-              {{ date.toISOString() | date }}
-            </span>
-            <span class="fst-italic">({{ years() }})</span>
-          } @else {
-            <span class="fst-italic text-muted text-warning-emphasis" style="font-size: 14px">
-              Date of birth
-            </span>
-          }
+      <div class="d-flex justify-content-between align-items-end">
+        <div>
+          <div class="opacity-50 text-center" style="font-size: 10px">Weight</div>
+          <div class="d-flex mb-1">
+            <iconify
+              class="z-0 opacity-75"
+              [class]="{
+                'text-info-emphasis': optionsService.options().height,
+                'text-warning-emphasis': !optionsService.options().height,
+              }"
+              icon="iconoir:weight"
+              size="32px"
+            />
+            <input
+              type="number"
+              inputmode="numeric"
+              class="form-control text-center p-0 shadow-none border border-0 opacity-80"
+              style="width: 44px; border-radius: 2px"
+              [placeholder]="diaryLogService.getCurrentWeight(today().toISOString()) ? 'kg' : '?'"
+              [value]="diaryLogService.getCurrentWeight(today().toISOString()) ?? null"
+              (blur)="diaryLogService.updateCurrentWeight(today().toISOString(), $event.target.value)"
+            />
+          </div>
         </div>
-        <date-picker
-          [selectedDate]="selectedDate()"
-          (selectedDateChange)="selectedDate.set($event); optionsService.updateDateOfBirth($event)"
-        />
+        <div class="d-flex justify-content-center my-1 align-itesms-center">
+          <div
+            class="rounded align-content-center text-center bg-body-secondary opacity-80"
+            style="min-width: 120px"
+          >
+            @if (selectedDayJs(); as date) {
+              <span class="text-info-emphasis" style="font-size: 14px">
+                {{ date.toISOString() | date }}
+              </span>
+              <span class="fst-italic">({{ years() }})</span>
+            } @else {
+              <span class="fst-italic text-muted text-warning-emphasis" style="font-size: 14px">
+                Date of birth
+              </span>
+            }
+          </div>
+          <date-picker
+            [selectedDate]="selectedDate()"
+            (selectedDateChange)="
+              selectedDate.set($event); optionsService.updateDateOfBirth($event)
+            "
+          />
+        </div>
       </div>
       <button
         type="button"
