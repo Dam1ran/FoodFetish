@@ -10,6 +10,17 @@
   >
     <span class="opacity-85">{{ selectedDayJs()?.toISOString() | date }}</span>
   </div>
+  <div class="position-relative" style="height: 1px">
+    <div
+      class="position-absolute rounded-circle translate-middle bosrder bosrder-secondary"
+      style="width: 10px; height: 10px;"
+      [style]="{
+        'left': getLeftPositionPercentBasedOnTime(),
+        'opacity': getTimeBasedOpacity(),
+        'background-color': getTimeBasedBgColor(),
+      }"
+    ></div>
+  </div>
   <weekdays [(selectedDate)]="selectedDate" />
   <div class="border-bottom"></div>
   <div class="d-flex">
@@ -38,7 +49,7 @@
         @let waterMl = diaryLogService.getDayWater(selectedDayJs().toISOString());
         <div
           class="text-center rounded fw-semibold opacity-70"
-          style="width: 43px; border: 1px solid transparent;font-size: 14px;"
+          style="width: 43px; border: 1px solid transparent; font-size: 14px"
           [class.border-info-subtle]="
             waterThresholdMet(waterMl, optionsService.options().weightFormulaBackDays)
           "

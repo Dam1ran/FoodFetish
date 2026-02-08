@@ -280,4 +280,25 @@ export class Diary implements AfterViewInit {
       await this.imageStoreService.delete(imageId);
     }
   }
+  getLeftPositionPercentBasedOnTime() {
+    const now = new Date();
+    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+    const totalMinutesInDay = 24 * 60;
+    return `${(minutesSinceMidnight / totalMinutesInDay) * 100}%`;
+  }
+
+  getTimeBasedOpacity() {
+    const now = new Date();
+    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+    const distanceFromNoon = Math.abs(minutesSinceMidnight - 720);
+    return 1 - (distanceFromNoon / 720) * 0.75;
+  }
+
+  getTimeBasedBgColor() {
+    const now = new Date();
+    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+    const dayProgress = (minutesSinceMidnight / (24 * 60)) * Math.PI * 2;
+    const hue = 240 + (Math.cos(dayProgress) - 1) * 97.5;
+    return `hsl(${Math.round(hue)}, 25%, 65%, 0.9)`;
+  }
 }
