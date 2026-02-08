@@ -12,6 +12,10 @@ import dayjs from 'dayjs';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
 
 dayjs.extend(utc);

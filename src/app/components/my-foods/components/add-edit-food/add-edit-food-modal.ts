@@ -31,7 +31,7 @@ export class AddEditFood implements AfterViewInit {
   private readonly activeModal = inject(NgbActiveModal);
   private readonly foodsService = inject(FoodsService);
 
-  readonly food = model<Food>(new Food(undefined, 'new food'));
+  readonly food = model<Food>();
   protected readonly form = form(this.food);
 
   protected readonly macroCategories = Object.keys(FoodMacroCategory)

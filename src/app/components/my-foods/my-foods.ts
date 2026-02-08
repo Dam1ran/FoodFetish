@@ -56,7 +56,13 @@ export class MyFoods {
   protected readonly recipeId = input<string>('');
 
   protected addFood() {
-    this.modalService.open(AddEditFood);
+    const modal = this.modalService.open(AddEditFood);
+    modal.componentInstance.food.set(new Food(undefined, this.nameFilter().capitalize()));
+  }
+
+  protected addFoodAndGoogle() {
+    window.open(this.getProductLink(), '_blank');
+    this.addFood();
   }
 
   private readonly diaryLogService = inject(DiaryLogService);
@@ -81,5 +87,9 @@ export class MyFoods {
 
   protected deleteFood(food: Food) {
     this.myFoodsService.deleteFood(food);
+  }
+
+  getProductLink() {
+    return `https://www.google.com/search?q=show+me+data+for+${encodeURI(this.nameFilter())}+100g+of+product+with+macro+order+list+protein+-+carbs+-+fats+-+fiber+-+Kcal+as+table+header`;
   }
 }
