@@ -41,6 +41,13 @@ export class DiaryLogService {
       (entry) => entry.position === mealPosition,
     )?.meal;
   }
+  isPrevPositionMealEmpty(isoDate: string, mealPosition: MealPosition) {
+    mealPosition = --mealPosition;
+    const entry = this.getRespectiveDayTemplate(isoDate)?.entries.find(
+      (entry) => entry.position === mealPosition,
+    );
+    return !entry?.meal?.foods?.length && !entry?.recipes?.length;
+  }
   updateMealTime(isoDate: string, mealPosition: MealPosition) {
     mealPosition = Number(mealPosition);
     this.diaryLog.update((diaryLog) => {
@@ -769,5 +776,24 @@ export class DiaryLogService {
     });
 
     this.saveDiaryLog();
+  }
+
+  getCalorieAveragePer7Days(isoDate: string) {
+    const date = dayjs(isoDate).utc();
+
+    const caloriesInWeek: number[] = [];
+    for (let i = 0; i < 7; i++) {
+      const currentDate = date.subtract(i, 'day').toISOString();
+      const calorie = this.getCalorie(currentDate);
+      if (calorie > 0) {
+        caloriesInWeek.push(calorie);
+      }
+    }
+
+    if (caloriesInWeek.length === 0) {
+      return 0;
+    }
+
+    return caloriesInWeek.reduce((acc, cal) => acc + cal, 0) / caloriesInWeek.length;
   }
 }

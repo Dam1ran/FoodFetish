@@ -1,14 +1,14 @@
 <div class="content-wrapper">
   <div
-    class="bg-body-tertiary text-center opacity-75"
+    class="bg-body-tertiary text-center"
     [class]="{
       'fst-italic': !isTodaySelected(),
       'fw-semibold': isTodaySelected(),
       'text-muted': !isTodaySelected(),
     }"
-    style="font-size: 14px; line-height: 16px"
+    style="font-size: 14px; line-height: 18px"
   >
-    {{ selectedDayJs()?.toISOString() | date }}
+    <span class="opacity-85">{{ selectedDayJs()?.toISOString() | date }}</span>
   </div>
   <weekdays [(selectedDate)]="selectedDate" />
   <div class="border-bottom"></div>
@@ -81,29 +81,29 @@
   <div class="border-bottom"></div>
   <div class="accordion accordion-flush position-relative" id="accordionFlush">
     <div class="overlay"></div>
-    @for (mealTemplateEntry of dayTemplateService.getDayTemplate()!.entries; track $index) {
-      @let respectiveDay = diaryLogService.getRespectiveDayTemplate(selectedDayJs().toISOString());
+    @for (
+      mealTemplateEntry of dayTemplateService.getDayTemplate()!.entries;
+      let mealIndex = $index;
+      track mealIndex
+    ) {
       @let respectiveMeal = getRespectiveMeal(mealTemplateEntry.position);
-      @if (
-        $index === 0 ||
-        $index === dayTemplateService.getDayTemplate().entries.length - 1 ||
-        respectiveDay?.entries[$index - 1]?.meal?.foods?.length ||
-        respectiveDay?.entries[$index - 1]?.recipes?.length
-      ) {
+      @if (isMealShown(mealTemplateEntry.position)) {
         <div class="accordion-item">
           <h2 class="accordion-header d-flex align-items-center">
             <button
-              class="accordion-button p-2 text-truncate text-muted shadow-none bg-dark-subtsle"
+              class="accordion-button p-2 text-truncate text-muted shadow-none"
               [class]="{
                 collapsed: !isMealExpanded(mealTemplateEntry.position),
                 'fw-semibold': mealTemplateEntry.position !== mealPosition.Snacks,
-                'opacity-50': mealTemplateEntry.position !== mealPosition.Snacks && !isMealExpanded(mealTemplateEntry.position),
+                'opacity-50':
+                  mealTemplateEntry.position !== mealPosition.Snacks &&
+                  !isMealExpanded(mealTemplateEntry.position),
                 'opacity-30': mealTemplateEntry.position === mealPosition.Snacks,
                 'opacity-70': isMealExpanded(mealTemplateEntry.position),
               }"
               type="button"
               data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#flush-collapse' + $index"
+              [attr.data-bs-target]="'#flush-collapse' + mealIndex"
               (click)="toggleExpandedMeal(mealTemplateEntry.position)"
               style="width: 130px"
             >
@@ -113,7 +113,7 @@
               <div
                 class="row g-0 h-100 fw-light fst-italic"
                 [class]="{
-                  'bg-body-secondary': !isMealExpanded(mealTemplateEntry.position),
+                  'bg-body-tertiary': !isMealExpanded(mealTemplateEntry.position),
                   'bg-dark-subtle': isMealExpanded(mealTemplateEntry.position),
                 }"
                 style="font-size: 12px; transition: background-color 0.3s"
@@ -123,44 +123,56 @@
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(80, 100, 240)"
                 >
-                  {{ positionStats.proteins.toFixed() }}
+                  @if (positionStats.proteins; as proteins) {
+                    {{ proteins.toFixed() }}
+                  }
                 </div>
                 <div
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(220, 220, 90)"
                 >
-                  {{ positionStats.carbs.toFixed() }}
+                  @if (positionStats.carbs; as carbs) {
+                    {{ carbs.toFixed() }}
+                  }
                 </div>
                 <div
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(200, 160, 30)"
                 >
-                  {{ positionStats.fats.toFixed() }}
+                  @if (positionStats.fats; as fats) {
+                    {{ fats.toFixed() }}
+                  }
                 </div>
                 <div
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(100, 130, 20)"
                 >
-                  {{ positionStats.fiber.toFixed() }}
+                  @if (positionStats.fiber; as fiber) {
+                    {{ fiber.toFixed() }}
+                  }
                 </div>
                 <div
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(150, 140, 180)"
                 >
-                  {{ positionStats.calories.toFixed() }}
+                  @if (positionStats.calories; as calories) {
+                    {{ calories.toFixed() }}
+                  }
                 </div>
                 <div
                   class="col col-2 align-self-center text-center"
                   style="color: rgb(100, 100, 100)"
                 >
-                  {{ positionStats.weight.toFixed() }}
+                  @if (positionStats.weight; as weight) {
+                    {{ weight.toFixed() }}
+                  }
                 </div>
               </div>
             </div>
           </h2>
           <div
             #collapsible
-            [id]="'flush-collapse' + $index"
+            [id]="'flush-collapse' + mealIndex"
             class="accordion-collapse collapse rounded"
             [class.show]="isMealExpanded(mealTemplateEntry.position)"
             data-bs-parent="#accordionFlush"
@@ -191,7 +203,8 @@
 
             @for (
               recipe of getRespectiveRecipes(mealTemplateEntry.position);
-              track $index;
+              let recipeIndex = $index;
+              track recipeIndex;
               let isOdd = $odd
             ) {
               <diary-recipe
@@ -199,27 +212,30 @@
                 (updateFoodWeight)="
                   updateRecipeFoodWeight(
                     mealTemplateEntry.position,
-                    $index,
+                    recipeIndex,
                     $event.foodIndex,
                     $event.newWeight
                   )
                 "
-                (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, $index)"
-                (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, $index, $event)"
+                (removeRecipe)="removeRecipeFromPosition(mealTemplateEntry.position, recipeIndex)"
+                (removeFood)="removeFoodFromRecipe(mealTemplateEntry.position, recipeIndex, $event)"
               />
             }
             <div class="d-flex flex-column gap-1" [class.py-1]="respectiveMeal?.foods?.length">
               @for (
                 food of respectiveMeal?.foods;
-                track $index;
+                let foodIndex = $index;
+                track foodIndex;
                 let isOdd = $odd;
                 let isLast = $last
               ) {
                 <food-row
                   [food]="food"
                   [isOdd]="isOdd"
-                  (removeFood)="removeFood(mealTemplateEntry.position, $index)"
-                  (updateFoodWeight)="updateFoodWeight(mealTemplateEntry.position, $index, $event)"
+                  (removeFood)="removeFood(mealTemplateEntry.position, foodIndex)"
+                  (updateFoodWeight)="
+                    updateFoodWeight(mealTemplateEntry.position, foodIndex, $event)
+                  "
                   [focusWeight]="isMealExpanded(mealTemplateEntry.position) && isLast"
                 />
               }
@@ -246,10 +262,7 @@
                     />
                   </div>
                   <div class="position-absolute z-0 w-100">
-                    <meal-thumb
-                      stretched
-                      [imageId]="respectiveMeal.imageId"
-                    />
+                    <meal-thumb stretched [imageId]="respectiveMeal.imageId" />
                   </div>
                 </div>
               } @else if (

@@ -44,4 +44,12 @@ export class WeightInWidget {
   protected readonly caloriesMax = computed(() => Math.max(...this.calories()));
   protected readonly caloriesMin = computed(() => Math.min(...this.calories()));
   protected readonly caloriesRange = computed(() => this.caloriesMax() - this.caloriesMin());
+
+  getCalorieAverageLeftPositionPercent(currentCalories: number, targetCalories: number) {
+    const rangeHalf = 250;
+    const minRange = targetCalories - rangeHalf;
+    const maxRange = targetCalories + rangeHalf;
+    const clampedCalories = Math.max(minRange, Math.min(maxRange, currentCalories));
+    return ((clampedCalories - minRange) / (rangeHalf * 2)) * 65 + 17.5; // css element needs 17.5 % saved in space both sides
+  }
 }

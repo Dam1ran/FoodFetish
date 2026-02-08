@@ -41,23 +41,85 @@
               [attr.y1]="`${caloriesRange() === 0 ? 50 : ((caloriesMax() + caloriesRange() * 0.1 - calorie) / (caloriesRange() * 1.5)) * 100}%`"
               [attr.x2]="`${(96 / (calories().length - 1)) * ($index + 1) + 2}%`"
               [attr.y2]="`${caloriesRange() === 0 ? 50 : ((caloriesMax() + caloriesRange() * 0.1 - calories()[$index + 1]) / (caloriesRange() * 1.5)) * 100}%`"
-              stroke="rgb(110, 100, 140)"
+              stroke="rgb(130, 100, 140)"
               stroke-width="1"
             />
           }
         }
       </svg>
     }
-    <div class="d-flex">
-      <div class="flex-grow-1 px-1 d-flex align-items-center mt-3">
-        <iconify class="opacity-50" icon="ph:tilde-fill" />
-        <div class="ms-1 fw-semibold opacity-75" style="font-size: 14px">
-          {{
-            diaryLogService
-              .getWeightByFormula(isoDate(), optionsService.options().weightFormulaBackDays)
-              .toFixed(1)
-          }}
-          kg
+    <div class="d-flex gap-1 justify-content-between align-items-center">
+      <div class="flex-grow-1">
+        @let targetCalories =
+          optionsService.getCaloriesForWeightGoal(
+            diaryLogService.getWeightByFormula(
+              undefined,
+              optionsService.options().weightFormulaBackDays
+            )
+          );
+        <div class="m-1 bg-body-tertiary rounded-pill position-relative" style="height: 24px">
+          <div
+            class="text-center fw-semibold bg-body-secondary px-2 position-absolute rounded-pill top-0 translate-middle start-50 z-2"
+            style="
+              font-size: 10px;
+              color: rgb(150, 150, 255);
+              text-shadow: 0 0 5px rgba(10, 10, 10, 0.9);
+              border-top: 1px solid rgba(10, 10, 10, 0.5);
+              border-bottom: 1px solid rgba(130, 130, 130, 0.2);
+              white-space: nowrap;
+            "
+          >
+            <span class="opacity-75" style="font-size: 14px; line-height: 14px">&rarr;</span>
+            {{ targetCalories.toFixed() }}
+            <span class="opacity-75" style="font-size: 14px; line-height: 14px">&larr;</span>
+          </div>
+          <div
+            class="position-absolute translate-midsdle-x start-50"
+            style="width: 1px; height: 100%; background-color: rgb(150, 150, 255)"
+          ></div>
+          <div
+            class="fw-semibold px-3 rounded-pill position-absolute translate-middle-x align-content-end opacity-95 position-relative"
+            style="
+              font-size: 10px;
+              border: 1px solid rgb(150, 110, 160, 0.1);
+              background-color: rgb(240, 180, 230, 0.25);
+              text-shadow: 0 0 5px rgba(10, 10, 10, 0.9);
+              height: calc(100% - 2px);
+              box-shadow: inset 0 0 10px rgba(10, 10, 10, 0.75);
+              top: 1px;
+            "
+            [style.left.%]="
+              getCalorieAverageLeftPositionPercent(
+                diaryLogService.getCalorieAveragePer7Days(this.isoDate()),
+                targetCalories
+              )
+            "
+          >
+            {{ diaryLogService.getCalorieAveragePer7Days(this.isoDate()).toFixed() }}
+            <div
+              class="position-absolute translate-midsdle-x start-50 top-0"
+              style="width: 1px; height: 100%; background-color: rgb(240, 180, 230, 0.75)"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="opacity-50 text-center"
+          style="font-size: 10px; line-height: 12px; margin-bottom: -6px"
+        >
+          avg
+        </div>
+        <div class="px-1 d-flex align-items-center">
+          <iconify class="opacity-50" icon="ph:tilde-fill" />
+          <div class="ms-1 fw-semibold opacity-75" style="font-size: 14px">
+            {{
+              diaryLogService
+                .getWeightByFormula(isoDate(), optionsService.options().weightFormulaBackDays)
+                .toFixed(1)
+            }}
+            kg
+          </div>
         </div>
       </div>
       <div

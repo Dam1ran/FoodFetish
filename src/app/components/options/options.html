@@ -1,5 +1,296 @@
 <div class="content-wrapper">
   <div class="border rounded m-1 mb-0">
+    <div class="mx-1">Anthropometrics</div>
+    <div class="p-1 bg-body-tertiary">
+      <div
+        class="d-flex justify-content-between align-items-center gap-2 mx-auto"
+        style="width: 300px"
+      >
+        <div>
+          <div class="opacity-50 text-center" style="font-size: 10px">Height</div>
+          <div class="d-flex">
+            <iconify
+              class="z-0 opacity-75"
+              [class]="{
+                'text-info-emphasis': optionsService.options().height,
+                'text-warning-emphasis': !optionsService.options().height,
+              }"
+              icon="game-icons:body-height"
+              size="32px"
+            />
+            <input
+              type="number"
+              inputmode="numeric"
+              class="form-control text-center p-0 shadow-none border border-0 opacity-80"
+              style="width: 44px; border-radius: 2px"
+              [placeholder]="optionsService.options().height ? 'cm' : 'cm?'"
+              [value]="optionsService.options().height ?? null"
+              (blur)="optionsService.updateHeight($event.target.value)"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="opacity-50 text-center" style="font-size: 10px">Gender</div>
+          <div
+            class="d-flex rounded align-items-center"
+            style="border: 1px solid rgba(140, 200, 240, 0.25)"
+          >
+            <div
+              [class]="{
+                'bg-body': optionsService.options().isMale,
+              }"
+            >
+              <iconify
+                class="z-0"
+                icon="healthicons:female-24px"
+                [class]="{
+                  'opacity-90': !optionsService.options().isMale,
+                  'opacity-10': optionsService.options().isMale,
+                }"
+                style="color: rgba(240, 120, 200, 0.9)"
+                size="32px"
+                (click)="optionsService.setIsMale(false)"
+              />
+            </div>
+            <div class="bg-dark" style="width: 1px; height: 34px"></div>
+            <div
+              [class]="{
+                'bg-body': !optionsService.options().isMale,
+              }"
+            >
+              <iconify
+                class="z-0"
+                icon="healthicons:male-24px"
+                [class]="{
+                  'opacity-90': optionsService.options().isMale,
+                  'opacity-10': !optionsService.options().isMale,
+                }"
+                style="color: rgba(90, 110, 250, 0.9)"
+                size="32px"
+                (click)="optionsService.setIsMale(true)"
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="opacity-50 text-center" style="font-size: 10px">BF %(leave empty if n/a)</div>
+          <div class="d-flex justify-content-center">
+            <iconify
+              class="z-0 opacity-75"
+              [class]="{
+                'text-info-emphasis': optionsService.options().bodyFatPercentage,
+                'text-warning-emphasis': !optionsService.options().bodyFatPercentage,
+              }"
+              icon="ri:water-percent-line"
+              size="32px"
+            />
+            <input
+              type="number"
+              inputmode="numeric"
+              class="form-control text-center p-0 shadow-none border border-0 opacity-80"
+              style="width: 44px; border-radius: 2px"
+              [placeholder]="optionsService.options().bodyFatPercentage ? '%' : '?'"
+              [value]="optionsService.options().bodyFatPercentage ?? null"
+              (blur)="optionsService.updateBodyFatPercent($event.target.value)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center my-1">
+        <div
+          class="rounded align-content-center text-center bg-body-secondary opacity-80"
+          style="min-width: 120px"
+        >
+          @if (selectedDayJs(); as date) {
+            <span class="text-info-emphasis" style="font-size: 14px">
+              {{ date.toISOString() | date }}
+            </span>
+            <span class="fst-italic">({{ years() }})</span>
+          } @else {
+            <span class="fst-italic text-muted text-warning-emphasis" style="font-size: 14px">
+              Date of birth
+            </span>
+          }
+        </div>
+        <date-picker
+          [selectedDate]="selectedDate()"
+          (selectedDateChange)="selectedDate.set($event); optionsService.updateDateOfBirth($event)"
+        />
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-secondary dropdown-toggle align-self-center py-0 mx-auto d-block opacity text-truncate text-info-emphasis opacity-80"
+        style="height: 34px; width: 300px"
+        data-bs-toggle="dropdown"
+      >
+        @if (optionsService.options().activityLevel ?? 0 !== 0) {
+          {{ activityLevelMap[optionsService.options().activityLevel].description }}
+        } @else {
+          Choose activity level
+        }
+      </button>
+      <ul class="dropdown-menu p-1" style="width: 300px">
+        @for (activityLevel of activityLevels; track $index) {
+          @if (activityLevel.value !== 0) {
+            <li [class.mt-1]="!$first" class="border rounded">
+              @let sameActivityLevel =
+                activityLevel.value === optionsService.options().activityLevel;
+              <span
+                class="dropdown-item cursor-pointer text-wrap p-1 text-center user-select-none"
+                [class]="{
+                  'fst-italic': sameActivityLevel,
+                  'bg-body-tertiary': $even,
+                }"
+                [style]="{
+                  'text-decoration': sameActivityLevel ? 'underline' : 'unset',
+                  'letter-spacing': sameActivityLevel ? '1px' : '0.25px',
+                  'text-underline-offset': '2px',
+                }"
+                (click)="optionsService.setActivityLevel(activityLevel.value)"
+              >
+                {{ activityLevel.label }}
+              </span>
+            </li>
+          }
+        }
+      </ul>
+      <div class="border p-1 bg-body-secondary my-1 mx-auto" style="width: 300px">
+        <div class="text-muted text-center opacity-50" style="font-size: 12px">
+          Guestimation calories per day for current options
+        </div>
+        <div class="text-center fst-italic text-success" style="font-size: 12px">
+          @if (!optionsService.options().bodyFatPercentage) {
+            Revised Harris-Benedict equation
+          } @else {
+            Katch-McArdle equation
+          }
+          <div>(BMR - Rev.2023)</div>
+        </div>
+        <div class="text-info-emphasis text-center">
+          {{
+            optionsService
+              .getCaloriesForActivityLevel(
+                diaryLogService.getWeightByFormula(
+                  undefined,
+                  optionsService.options().weightFormulaBackDays
+                )
+              )
+              .toFixed()
+          }}
+        </div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-secondary dropdown-toggle align-self-center py-0 mx-auto d-block opacity text-truncate text-info-emphasis opacity-80"
+        style="height: 34px; width: 300px"
+        data-bs-toggle="dropdown"
+      >
+        @if (optionsService.options().weightGoal ?? 0 !== 0) {
+          {{ weightGoalMap[optionsService.options().weightGoal].description }}
+        } @else {
+          Choose your weight goal
+        }
+      </button>
+      <ul class="dropdown-menu p-1" style="width: 300px">
+        @for (weightGoal of weightGoals; track $index) {
+          @if (weightGoal.value !== 0) {
+            <li [class.mt-1]="!$first" class="border rounded">
+              @let sameWeightGoal = weightGoal.value === optionsService.options().weightGoal;
+              <span
+                class="dropdown-item cursor-pointer text-wrap p-1 text-center user-select-none"
+                [class]="{
+                  'fst-italic': sameWeightGoal,
+                  'bg-body-tertiary': $even,
+                }"
+                [style]="{
+                  'text-decoration': sameWeightGoal ? 'underline' : 'unset',
+                  'letter-spacing': sameWeightGoal ? '1px' : '0.25px',
+                  'text-underline-offset': '2px',
+                }"
+                (click)="optionsService.setWeightGoal(weightGoal.value)"
+              >
+                {{ weightGoal.label }}
+              </span>
+            </li>
+          }
+        }
+      </ul>
+      <div class="border p-1 bg-body-secondary mt-1 mx-auto" style="width: 300px">
+        <div class="text-muted text-center opacity-50" style="font-size: 12px">
+          Guestimation calories per day for your goal
+        </div>
+        <div class="text-center fw-bold" style="color: rgb(130, 130, 255)">
+          {{
+            optionsService
+              .getCaloriesForWeightGoal(
+                diaryLogService.getWeightByFormula(
+                  undefined,
+                  optionsService.options().weightFormulaBackDays
+                )
+              )
+              .toFixed()
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border rounded m-1 mb-0 mt-4">
+    <div class="mx-1">Google Drive sync</div>
+    <div class="d-flex flex-column gap-1 p-1 bg-body-tertiary">
+      @if (!googleDriveService.isSignedIn()) {
+        <button
+          class="btn btn-secondary p-0 px-1 rounded opacity-75"
+          iconSize="24px"
+          buttonIcon="iconoir:google"
+          (click)="googleDriveService.signIn()"
+        >
+          Sign in with Google
+        </button>
+      } @else {
+        <button
+          class="btn p-0 px-1 rounded opacity-40"
+          [class]="{
+            'btn-secondary': !googleDriveService.isSyncing(),
+            'btn-outline-secondary': googleDriveService.isSyncing(),
+          }"
+          iconSize="24px"
+          buttonIcon="iconoir:cloud-upload"
+          [disabled]="googleDriveService.isSyncing()"
+          (click)="googleDriveService.uploadToDrive()"
+        >
+          Upload to Drive
+        </button>
+        <button
+          class="btn p-0 px-1 rounded opacity-40"
+          [class]="{
+            'btn-secondary': !googleDriveService.isSyncing(),
+            'btn-outline-secondary': googleDriveService.isSyncing(),
+          }"
+          iconSize="24px"
+          buttonIcon="iconoir:cloud-download"
+          [disabled]="googleDriveService.isSyncing()"
+          (click)="googleDriveService.downloadFromDrive()"
+        >
+          Download from Drive
+        </button>
+        <div
+          class="mt-4 text-muted text-truncate fst-italic opacity-40"
+          style="font-size: 14px; line-height: 16px"
+        >
+          {{ googleDriveService.userEmail() }}
+        </div>
+        <button
+          class="btn btn-secondary p-0 px-1 rounded opacity-75"
+          iconSize="24px"
+          buttonIcon="iconoir:log-out"
+          (click)="googleDriveService.signOut()"
+        >
+          Sign out
+        </button>
+      }
+    </div>
+  </div>
+  <div class="border rounded m-1 mb-0">
     <div class="mx-1">Foods</div>
     <div class="d-flex justify-content-between p-1 bg-body-tertiary">
       <button
@@ -89,57 +380,6 @@
       >
         Load
       </button>
-    </div>
-  </div>
-  <div class="border rounded m-1 mb-0">
-    <div class="mx-1">Google Drive sync</div>
-    <div class="d-flex flex-column gap-1 p-1 bg-body-tertiary">
-      @if (!googleDriveService.isSignedIn()) {
-        <button
-          class="btn btn-secondary p-0 px-1 rounded opacity-75"
-          iconSize="24px"
-          buttonIcon="iconoir:google"
-          (click)="googleDriveService.signIn()"
-        >
-          Sign in with Google
-        </button>
-      } @else {
-        <button
-          class="btn p-0 px-1 rounded opacity-40"
-          [class]="{
-            'btn-secondary': !googleDriveService.isSyncing(),
-            'btn-outline-secondary': googleDriveService.isSyncing(),
-          }"
-          iconSize="24px"
-          buttonIcon="iconoir:cloud-upload"
-          [disabled]="googleDriveService.isSyncing()"
-          (click)="googleDriveService.uploadToDrive()"
-        >
-          Upload to Drive
-        </button>
-        <button
-          class="btn p-0 px-1 rounded opacity-40"
-          [class]="{
-            'btn-secondary': !googleDriveService.isSyncing(),
-            'btn-outline-secondary': googleDriveService.isSyncing(),
-          }"
-          iconSize="24px"
-          buttonIcon="iconoir:cloud-download"
-          [disabled]="googleDriveService.isSyncing()"
-          (click)="googleDriveService.downloadFromDrive()"
-        >
-          Download from Drive
-        </button>
-        <div class="mt-4 text-muted text-truncate fst-italic opacity-40" style="font-size: 14px; line-height: 16px;">{{ googleDriveService.userEmail() }}</div>
-        <button
-          class="btn btn-secondary p-0 px-1 rounded opacity-75"
-          iconSize="24px"
-          buttonIcon="iconoir:log-out"
-          (click)="googleDriveService.signOut()"
-        >
-          Sign out
-        </button>
-      }
     </div>
   </div>
   <div class="border rounded m-1 mb-0 bg-warning-subtle">

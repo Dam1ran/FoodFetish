@@ -1,5 +1,6 @@
-import { Component, ElementRef, inject, viewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, viewChild, linkedSignal } from '@angular/core';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { FoodsService } from '../../shared/services/my-foods.service';
 import { ToastsService } from '../../shared/services/toasts.service';
 import { ButtonIconDirective } from '../../shared/directives/button-icon.directive';
@@ -10,10 +11,16 @@ import { RecipesService } from '../../shared/services/recipes.service';
 import { DiaryLogService } from '../../shared/services/diary-log.service';
 import { ImageStoreService } from '../../shared/services/image-store.service';
 import { GoogleDriveService } from '../../shared/services/google-drive.service';
+import { IconifyComponent } from '../../shared/components/iconify.component';
+import { DatePicker } from '../../shared/components/date-picker/date-picker';
+import { DayJsHelper } from '../../shared/helpers/dayjs-helper';
+import { OptionsService } from '../../shared/services/options/options.service';
+import { ActivityLevel, ActivityLevelMap } from '../../shared/services/options/activity-level.enum';
+import { WeightGoal, WeightGoalMap } from '../../shared/services/options/weight-goal.enum';
 
 @Component({
   selector: 'app-options',
-  imports: [ButtonIconDirective],
+  imports: [ButtonIconDirective, IconifyComponent, DatePicker, DatePipe],
   templateUrl: './options.html',
 })
 export class Options {
@@ -23,6 +30,7 @@ export class Options {
   protected readonly diaryLogService = inject(DiaryLogService);
   private readonly imageStoreService = inject(ImageStoreService);
   protected readonly googleDriveService = inject(GoogleDriveService);
+  protected readonly optionsService = inject(OptionsService);
 
   protected readonly jsonUploadFoodsInput =
     viewChild<ElementRef<HTMLInputElement>>('jsonUploadFoods');
@@ -169,4 +177,29 @@ export class Options {
       window.location.reload();
     }, 50);
   }
+
+  readonly selectedDate = linkedSignal(() => this.optionsService.options().dateOfBirth);
+
+  readonly selectedDayJs = computed(
+    () => this.selectedDate() && DayJsHelper.fromNgbDateStruct(this.selectedDate()),
+  );
+  readonly years = computed(() =>
+    this.selectedDayJs() ? DayJsHelper.getStartOfToday().diff(this.selectedDayJs(), 'year') : 0,
+  );
+
+  activityLevelMap = ActivityLevelMap;
+  protected readonly activityLevels = Object.keys(ActivityLevel)
+    .filter((value) => !isNaN(Number(value)))
+    .map((value) => ({
+      label: ActivityLevelMap[value].description,
+      value: +value as ActivityLevel,
+    }));
+
+  weightGoalMap = WeightGoalMap;
+  protected readonly weightGoals = Object.keys(WeightGoal)
+    .filter((value) => !isNaN(Number(value)))
+    .map((value) => ({
+      label: WeightGoalMap[value].description,
+      value: +value as WeightGoal,
+    }));
 }

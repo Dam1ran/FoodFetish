@@ -401,6 +401,7 @@ export class GoogleDriveService {
     this.foodsService.setFoods([]);
     this.recipesService.setRecipes([]);
     this.diaryLogService.setDiary({ diaryDays: [] });
+    this.optionsService.setOptions(undefined);
 
     if (data.foods) {
       this.foodsService.setFoods(data.foods as Parameters<FoodsService['setFoods']>[0]);
@@ -411,6 +412,7 @@ export class GoogleDriveService {
     if (data.diaryLog) {
       this.diaryLogService.setDiary(data.diaryLog as Parameters<DiaryLogService['setDiary']>[0]);
     }
+
     if (data.options) {
       this.optionsService.setOptions(data.options as Parameters<OptionsService['setOptions']>[0]);
     }

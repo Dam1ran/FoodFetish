@@ -12,6 +12,28 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.11.1',
+      date: '08.02.2026',
+      changes: [
+        {
+          description: 'Added anthropometrics feature.',
+          type: VersionChangeType.Feature,
+        },
+        {
+          description: 'Updated weight-in widget with some additional data.',
+          type: VersionChangeType.Maintenance,
+        },
+        {
+          description: 'UI cleanups.',
+          type: VersionChangeType.Maintenance,
+        },
+        {
+          description: 'Fix hide meal logic.',
+          type: VersionChangeType.Fix,
+        },
+      ],
+    },
+    {
       version: '1.11.0',
       date: '08.02.2026',
       changes: [

@@ -121,7 +121,17 @@ export class Diary implements AfterViewInit {
   getRespectiveMeal(mealPosition: MealPosition) {
     return this.diaryLogService.getRespectiveMeal(this.selectedDayJs().toISOString(), mealPosition);
   }
-  getRespectiveRecipes(mealPosition) {
+  isMealShown(mealPosition: MealPosition) {
+    return (
+      mealPosition === MealPosition.MealOne ||
+      mealPosition === MealPosition.Snacks ||
+      !this.diaryLogService.isPrevPositionMealEmpty(
+        this.selectedDayJs().toISOString(),
+        mealPosition,
+      )
+    );
+  }
+  getRespectiveRecipes(mealPosition: MealPosition) {
     return this.diaryLogService.getRespectiveRecipes(
       this.selectedDayJs().toISOString(),
       mealPosition,
