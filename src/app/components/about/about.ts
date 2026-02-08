@@ -9,6 +9,11 @@ import { IconifyComponent } from '../../shared/components/iconify.component';
 export class About {
   protected readonly aboutNotes = [
     {
+      icon: 'game-icons:measure-tape',
+      iconClass: 'text-warning-emphasis',
+      text: 'Anthropometrics calculator with 2 formulas, which allow user to calorie targets based on 7days data!',
+    },
+    {
       icon: 'iconoir:weight',
       iconClass: 'text-info-emphasis',
       text: 'Features improved averaged weight formula!',
