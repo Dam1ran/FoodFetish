@@ -8,6 +8,8 @@
   (dateSelect)="onDateSelected($event)"
   autofocus="false"
   tabindex="-1"
+  navigation="select"
+  [minDate]="{ year: 1960, month: 1, day: 1 }"
 />
 <button
   class="btn p-0 btn-sm border-0 opacity-85"
