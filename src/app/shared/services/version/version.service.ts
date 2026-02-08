@@ -12,6 +12,16 @@ export class VersionService {
 
   readonly releases = [
     {
+      version: '1.11.0',
+      date: '08.02.2026',
+      changes: [
+        {
+          description: 'Moved to DNS.',
+          type: VersionChangeType.Update,
+        },
+      ],
+    },
+    {
       version: '1.10.2',
       date: '07.02.2026',
       changes: [
