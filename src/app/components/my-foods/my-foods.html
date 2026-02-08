@@ -46,10 +46,7 @@
   </div>
 </div>
 <div class="content-wrapper overflow-y-auto" style="height: calc(100dvh - 141px)">
-  <table
-    class="table table-sm table-borderless mb-0"
-    style="font-size: 12px; table-layout: fixed"
-  >
+  <table class="table table-sm table-borderless mb-0" style="font-size: 12px; table-layout: fixed">
     <thead class="position-sticky z-1" style="top: 0px">
       <tr>
         <th scope="col" class="bg-gradient" style="width: 10%"></th>
@@ -94,7 +91,7 @@
     <tbody>
       @for (food of foods(); track $index) {
         <tr scope="row" class="opacity-90">
-          <td colspan="7" class="bg-dark" style="padding: 1px 0;"></td>
+          <td colspan="7" class="bg-dark" style="padding: 1px 0"></td>
         </tr>
         <tr scope="row" class="opacity-90">
           <td rowspan="2" class="bg-dark-subtle">
@@ -111,12 +108,19 @@
             [style.background-color]="foodMacroCategoryMap[food.macroCategory].bgColor"
             [class.text-decoration-underline]="!!diaryDate() || !!recipeId()"
             (click)="addFoodToDiaryOrRecipe(food)"
-            style="font-size: 16px; text-underline-offset: 2px; text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);"
+            style="
+              font-size: 16px;
+              text-underline-offset: 2px;
+              text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+            "
           >
-            <div class="d-flex justify-content-center align-items-center">
-              <div>{{ food.name }}</div>
+            <div class="d-flex justify-content-between align-items-center">
               @if (food.barcode) {
-                <iconify class="ms-1 opacity-50" icon="si:barcode-fill" />
+                <iconify class="ms-1 opacity-40" icon="teenyicons:barcode-outline" size="16px" />
+              }
+              <div class="mx-auto">{{ food.name }}</div>
+              @if (food.barcode) {
+                <iconify class="ms-1 opacity-40" icon="teenyicons:barcode-outline" size="16px" />
               }
             </div>
           </td>
